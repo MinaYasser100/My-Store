@@ -10,27 +10,26 @@ class ColorsTheme {
   // Factory constructor to return the same instance
   factory ColorsTheme() => _instance;
 
-  // Primary color (Rich Red from the robe)
-  final primaryColor = const Color(0xFFC0392B); // Deep Red
-  final primaryLight = const Color(0xFFE74C3C); // Light Red
-  final primaryDark = const Color(0xFF922B21); // Dark Red
+  // Primary color (Dark Navy)
+  final primaryColor = const Color(0xFF021024); // Darkest Blue
+  final primaryDark = const Color(0xFF052659); // Deep Blue
+  final primaryLight = const Color(0xFF345B83); // Medium Blue
 
-  // Secondary color (Blue from the background and robe)
-  final secondaryColor = const Color(0xFF3498DB); // Soft Blue
-  final secondaryLight = const Color(0xFF5DADE2); // Light Blue
-  final secondaryDark = const Color(0xFF2874A6); // Dark Blue
+  // Secondary colors (lighter shades)
+  final secondaryColor = const Color(0xFF7DA0CA); // Light Blue
+  final secondaryLight = const Color(0xFFC1E8FF); // Very Light Blue
 
-  // Accent color (Gold from the crown and harp)
-  final accentColor = const Color(0xFFD4A017); // Warm Gold
-  final accentLight = const Color(0xFFF1C40F); // Light Gold
-  final accentDark = const Color(0xFF9B7A00); // Dark Gold
-
-  // Neutral colors (Beige and White from the halo)
+  // Neutral / Background colors
   final whiteColor = Colors.white;
-  final backgroundColor = const Color(0xFFF5F1E9); // Soft Beige
-  final cardColor = const Color(0xFFFAF7F2); // Light Beige
-  final grayWhite = const Color(0xFFD3C9B7); // Warm Gray
+  final backgroundColor = const Color(
+    0xFF021024,
+  ); // Same as primary for dark mode
+  final cardColor = const Color(0xFF052659); // Card background darker tone
+  final grayWhite = const Color(0xFF7DA0CA); // Soft grayish blue
+
+  // Accent (اختياري: ناخد أفتح درجة للهايلايت)
+  final accentColor = const Color(0xFFC1E8FF); // Accent highlight
 
   // Error color
-  final errorColor = const Color(0xFFD32F2F); // Vibrant Red for errors
+  final errorColor = const Color(0xFFD32F2F); // Red for errors
 }

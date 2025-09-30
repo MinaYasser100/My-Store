@@ -58,7 +58,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
                   isObscured ? Icons.visibility_off : Icons.visibility,
                   color: isObscured
                       ? ColorsTheme().primaryDark
-                      : ColorsTheme().secondaryDark,
+                      : ColorsTheme().primaryLight,
                 ),
               )
             : null,

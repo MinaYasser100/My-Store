@@ -1,0 +1,72 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:my_store/core/routing/routes.dart';
+import 'package:my_store/core/theme/app_style.dart';
+import 'package:my_store/core/utils/colors.dart';
+import 'package:my_store/core/utils/show_top_toast.dart';
+import 'package:my_store/features/forgot_password/manager/autovalidate_mode/autovalidate_mode_cubit.dart';
+import 'package:my_store/features/login/manager/cubit/login_cubit.dart';
+
+class LoginSubmitButton extends StatelessWidget {
+  const LoginSubmitButton({
+    super.key,
+    required this.formKey,
+    required this.emailController,
+    required this.passwordController,
+    required this.adminController,
+  });
+
+  final GlobalKey<FormState> formKey;
+  final TextEditingController emailController;
+  final TextEditingController passwordController;
+  final TextEditingController adminController;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocConsumer<LoginCubit, LoginState>(
+      listener: (context, state) {
+        if (state is LoginError) {
+          showErrorToast(context, 'Error', state.error);
+        }
+        if (state is LoginSuccess) {
+          showSuccessToast(context, 'Success', 'Login Process is Successful');
+          context.go(Routes.homeView);
+        }
+      },
+      builder: (context, state) {
+        return Container(
+          height: 50,
+          width: double.infinity,
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(16)),
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: ColorsTheme().primaryDark,
+              padding: const EdgeInsets.all(0),
+            ),
+            onPressed: () {
+              if (formKey.currentState!.validate()) {
+                FocusScope.of(context).unfocus();
+                if (adminController.text.trim() == "Jesus1741") {
+                  context.read<LoginCubit>().loginWithEmailAndPassword(
+                    email: emailController.text.trim(),
+                    password: passwordController.text.trim(),
+                  );
+                } else {
+                  showErrorToast(
+                    context,
+                    'Error',
+                    'Admin Password is Incorrect',
+                  );
+                }
+              } else {
+                context.read<AutovalidateModeCubit>().changeAutovalidateMode();
+              }
+            },
+            child: Text("Login", style: AppTextStyles.styleBold20sp(context)),
+          ),
+        );
+      },
+    );
+  }
+}

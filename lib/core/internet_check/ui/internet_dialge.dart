@@ -12,7 +12,7 @@ void showNoInternetDialog(BuildContext context) {
       elevation: 8,
       insetPadding: const EdgeInsets.symmetric(horizontal: 30, vertical: 24),
       content: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(16),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [

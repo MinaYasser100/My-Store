@@ -11,6 +11,7 @@ class CustomButton extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
+        color: Colors.blue,
         boxShadow: [
           BoxShadow(
             color: ColorsTheme().primaryDark.withOpacity(0.3),

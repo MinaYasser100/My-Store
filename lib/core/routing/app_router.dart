@@ -1,60 +1,42 @@
 import 'package:go_router/go_router.dart';
 import 'package:my_store/core/routing/animation_route.dart';
 import 'package:my_store/core/routing/routes.dart';
+import 'package:my_store/features/forgot_password/ui/forgot_password_view.dart';
+import 'package:my_store/features/home/ui/home_view.dart';
+import 'package:my_store/features/login/ui/login_view.dart';
+import 'package:my_store/features/register/ui/register_view.dart';
+import 'package:my_store/features/verfiy_email/ui/verify_email_view.dart';
 
 abstract class AppRouter {
   static final router = GoRouter(
-    initialLocation: Routes.loginView,
+    initialLocation: Routes.registerView,
     routes: [
-      // Register view
-      // GoRoute(
-      //   path: Routes.registerView,
-      //   pageBuilder: (context, state) => fadeTransitionPage(),
-      // ),
-      // // Login view
-      // GoRoute(
-      //   path: Routes.loginView,
-      //   pageBuilder: (context, state) => fadeTransitionPage(LoginView()),
-      // ),
-      // // Home view
-      // GoRoute(
-      //   path: Routes.homeView,
-      //   pageBuilder: (context, state) => fadeTransitionPage(HomeView()),
-      // ),
-      // // Forgot Password
-      // GoRoute(
-      //   path: Routes.forgotPasswordView,
-      //   pageBuilder: (context, state) =>
-      //       fadeTransitionPage(ForgotPasswordView()),
-      // ),
-      // // Verify Email
-      // GoRoute(
-      //   path: Routes.verifyEmailView,
-      //   pageBuilder: (context, state) => fadeTransitionPage(VerifyEmailView()),
-      // ),
-      // // Classes View
-      // GoRoute(
-      //   path: Routes.classesView,
-      //   pageBuilder: (context, state) {
-      //     final level = state.extra as LevelModel?;
-      //     if (level == null) throw Exception('Level is not found');
-      //     return fadeTransitionPage(ClassesView(level: level));
-      //   },
-      // ),
-      // // Class View
-      // GoRoute(
-      //   path: Routes.classView,
-      //   pageBuilder: (context, state) {
-      //     final classModel = state.extra as ClassModel?;
-      //     if (classModel == null) throw Exception('class is not found');
-      //     return fadeTransitionPage(ClassView(classModel: classModel));
-      //   },
-      // ),
-      // // Settings View
-      // GoRoute(
-      //   path: Routes.settingsView,
-      //   pageBuilder: (context, state) => fadeTransitionPage(SettingsView()),
-      // ),
+      //Register view
+      GoRoute(
+        path: Routes.registerView,
+        pageBuilder: (context, state) => fadeTransitionPage(RegisterView()),
+      ),
+      // Login view
+      GoRoute(
+        path: Routes.loginView,
+        pageBuilder: (context, state) => fadeTransitionPage(LoginView()),
+      ),
+      // Home view
+      GoRoute(
+        path: Routes.homeView,
+        pageBuilder: (context, state) => fadeTransitionPage(HomeView()),
+      ),
+      // Forgot Password
+      GoRoute(
+        path: Routes.forgotPasswordView,
+        pageBuilder: (context, state) =>
+            fadeTransitionPage(ForgotPasswordView()),
+      ),
+      // Verify Email
+      GoRoute(
+        path: Routes.verifyEmailView,
+        pageBuilder: (context, state) => fadeTransitionPage(VerifyEmailView()),
+      ),
     ],
   );
 }

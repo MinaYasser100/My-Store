@@ -37,7 +37,7 @@ class LoginFormFields extends StatelessWidget {
           'Sign in to continue',
           style: AppTextStyles.styleBold16sp(
             context,
-          ).copyWith(color: ColorsTheme().grayWhite),
+          ).copyWith(color: ColorsTheme().grayColor),
         ),
         const SizedBox(height: 30),
         CustomTextFormField(

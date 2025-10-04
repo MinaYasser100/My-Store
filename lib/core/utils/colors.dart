@@ -25,7 +25,8 @@ class ColorsTheme {
     0xFF021024,
   ); // Same as primary for dark mode
   final cardColor = const Color(0xFF052659); // Card background darker tone
-  final grayWhite = const Color(0xFF7DA0CA); // Soft grayish blue
+  final softBlue = const Color(0xFF7DA0CA); // Soft grayish blue
+  final grayColor = const Color.fromARGB(255, 226, 231, 235); // Light gray
 
   // Accent (اختياري: ناخد أفتح درجة للهايلايت)
   final accentColor = const Color(0xFFC1E8FF); // Accent highlight

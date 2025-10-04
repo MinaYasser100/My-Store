@@ -24,7 +24,7 @@ class CustomGoogleLoginBloc extends StatelessWidget {
       },
       builder: (context, state) {
         return CustomImageAndTextButton(
-          image: 'assets/image/google.jpg',
+          image: 'assets/images/google.jpg',
           text: 'Sign in with Google',
           onPressed: () {
             FocusScope.of(context).unfocus();

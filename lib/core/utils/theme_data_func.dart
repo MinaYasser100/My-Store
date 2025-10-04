@@ -34,6 +34,16 @@ ThemeData themeDataFunc() {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
     ),
+    textButtonTheme: TextButtonThemeData(
+      style: TextButton.styleFrom(
+        padding: EdgeInsets.all(0),
+        textStyle: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+          color: ColorsTheme().primaryColor,
+        ),
+      ),
+    ),
     useMaterial3: true,
   );
 }

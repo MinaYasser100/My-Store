@@ -10,34 +10,30 @@ class LoginFormFields extends StatelessWidget {
     super.key,
     required this.emailController,
     required this.passwordController,
-    required this.adminController,
     required this.emailFocusNode,
     required this.passwordFocusNode,
-    required this.adminFocusNode,
   });
 
   final TextEditingController emailController;
   final TextEditingController passwordController;
-  final TextEditingController adminController;
   final FocusNode emailFocusNode;
   final FocusNode passwordFocusNode;
-  final FocusNode adminFocusNode;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Text(
-          "Login",
+          "Welcome back",
           style: AppTextStyles.styleBold30sp(
             context,
-          ).copyWith(color: ColorsTheme().primaryDark),
+          ).copyWith(color: ColorsTheme().primaryColor),
         ),
         Text(
-          'Sign in to continue',
+          'Sign in to your My Store account',
           style: AppTextStyles.styleBold16sp(
             context,
-          ).copyWith(color: ColorsTheme().grayColor),
+          ).copyWith(color: ColorsTheme().primaryLight),
         ),
         const SizedBox(height: 30),
         CustomTextFormField(
@@ -70,23 +66,6 @@ class LoginFormFields extends StatelessWidget {
             focusNode: passwordFocusNode,
             onFieldSubmitted: (value) {
               passwordFocusNode.unfocus();
-              FocusScope.of(context).requestFocus(adminFocusNode);
-            },
-          ),
-        ),
-        const SizedBox(height: 20),
-        CustomTextFormField(
-          textFieldModel: TextFieldModel(
-            keyboardType: TextInputType.visiblePassword,
-            controller: adminController,
-            labelText: "Admin Password",
-            hintText: "Enter Admin Password",
-            icon: Icons.lock,
-            obscureText: true,
-            validator: (value) => Validatoin.validatePassword(value),
-            focusNode: adminFocusNode,
-            onFieldSubmitted: (value) {
-              adminFocusNode.unfocus();
             },
           ),
         ),

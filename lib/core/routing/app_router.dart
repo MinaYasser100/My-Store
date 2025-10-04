@@ -9,7 +9,7 @@ import 'package:my_store/features/verfiy_email/ui/verify_email_view.dart';
 
 abstract class AppRouter {
   static final router = GoRouter(
-    initialLocation: Routes.registerView,
+    initialLocation: Routes.loginView,
     routes: [
       //Register view
       GoRoute(

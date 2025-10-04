@@ -29,7 +29,7 @@ class CustomImageAndTextButton extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CircleAvatar(
-              radius: 20,
+              radius: 16,
               backgroundImage: AssetImage(image),
               backgroundColor: ColorsTheme().cardColor,
             ),

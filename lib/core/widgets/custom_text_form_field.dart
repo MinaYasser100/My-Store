@@ -69,13 +69,13 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
         autofocus: widget.textFieldModel.autofocus,
         focusNode: _focusNode,
         onFieldSubmitted: widget.textFieldModel.onFieldSubmitted,
-        style: TextStyle(color: ColorsTheme().primaryDark),
+        style: TextStyle(color: ColorsTheme().primaryDark, fontSize: 14),
         decoration: InputDecoration(
-          contentPadding: EdgeInsets.symmetric(horizontal: 16),
+          contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           hintText: widget.textFieldModel.hintText,
           errorText: widget.textFieldModel.errorText,
           hintStyle: TextStyle(color: ColorsTheme().primaryLight),
-          labelStyle: TextStyle(color: ColorsTheme().primaryDark),
+          //labelStyle: TextStyle(color: ColorsTheme().primaryDark),
           suffixIcon: widget.textFieldModel.obscureText
               ? GestureDetector(
                   onTap: () {

@@ -3,7 +3,8 @@ import 'package:my_store/core/model/text_field_model/text_field_model.dart';
 import 'package:my_store/core/theme/app_style.dart';
 import 'package:my_store/core/utils/colors.dart';
 import 'package:my_store/core/validation/validatoin.dart';
-import 'package:my_store/core/widgets/custom_text_form_field.dart';
+import 'package:my_store/features/register/ui/widgets/register_field.dart';
+import 'package:my_store/features/register/ui/widgets/register_name_widget.dart';
 
 class RegisterFormFields extends StatelessWidget {
   const RegisterFormFields({
@@ -55,59 +56,19 @@ class RegisterFormFields extends StatelessWidget {
           ).copyWith(color: ColorsTheme().primaryLight),
         ),
         const SizedBox(height: 30),
-        Row(
-          children: [
-            Expanded(
-              child: CustomTextFormField(
-                textFieldModel: TextFieldModel(
-                  controller: firstNameController,
-                  hintText: "John",
-                  icon: Icons.person,
-                  obscureText: false,
-                  keyboardType: TextInputType.name,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return "First name is required";
-                    }
-                    return null;
-                  },
-                  autofocus: true,
-                  focusNode: firstNameFocusNode,
-                  onFieldSubmitted: (value) {
-                    firstNameFocusNode.unfocus();
-                    FocusScope.of(context).requestFocus(lastNameFocusNode);
-                  },
-                ),
-              ),
-            ),
-            const SizedBox(width: 15),
-            Expanded(
-              child: CustomTextFormField(
-                textFieldModel: TextFieldModel(
-                  controller: lastNameController,
-                  hintText: "Deo",
-                  obscureText: false,
-                  keyboardType: TextInputType.name,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return "First name is required";
-                    }
-                    return null;
-                  },
-                  autofocus: true,
-                  focusNode: lastNameFocusNode,
-                  onFieldSubmitted: (value) {
-                    lastNameFocusNode.unfocus();
-                    FocusScope.of(context).requestFocus(emailFocusNode);
-                  },
-                ),
-              ),
-            ),
-          ],
+
+        // First & Last name side-by-side
+        RegisterNameWidget(
+          firstNameController: firstNameController,
+          firstNameFocusNode: firstNameFocusNode,
+          lastNameFocusNode: lastNameFocusNode,
+          lastNameController: lastNameController,
+          emailFocusNode: emailFocusNode,
         ),
+
         const SizedBox(height: 10),
-        textTitle(context, "Email"),
-        CustomTextFormField(
+        RegisterField(
+          title: 'Email',
           textFieldModel: TextFieldModel(
             controller: emailController,
             hintText: "jhon@example.com",
@@ -121,14 +82,15 @@ class RegisterFormFields extends StatelessWidget {
             },
           ),
         ),
+
         const SizedBox(height: 10),
-        textTitle(context, "Phone Number"),
-        CustomTextFormField(
+        RegisterField(
+          title: 'Phone Number',
           textFieldModel: TextFieldModel(
             controller: phoneController,
-            hintText: "+20 123 456 789",
+            hintText: "012 2222 2222",
             keyboardType: TextInputType.phone,
-            validator: (value) => Validatoin.emailValidation(value),
+            validator: (value) => Validatoin.validatePhone(value),
             focusNode: phoneFocusNode,
             onFieldSubmitted: (value) {
               phoneFocusNode.unfocus();
@@ -136,9 +98,10 @@ class RegisterFormFields extends StatelessWidget {
             },
           ),
         ),
+
         const SizedBox(height: 10),
-        textTitle(context, "Password"),
-        CustomTextFormField(
+        RegisterField(
+          title: 'Password',
           textFieldModel: TextFieldModel(
             keyboardType: TextInputType.visiblePassword,
             controller: passwordController,
@@ -152,9 +115,10 @@ class RegisterFormFields extends StatelessWidget {
             },
           ),
         ),
+
         const SizedBox(height: 10),
-        textTitle(context, "Confirm Password"),
-        CustomTextFormField(
+        RegisterField(
+          title: 'Confirm Password',
           textFieldModel: TextFieldModel(
             keyboardType: TextInputType.visiblePassword,
             controller: confirmPasswordController,
@@ -169,20 +133,9 @@ class RegisterFormFields extends StatelessWidget {
             },
           ),
         ),
+
         const SizedBox(height: 20),
       ],
-    );
-  }
-
-  Padding textTitle(BuildContext context, String title) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 4.0, bottom: 4),
-      child: Text(
-        title,
-        style: AppTextStyles.styleBold18sp(
-          context,
-        ).copyWith(color: ColorsTheme().primaryColor),
-      ),
     );
   }
 }

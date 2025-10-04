@@ -18,4 +18,14 @@ class Validatoin {
     }
     return null;
   }
+
+  static String? validatePhone(value) {
+    if (value == null || value.isEmpty) {
+      return 'Phone number is required';
+    }
+    if (value.length < 11) {
+      return 'Phone number must be at least 11 digits';
+    }
+    return null;
+  }
 }

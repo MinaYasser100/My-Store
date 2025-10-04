@@ -48,8 +48,6 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
   Widget build(BuildContext context) {
     final isFocused = _focusNode.hasFocus;
 
-    // Use FormField so we can render the error text outside the decorated
-    // container (below it) instead of letting InputDecoration draw it inside.
     return FormField<String>(
       initialValue: widget.textFieldModel.controller.text,
       validator: widget.textFieldModel.validator,
@@ -62,10 +60,8 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
               decoration: isFocused
                   ? BoxDecoration(
                       border: Border.all(
-                        color: ColorsTheme().primaryLight.withAlpha(
-                          153,
-                        ), // Outer border color
-                        width: 2, // Wider outer border
+                        color: ColorsTheme().primaryLight.withAlpha(153),
+                        width: 2,
                       ),
                       borderRadius: BorderRadius.circular(18),
                     )
@@ -89,8 +85,6 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
                     vertical: 10,
                   ),
                   hintText: widget.textFieldModel.hintText,
-                  // Hide the internal error text so we can show it below the
-                  // container instead.
                   errorText: null,
                   hintStyle: TextStyle(color: ColorsTheme().primaryLight),
                   suffixIcon: widget.textFieldModel.obscureText
@@ -116,9 +110,6 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
               ),
             ),
 
-            // Render validation message below the two borders (outside the
-            // decorated container). We use the FormField's state to get the
-            // current error text so it'll update when the form is validated.
             if (fieldState.errorText != null)
               Padding(
                 padding: const EdgeInsets.only(left: 8.0, top: 6.0),

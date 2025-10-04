@@ -15,6 +15,7 @@ class RegisterSubmitButton extends StatelessWidget {
     required this.confirmPasswordController,
     required this.firstNameController,
     required this.lastNameController,
+    required this.phoneController,
   });
 
   final GlobalKey<FormState> formKey;
@@ -23,6 +24,7 @@ class RegisterSubmitButton extends StatelessWidget {
   final TextEditingController confirmPasswordController;
   final TextEditingController firstNameController;
   final TextEditingController lastNameController;
+  final TextEditingController phoneController;
 
   @override
   Widget build(BuildContext context) {
@@ -48,9 +50,6 @@ class RegisterSubmitButton extends StatelessWidget {
       },
       builder: (context, state) {
         return ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: ColorsTheme().primaryDark,
-          ),
           onPressed: () {
             if (formKey.currentState!.validate()) {
               FocusScope.of(context).unfocus();
@@ -65,7 +64,7 @@ class RegisterSubmitButton extends StatelessWidget {
             }
           },
           child: Text(
-            "Register",
+            "Create account",
             style: TextStyle(
               color: ColorsTheme().whiteColor,
               fontSize: 16,

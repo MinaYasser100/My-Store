@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:my_store/core/theme/app_style.dart';
 import 'package:my_store/core/utils/colors.dart';
 import 'package:my_store/features/forgot_password/manager/autovalidate_mode/autovalidate_mode_cubit.dart';
-import 'package:my_store/features/login/ui/login_view.dart';
 import 'package:my_store/features/register/ui/widgets/register_form_fields.dart';
 
+import 'have_account_widget.dart';
 import 'register_submit_button.dart';
 
 class RegisterBodyView extends StatelessWidget {
@@ -44,65 +43,50 @@ class RegisterBodyView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 24),
         child: BlocBuilder<AutovalidateModeCubit, AutovalidateModeState>(
           builder: (context, state) {
-            return Form(
-              key: _formKey,
-              autovalidateMode: context
-                  .read<AutovalidateModeCubit>()
-                  .autovalidateMode,
-              child: Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  border: Border.all(color: ColorsTheme().grayColor),
-                  borderRadius: BorderRadius.circular(24),
-                ),
-                child: Column(
-                  children: [
-                    RegisterFormFields(
-                      emailController: emailController,
-                      passwordController: passwordController,
-                      confirmPasswordController: confirmPasswordController,
-                      emailFocusNode: emailFocusNode,
-                      passwordFocusNode: passwordFocusNode,
-                      confirmPasswordFocusNode: confirmPasswordFocusNode,
-                      firstNameController: firstNameController,
-                      lastNameController: lastNameController,
-                      firstNameFocusNode: firstNameFocusNode,
-                      lastNameFocusNode: lastNameFocusNode,
-                      phoneController: phoneController,
-                      phoneFocusNode: phoneFocusNode,
-                    ),
-                    RegisterSubmitButton(
-                      formKey: _formKey,
-                      emailController: emailController,
-                      passwordController: passwordController,
-                      confirmPasswordController: confirmPasswordController,
-                      firstNameController: firstNameController,
-                      lastNameController: lastNameController,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Already have an account? ',
-                          style: AppTextStyles.styleBold16sp(context),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const LoginView(),
-                              ),
-                            );
-                          },
-                          child: const Text('Login'),
-                        ),
-                      ],
-                    ),
-                  ],
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 30),
+              child: Form(
+                key: _formKey,
+                autovalidateMode: context
+                    .read<AutovalidateModeCubit>()
+                    .autovalidateMode,
+                child: Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: ColorsTheme().grayColor),
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                  child: Column(
+                    children: [
+                      RegisterFormFields(
+                        emailController: emailController,
+                        passwordController: passwordController,
+                        confirmPasswordController: confirmPasswordController,
+                        emailFocusNode: emailFocusNode,
+                        passwordFocusNode: passwordFocusNode,
+                        confirmPasswordFocusNode: confirmPasswordFocusNode,
+                        firstNameController: firstNameController,
+                        lastNameController: lastNameController,
+                        firstNameFocusNode: firstNameFocusNode,
+                        lastNameFocusNode: lastNameFocusNode,
+                        phoneController: phoneController,
+                        phoneFocusNode: phoneFocusNode,
+                      ),
+                      RegisterSubmitButton(
+                        formKey: _formKey,
+                        emailController: emailController,
+                        passwordController: passwordController,
+                        confirmPasswordController: confirmPasswordController,
+                        phoneController: phoneController,
+                        firstNameController: firstNameController,
+                        lastNameController: lastNameController,
+                      ),
+                      HaveAccountWidget(),
+                    ],
+                  ),
                 ),
               ),
             );

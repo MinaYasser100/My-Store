@@ -29,60 +29,62 @@ class LoginBodyView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
-        child: BlocBuilder<AutovalidateModeCubit, AutovalidateModeState>(
-          builder: (context, state) {
-            return Form(
-              key: _formKey,
-              autovalidateMode: context
-                  .read<AutovalidateModeCubit>()
-                  .autovalidateMode,
-              child: Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  border: Border.all(color: ColorsTheme().grayColor),
-                  borderRadius: BorderRadius.circular(24),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    LoginFormFields(
-                      emailController: emailController,
-                      passwordController: passwordController,
-                      emailFocusNode: emailFocusNode,
-                      passwordFocusNode: passwordFocusNode,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        TextButton(
-                          onPressed: () {
-                            FocusScope.of(context).unfocus();
-                            context.push(Routes.forgotPasswordView);
-                          },
-                          child: Text(
-                            "Forgot password?",
-                            style: AppTextStyles.styleBold16sp(context),
+    return SafeArea(
+      child: Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: BlocBuilder<AutovalidateModeCubit, AutovalidateModeState>(
+            builder: (context, state) {
+              return Form(
+                key: _formKey,
+                autovalidateMode: context
+                    .read<AutovalidateModeCubit>()
+                    .autovalidateMode,
+                child: Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: ColorsTheme().grayColor),
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      LoginFormFields(
+                        emailController: emailController,
+                        passwordController: passwordController,
+                        emailFocusNode: emailFocusNode,
+                        passwordFocusNode: passwordFocusNode,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          TextButton(
+                            onPressed: () {
+                              FocusScope.of(context).unfocus();
+                              context.push(Routes.forgotPasswordView);
+                            },
+                            child: Text(
+                              "Forgot password?",
+                              style: AppTextStyles.styleBold16sp(context),
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    LoginSubmitButton(
-                      formKey: _formKey,
-                      emailController: emailController,
-                      passwordController: passwordController,
-                    ),
-                    const SizedBox(height: 16),
-                    CustomGoogleLoginBloc(),
-                    const SizedBox(height: 16),
-                    CustomDontAccount(),
-                  ],
+                        ],
+                      ),
+                      LoginSubmitButton(
+                        formKey: _formKey,
+                        emailController: emailController,
+                        passwordController: passwordController,
+                      ),
+                      const SizedBox(height: 16),
+                      CustomGoogleLoginBloc(),
+                      const SizedBox(height: 16),
+                      CustomDontAccount(),
+                    ],
+                  ),
                 ),
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
       ),
     );

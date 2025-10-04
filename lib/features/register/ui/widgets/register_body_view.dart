@@ -41,56 +41,58 @@ class RegisterBodyView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 24),
-        child: BlocBuilder<AutovalidateModeCubit, AutovalidateModeState>(
-          builder: (context, state) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 30),
-              child: Form(
-                key: _formKey,
-                autovalidateMode: context
-                    .read<AutovalidateModeCubit>()
-                    .autovalidateMode,
-                child: Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: ColorsTheme().grayColor),
-                    borderRadius: BorderRadius.circular(24),
-                  ),
-                  child: Column(
-                    children: [
-                      RegisterFormFields(
-                        emailController: emailController,
-                        passwordController: passwordController,
-                        confirmPasswordController: confirmPasswordController,
-                        emailFocusNode: emailFocusNode,
-                        passwordFocusNode: passwordFocusNode,
-                        confirmPasswordFocusNode: confirmPasswordFocusNode,
-                        firstNameController: firstNameController,
-                        lastNameController: lastNameController,
-                        firstNameFocusNode: firstNameFocusNode,
-                        lastNameFocusNode: lastNameFocusNode,
-                        phoneController: phoneController,
-                        phoneFocusNode: phoneFocusNode,
-                      ),
-                      RegisterSubmitButton(
-                        formKey: _formKey,
-                        emailController: emailController,
-                        passwordController: passwordController,
-                        confirmPasswordController: confirmPasswordController,
-                        phoneController: phoneController,
-                        firstNameController: firstNameController,
-                        lastNameController: lastNameController,
-                      ),
-                      HaveAccountWidget(),
-                    ],
+    return SafeArea(
+      child: Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 20),
+          child: BlocBuilder<AutovalidateModeCubit, AutovalidateModeState>(
+            builder: (context, state) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 30),
+                child: Form(
+                  key: _formKey,
+                  autovalidateMode: context
+                      .read<AutovalidateModeCubit>()
+                      .autovalidateMode,
+                  child: Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: ColorsTheme().grayColor),
+                      borderRadius: BorderRadius.circular(24),
+                    ),
+                    child: Column(
+                      children: [
+                        RegisterFormFields(
+                          emailController: emailController,
+                          passwordController: passwordController,
+                          confirmPasswordController: confirmPasswordController,
+                          emailFocusNode: emailFocusNode,
+                          passwordFocusNode: passwordFocusNode,
+                          confirmPasswordFocusNode: confirmPasswordFocusNode,
+                          firstNameController: firstNameController,
+                          lastNameController: lastNameController,
+                          firstNameFocusNode: firstNameFocusNode,
+                          lastNameFocusNode: lastNameFocusNode,
+                          phoneController: phoneController,
+                          phoneFocusNode: phoneFocusNode,
+                        ),
+                        RegisterSubmitButton(
+                          formKey: _formKey,
+                          emailController: emailController,
+                          passwordController: passwordController,
+                          confirmPasswordController: confirmPasswordController,
+                          phoneController: phoneController,
+                          firstNameController: firstNameController,
+                          lastNameController: lastNameController,
+                        ),
+                        HaveAccountWidget(),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
       ),
     );

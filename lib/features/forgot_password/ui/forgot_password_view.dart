@@ -46,55 +46,13 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
         ),
       ],
       child: Scaffold(
-        appBar: AppBar(title: const Text('Forgot Password')),
+        appBar: AppBar(
+          title: const Text('Forgot Password'),
+          backgroundColor: ColorsTheme().whiteColor,
+          foregroundColor: ColorsTheme().primaryDark,
+        ),
         body: Stack(
           children: [
-            // Background decorations
-            Positioned(
-              top: -50,
-              left: -50,
-              child: _circleDecoration(
-                120,
-                ColorsTheme().primaryColor.withValues(alpha: 0.3),
-              ),
-            ),
-            Positioned(
-              top: 100,
-              right: -40,
-              child: _circleDecoration(
-                100,
-                ColorsTheme().secondaryLight.withValues(alpha: 0.3),
-              ),
-            ),
-            Positioned(
-              top: 450,
-              left: -50,
-              child: _circleDecoration(
-                120,
-                ColorsTheme().primaryColor.withValues(alpha: 0.3),
-              ),
-            ),
-            Positioned(
-              top: 350,
-              right: -20,
-              child: _circleDecoration(
-                150,
-                ColorsTheme().primaryDark.withValues(alpha: 0.2),
-              ),
-            ),
-
-            Positioned(
-              top: 140,
-              left: -30,
-              child: _rectangularCircleDecoration(),
-            ),
-
-            Positioned(
-              top: 600,
-              right: -30,
-              child: _rectangularCircleDecoration(),
-            ),
-
             ForgotPasswordBadyView(
               emailController: emailController,
               emailFocusNode: emailFocusNode,
@@ -103,25 +61,6 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
           ],
         ),
       ),
-    );
-  }
-
-  Container _rectangularCircleDecoration() {
-    return Container(
-      height: 80,
-      width: 200,
-      decoration: BoxDecoration(
-        color: ColorsTheme().secondaryColor.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(40),
-      ),
-    );
-  }
-
-  Widget _circleDecoration(double size, Color color) {
-    return Container(
-      height: size,
-      width: size,
-      decoration: BoxDecoration(shape: BoxShape.circle, color: color),
     );
   }
 }

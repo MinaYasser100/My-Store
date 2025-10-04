@@ -25,7 +25,7 @@ class ForgotPasswordBadyView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 20, right: 20, top: 40),
+      padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
       child: BlocBuilder<AutovalidateModeCubit, AutovalidateModeState>(
         builder: (context, state) {
           return Form(
@@ -33,72 +33,88 @@ class ForgotPasswordBadyView extends StatelessWidget {
             autovalidateMode: context
                 .read<AutovalidateModeCubit>()
                 .autovalidateMode,
-            child: Column(
-              children: [
-                Text(
-                  'If you have forgotten your password, you can reset it here. Please enter your email address and we will send you a link to reset your password.',
-                  style: AppTextStyles.styleBold20sp(
-                    context,
-                  ).copyWith(color: ColorsTheme().primaryDark),
-                ),
+            child: Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                border: Border.all(color: ColorsTheme().grayColor),
+                borderRadius: BorderRadius.circular(24),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'Forgot Password',
+                    style: AppTextStyles.styleBold24sp(
+                      context,
+                    ).copyWith(color: ColorsTheme().primaryDark),
+                  ),
 
-                const SizedBox(height: 30),
+                  Text(
+                    'If you have forgotten your password, you can reset it here. Please enter your email address and we will send you a link to reset your password.',
+                    textAlign: TextAlign.center,
+                    style: AppTextStyles.styleRegular16sp(
+                      context,
+                    ).copyWith(color: ColorsTheme().primaryLight),
+                  ),
 
-                CustomTextFormField(
-                  textFieldModel: TextFieldModel(
-                    controller: emailController,
-                    labelText: "Email",
-                    hintText: "username@gmail.com",
-                    icon: Icons.email,
-                    keyboardType: TextInputType.emailAddress,
-                    validator: (value) => Validatoin.emailValidation(value),
-                    autofocus: true,
-                    focusNode: emailFocusNode,
-                    onFieldSubmitted: (value) {
-                      emailFocusNode.unfocus();
+                  const SizedBox(height: 30),
+
+                  CustomTextFormField(
+                    textFieldModel: TextFieldModel(
+                      controller: emailController,
+                      labelText: "Email",
+                      hintText: "username@gmail.com",
+                      icon: Icons.email,
+                      keyboardType: TextInputType.emailAddress,
+                      validator: (value) => Validatoin.emailValidation(value),
+                      autofocus: true,
+                      focusNode: emailFocusNode,
+                      onFieldSubmitted: (value) {
+                        emailFocusNode.unfocus();
+                      },
+                    ),
+                  ),
+
+                  const SizedBox(height: 20),
+                  BlocConsumer<ForgotPasswordCubit, ForgotPasswordState>(
+                    listener: (context, state) {
+                      if (state is ForgotPasswordError) {
+                        showErrorToast(context, 'Error', state.error);
+                      }
+                      if (state is ForgotPasswordSuccess) {
+                        showSuccessToast(
+                          context,
+                          'Success',
+                          'Password Reset Link Sent Successfully',
+                        );
+                        context.go(Routes.loginView);
+                      }
+                    },
+                    builder: (context, state) {
+                      return ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: ColorsTheme().primaryDark,
+                        ),
+                        onPressed: () {
+                          if (formKey.currentState!.validate()) {
+                            FocusScope.of(context).unfocus();
+                            context
+                                .read<ForgotPasswordCubit>()
+                                .sendPasswordResetEmail(
+                                  email: emailController.text.trim(),
+                                );
+                          } else {
+                            context
+                                .read<AutovalidateModeCubit>()
+                                .changeAutovalidateMode();
+                          }
+                        },
+                        child: const Text('Reset Password'),
+                      );
                     },
                   ),
-                ),
-
-                const SizedBox(height: 20),
-                BlocConsumer<ForgotPasswordCubit, ForgotPasswordState>(
-                  listener: (context, state) {
-                    if (state is ForgotPasswordError) {
-                      showErrorToast(context, 'Error', state.error);
-                    }
-                    if (state is ForgotPasswordSuccess) {
-                      showSuccessToast(
-                        context,
-                        'Success',
-                        'Password Reset Link Sent Successfully',
-                      );
-                      context.go(Routes.loginView);
-                    }
-                  },
-                  builder: (context, state) {
-                    return ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: ColorsTheme().primaryDark,
-                      ),
-                      onPressed: () {
-                        if (formKey.currentState!.validate()) {
-                          FocusScope.of(context).unfocus();
-                          context
-                              .read<ForgotPasswordCubit>()
-                              .sendPasswordResetEmail(
-                                email: emailController.text.trim(),
-                              );
-                        } else {
-                          context
-                              .read<AutovalidateModeCubit>()
-                              .changeAutovalidateMode();
-                        }
-                      },
-                      child: const Text('Reset Password'),
-                    );
-                  },
-                ),
-              ],
+                ],
+              ),
             ),
           );
         },

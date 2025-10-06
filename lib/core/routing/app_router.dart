@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:go_router/go_router.dart';
 import 'package:my_store/core/caching/shared/shared_perf_helper.dart';
 import 'package:my_store/core/routing/animation_route.dart';
@@ -25,7 +23,6 @@ abstract class AppRouter {
         path: Routes.loginView,
         pageBuilder: (context, state) {
           bool fromVerifyEmail = state.extra as bool? ?? false;
-          log('fromVerifyEmail: $fromVerifyEmail');
           return fadeTransitionPage(
             LoginView(fromVerifyEmail: fromVerifyEmail),
           );

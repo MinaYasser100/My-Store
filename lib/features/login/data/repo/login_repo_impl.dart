@@ -5,7 +5,6 @@ import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:my_store/core/caching/hive/user_hive_helper.dart';
-import 'package:my_store/core/caching/shared/shared_perf_helper.dart';
 import 'package:my_store/core/firebase/firebase_auth_error_handling.dart';
 import 'package:my_store/core/firebase/firebase_firestore_error_handler.dart';
 import 'package:my_store/core/model/user_model/user_model.dart';
@@ -15,17 +14,15 @@ import 'package:my_store/features/login/data/repo/login_repo.dart';
 class LoginRepoImpl implements LoginRepo {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseAuthErrorHandling errorHandling;
-  final SharedPrefHelper _sharedPrefHelper;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final UserHiveHelper userHiveHelper;
   final FirebaseFirestoreErrorHandler firestoreErrorHandler;
 
   LoginRepoImpl({
     required this.errorHandling,
-    required SharedPrefHelper sharedPrefHelper,
     required this.userHiveHelper,
     required this.firestoreErrorHandler,
-  }) : _sharedPrefHelper = sharedPrefHelper;
+  });
   @override
   Future<Either<String, User>> loginWithEmailAndPassword({
     required String email,
@@ -36,8 +33,6 @@ class LoginRepoImpl implements LoginRepo {
         email: email,
         password: password,
       );
-      await _sharedPrefHelper.saveBool(ConstantVariable.isLogin, true);
-
       await _fetchAndStoreUserInfo(user.user!.uid);
       return Right(user.user!);
     } on FirebaseAuthException catch (e) {
@@ -92,7 +87,6 @@ class LoginRepoImpl implements LoginRepo {
           userCredential?.user ??
           currentUser; // نختار المستخدم بناءً على الحالة
       if (user != null) {
-        await _sharedPrefHelper.saveBool(ConstantVariable.isLogin, true);
         await _registerAndSaveUserGoogleInfo(user); // حفظ البيانات
         return Right(user);
       } else {
@@ -140,7 +134,6 @@ class LoginRepoImpl implements LoginRepo {
     required UserModel userModel,
   }) async {
     try {
-      log('Registering user info in Firestore: ${userModel.toMap()}');
       await _firestore
           .collection(ConstantVariable.users)
           .doc(userModel.uid)
@@ -149,7 +142,6 @@ class LoginRepoImpl implements LoginRepo {
     } on FirebaseException catch (e) {
       return Left(firestoreErrorHandler.mapFirebaseFirestoreException(e));
     } catch (e) {
-      log(e.toString());
       return const Left('Register Process Failed');
     }
   }

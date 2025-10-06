@@ -16,7 +16,9 @@ class HaveAccountWidget extends StatelessWidget {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const LoginView()),
+              MaterialPageRoute(
+                builder: (context) => const LoginView(fromVerifyEmail: false),
+              ),
             );
           },
           style: TextButton.styleFrom(padding: const EdgeInsets.all(0)),

@@ -1,6 +1,10 @@
+import 'dart:developer';
+
 import 'package:go_router/go_router.dart';
+import 'package:my_store/core/caching/shared/shared_perf_helper.dart';
 import 'package:my_store/core/routing/animation_route.dart';
 import 'package:my_store/core/routing/routes.dart';
+import 'package:my_store/core/utils/constant.dart';
 import 'package:my_store/features/forgot_password/ui/forgot_password_view.dart';
 import 'package:my_store/features/home/ui/home_view.dart';
 import 'package:my_store/features/login/ui/login_view.dart';
@@ -9,7 +13,7 @@ import 'package:my_store/features/verfiy_email/ui/verify_email_view.dart';
 
 abstract class AppRouter {
   static final router = GoRouter(
-    initialLocation: Routes.loginView,
+    initialLocation: checkLogin() ? Routes.homeView : Routes.loginView,
     routes: [
       //Register view
       GoRoute(
@@ -19,7 +23,13 @@ abstract class AppRouter {
       // Login view
       GoRoute(
         path: Routes.loginView,
-        pageBuilder: (context, state) => fadeTransitionPage(LoginView()),
+        pageBuilder: (context, state) {
+          bool fromVerifyEmail = state.extra as bool? ?? false;
+          log('fromVerifyEmail: $fromVerifyEmail');
+          return fadeTransitionPage(
+            LoginView(fromVerifyEmail: fromVerifyEmail),
+          );
+        },
       ),
       // Home view
       GoRoute(
@@ -39,6 +49,12 @@ abstract class AppRouter {
       ),
     ],
   );
+
+  static checkLogin() {
+    bool isLoginPref =
+        SharedPrefHelper.instance.getBool(ConstantVariable.isLogin) ?? false;
+    return isLoginPref;
+  }
 }
 
 // Future<String> getFirstScreen() async {

@@ -7,8 +7,8 @@ import 'package:my_store/features/login/manager/cubit/login_cubit.dart';
 import 'package:my_store/features/login/ui/widgets/login_body_view.dart';
 
 class LoginView extends StatefulWidget {
-  const LoginView({super.key});
-
+  const LoginView({super.key, required this.fromVerifyEmail});
+  final bool fromVerifyEmail;
   @override
   State<LoginView> createState() => _LoginViewState();
 }
@@ -52,6 +52,7 @@ class _LoginViewState extends State<LoginView> {
           passwordController: passwordController,
           emailFocusNode: emailFocusNode,
           passwordFocusNode: passwordFocusNode,
+          fromVerifyEmail: widget.fromVerifyEmail,
         ),
       ),
     );

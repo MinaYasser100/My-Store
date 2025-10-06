@@ -28,7 +28,7 @@ class VerifyEmailView extends StatelessWidget {
               if (state is VerifyEmailSuccess) {
                 Future.delayed(const Duration(milliseconds: 500)).then((value) {
                   showSuccessToast(context, 'Success', 'Email verified!');
-                  context.go(Routes.loginView);
+                  context.go(Routes.loginView, extra: true);
                 });
               }
             },

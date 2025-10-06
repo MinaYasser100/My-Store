@@ -5,6 +5,8 @@ import 'package:my_store/core/utils/colors.dart';
 import 'package:my_store/core/validation/validatoin.dart';
 import 'package:my_store/core/widgets/custom_text_form_field.dart';
 
+import 'custom_success_register_message.dart';
+
 class LoginFormFields extends StatelessWidget {
   const LoginFormFields({
     super.key,
@@ -12,12 +14,14 @@ class LoginFormFields extends StatelessWidget {
     required this.passwordController,
     required this.emailFocusNode,
     required this.passwordFocusNode,
+    required this.fromVerifyEmail,
   });
 
   final TextEditingController emailController;
   final TextEditingController passwordController;
   final FocusNode emailFocusNode;
   final FocusNode passwordFocusNode;
+  final bool fromVerifyEmail;
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +44,7 @@ class LoginFormFields extends StatelessWidget {
             ).copyWith(color: ColorsTheme().primaryLight),
           ),
         ),
+        if (fromVerifyEmail) CustomSuccesRegisterMessage(),
         const SizedBox(height: 30),
         Text(
           'Email',

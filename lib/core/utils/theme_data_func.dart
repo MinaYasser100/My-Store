@@ -2,33 +2,34 @@ import 'package:flutter/material.dart';
 import 'package:my_store/core/utils/colors.dart';
 
 ThemeData themeDataFunc() {
+  final colors = ColorsTheme();
   return ThemeData(
-    scaffoldBackgroundColor: ColorsTheme().whiteColor,
-    primaryColor: ColorsTheme().primaryDark,
+    scaffoldBackgroundColor: colors.whiteColor,
+    primaryColor: colors.primaryDark,
     colorScheme: ColorScheme.fromSeed(
-      seedColor: ColorsTheme().primaryDark,
+      seedColor: colors.primaryDark,
       brightness: Brightness.light,
-      onPrimary: ColorsTheme().whiteColor,
-      secondary: ColorsTheme().secondaryColor,
+      onPrimary: colors.whiteColor,
+      secondary: colors.secondaryColor,
     ),
     appBarTheme: AppBarTheme(
-      backgroundColor: ColorsTheme().primaryDark,
-      foregroundColor: ColorsTheme().whiteColor,
+      backgroundColor: colors.whiteColor,
+      foregroundColor: colors.primaryColor,
       centerTitle: true,
       titleTextStyle: TextStyle(
-        color: ColorsTheme().whiteColor,
+        color: colors.primaryDark,
         fontSize: 26,
         fontWeight: FontWeight.bold,
       ),
     ),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
-      backgroundColor: ColorsTheme().primaryDark,
-      foregroundColor: ColorsTheme().whiteColor,
+      backgroundColor: colors.primaryDark,
+      foregroundColor: colors.whiteColor,
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        backgroundColor: ColorsTheme().primaryDark,
-        foregroundColor: ColorsTheme().whiteColor,
+        backgroundColor: colors.primaryDark,
+        foregroundColor: colors.whiteColor,
         minimumSize: const Size(double.infinity, 50),
         padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 14),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -40,7 +41,7 @@ ThemeData themeDataFunc() {
         textStyle: TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.bold,
-          color: ColorsTheme().primaryColor,
+          color: colors.primaryColor,
         ),
       ),
     ),

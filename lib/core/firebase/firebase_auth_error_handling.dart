@@ -20,7 +20,7 @@ class FirebaseAuthErrorHandling {
       case 'too-many-requests':
         return 'Too many attempts. Please try again later.';
       default:
-        return 'An unknown error occurred.';
+        return 'Invalid email or password.';
     }
   }
 }

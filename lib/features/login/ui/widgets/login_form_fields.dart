@@ -22,24 +22,34 @@ class LoginFormFields extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        Center(
+          child: Text(
+            "Welcome back",
+            style: AppTextStyles.styleBold30sp(
+              context,
+            ).copyWith(color: ColorsTheme().primaryColor),
+          ),
+        ),
+        Center(
+          child: Text(
+            'Sign in to your My Store account',
+            style: AppTextStyles.styleBold16sp(
+              context,
+            ).copyWith(color: ColorsTheme().primaryLight),
+          ),
+        ),
+        const SizedBox(height: 30),
         Text(
-          "Welcome back",
-          style: AppTextStyles.styleBold30sp(
+          'Email',
+          style: AppTextStyles.styleBold16sp(
             context,
           ).copyWith(color: ColorsTheme().primaryColor),
         ),
-        Text(
-          'Sign in to your My Store account',
-          style: AppTextStyles.styleBold16sp(
-            context,
-          ).copyWith(color: ColorsTheme().primaryLight),
-        ),
-        const SizedBox(height: 30),
         CustomTextFormField(
           textFieldModel: TextFieldModel(
             controller: emailController,
-            labelText: "Email",
             hintText: "Enter your email",
             icon: Icons.email,
             obscureText: false,
@@ -53,7 +63,13 @@ class LoginFormFields extends StatelessWidget {
             },
           ),
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 10),
+        Text(
+          'Password',
+          style: AppTextStyles.styleBold16sp(
+            context,
+          ).copyWith(color: ColorsTheme().primaryColor),
+        ),
         CustomTextFormField(
           textFieldModel: TextFieldModel(
             keyboardType: TextInputType.visiblePassword,

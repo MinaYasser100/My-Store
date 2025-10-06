@@ -113,6 +113,7 @@ class LoginRepoImpl implements LoginRepo {
       firstName: user.displayName!.split(' ')[0],
       lastName: user.displayName!.split(' ')[1],
       uid: user.uid,
+      phoneNumber: user.phoneNumber!,
     );
     await _registerUserInfoInFirebase(userModel: userModel);
     await userHiveHelper.saveUser(userModel);

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_store/core/routing/routes.dart';
+import 'package:my_store/core/utils/colors.dart';
 
 class CustomDontAccount extends StatelessWidget {
   const CustomDontAccount({super.key});
@@ -16,7 +17,10 @@ class CustomDontAccount extends StatelessWidget {
             FocusScope.of(context).unfocus();
             context.push(Routes.registerView);
           },
-          child: Text("Sign Up"),
+          child: Text(
+            "Sign Up",
+            style: TextStyle(color: ColorsTheme().primaryColor),
+          ),
         ),
       ],
     );

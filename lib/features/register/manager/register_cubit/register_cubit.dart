@@ -16,6 +16,7 @@ class RegisterCubit extends Cubit<RegisterState> {
     required String lastName,
     required String email,
     required String password,
+    required String phoneNumber,
   }) async {
     emit(RegisterLoading());
     final user = await registerRepo.egisterWithEmailAndPassword(
@@ -35,6 +36,7 @@ class RegisterCubit extends Cubit<RegisterState> {
             firstName: firstName,
             lastName: lastName,
             uid: user.uid,
+            phoneNumber: phoneNumber,
           ),
         );
         result.fold((error) {

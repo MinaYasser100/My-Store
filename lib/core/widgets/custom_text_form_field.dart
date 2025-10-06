@@ -13,41 +13,16 @@ class CustomTextFormField extends StatefulWidget {
 
 class _CustomTextFormFieldState extends State<CustomTextFormField> {
   late bool isObscured;
-  late FocusNode _focusNode;
-  late bool _createdFocusNode;
 
   @override
   void initState() {
     super.initState();
     isObscured = widget.textFieldModel.obscureText;
-    if (widget.textFieldModel.focusNode != null) {
-      _focusNode = widget.textFieldModel.focusNode!;
-      _createdFocusNode = false;
-    } else {
-      _focusNode = FocusNode();
-      _createdFocusNode = true;
-    }
-    _focusNode.addListener(_handleFocusChange);
-  }
-
-  void _handleFocusChange() {
-    // Rebuild when focus changes so the decoration (focused border) updates.
-    if (mounted) setState(() {});
   }
 
   @override
-  void dispose() {
-    _focusNode.removeListener(_handleFocusChange);
-    if (_createdFocusNode) {
-      _focusNode.dispose();
-    }
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
-    final isFocused = _focusNode.hasFocus;
-
     return FormField<String>(
       initialValue: widget.textFieldModel.controller.text,
       validator: widget.textFieldModel.validator,
@@ -56,60 +31,45 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              decoration: isFocused
-                  ? BoxDecoration(
-                      border: Border.all(
-                        color: ColorsTheme().primaryLight.withAlpha(153),
-                        width: 2,
-                      ),
-                      borderRadius: BorderRadius.circular(18),
-                    )
-                  : null,
-              child: TextField(
-                controller: widget.textFieldModel.controller,
-                cursorColor: ColorsTheme().primaryDark,
-                onChanged: (v) => fieldState.didChange(v),
-                obscureText: isObscured,
-                keyboardType: widget.textFieldModel.keyboardType,
-                autofocus: widget.textFieldModel.autofocus,
-                focusNode: _focusNode,
-                onSubmitted: widget.textFieldModel.onFieldSubmitted,
-                style: TextStyle(
-                  color: ColorsTheme().primaryDark,
-                  fontSize: 14,
+            TextField(
+              controller: widget.textFieldModel.controller,
+              cursorColor: ColorsTheme().primaryDark,
+              onChanged: (v) => fieldState.didChange(v),
+              obscureText: isObscured,
+              keyboardType: widget.textFieldModel.keyboardType,
+              autofocus: widget.textFieldModel.autofocus,
+              focusNode: widget.textFieldModel.focusNode,
+              onSubmitted: widget.textFieldModel.onFieldSubmitted,
+              style: TextStyle(color: ColorsTheme().primaryDark, fontSize: 14),
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 10,
                 ),
-                decoration: InputDecoration(
-                  contentPadding: EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 10,
-                  ),
-                  hintText: widget.textFieldModel.hintText,
-                  errorText: null,
-                  hintStyle: TextStyle(color: ColorsTheme().primaryLight),
-                  suffixIcon: widget.textFieldModel.obscureText
-                      ? GestureDetector(
-                          onTap: () {
-                            isObscured = !isObscured;
-                            setState(() {});
-                          },
-                          child: Icon(
-                            isObscured
-                                ? Icons.visibility_outlined
-                                : Icons.visibility_off_outlined,
-                            color: isObscured
-                                ? ColorsTheme().primaryDark
-                                : ColorsTheme().primaryLight,
-                          ),
-                        )
-                      : null,
-                  border: InputBorder.none,
-                  focusedBorder: _customOutlineInputBorder(),
-                  enabledBorder: InputBorder.none,
-                ),
+                hintText: widget.textFieldModel.hintText,
+                errorText: null,
+                hintStyle: TextStyle(color: ColorsTheme().primaryLight),
+                suffixIcon: widget.textFieldModel.obscureText
+                    ? GestureDetector(
+                        onTap: () {
+                          isObscured = !isObscured;
+                          setState(() {});
+                        },
+                        child: Icon(
+                          isObscured
+                              ? Icons.visibility_outlined
+                              : Icons.visibility_off_outlined,
+                          color: isObscured
+                              ? ColorsTheme().primaryDark
+                              : ColorsTheme().primaryLight,
+                        ),
+                      )
+                    : null,
+                border: InputBorder.none,
+                focusedBorder: _customOutlineInputBorder(),
+                enabledBorder: InputBorder.none,
               ),
             ),
-
             if (fieldState.errorText != null)
               Padding(
                 padding: const EdgeInsets.only(left: 8.0, top: 6.0),
@@ -127,7 +87,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
   OutlineInputBorder _customOutlineInputBorder() {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(16),
-      borderSide: BorderSide(color: ColorsTheme().primaryDark),
+      borderSide: BorderSide(color: ColorsTheme().primaryDark, width: 2),
     );
   }
 }

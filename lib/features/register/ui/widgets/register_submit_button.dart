@@ -58,6 +58,7 @@ class RegisterSubmitButton extends StatelessWidget {
                 password: passwordController.text.trim(),
                 firstName: firstNameController.text.trim(),
                 lastName: lastNameController.text.trim(),
+                phoneNumber: phoneController.text.trim(),
               );
             } else {
               context.read<AutovalidateModeCubit>().changeAutovalidateMode();

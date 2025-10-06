@@ -26,11 +26,9 @@ class VerifyEmailView extends StatelessWidget {
           child: BlocListener<VerifyEmailCubit, VerifyEmailState>(
             listener: (context, state) {
               if (state is VerifyEmailSuccess) {
-                Future.delayed(const Duration(seconds: 2), () {
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
-                    showSuccessToast(context, 'Success', 'Email verified!');
-                    context.go(Routes.loginView);
-                  });
+                Future.delayed(const Duration(milliseconds: 500)).then((value) {
+                  showSuccessToast(context, 'Success', 'Email verified!');
+                  context.go(Routes.loginView);
                 });
               }
             },

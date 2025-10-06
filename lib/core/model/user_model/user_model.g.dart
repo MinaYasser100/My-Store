@@ -21,7 +21,7 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       uid: fields[1] as String,
       firstName: fields[2] as String,
       lastName: fields[3] as String,
-      phoneNumber: fields[4] as String,
+      phoneNumber: fields[4] as String?,
     );
   }
 

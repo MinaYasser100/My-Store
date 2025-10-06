@@ -13,14 +13,14 @@ class UserModel {
   @HiveField(3)
   final String lastName;
   @HiveField(4)
-  final String phoneNumber;
+  final String? phoneNumber;
 
   UserModel({
     required this.email,
     required this.uid,
     required this.firstName,
     required this.lastName,
-    required this.phoneNumber,
+    this.phoneNumber,
   });
 
   Map<String, dynamic> toMap() {
@@ -39,7 +39,7 @@ class UserModel {
       uid: map['uid'] as String,
       firstName: map['firstName'] as String,
       lastName: map['lastName'] as String,
-      phoneNumber: map['phoneNumber'] as String,
+      phoneNumber: map['phoneNumber'] as String?,
     );
   }
 }

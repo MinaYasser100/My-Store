@@ -110,10 +110,10 @@ class LoginRepoImpl implements LoginRepo {
   Future<void> _registerAndSaveUserGoogleInfo(User user) async {
     UserModel userModel = UserModel(
       email: user.email!,
+      phoneNumber: "",
       firstName: user.displayName!.split(' ')[0],
       lastName: user.displayName!.split(' ')[1],
       uid: user.uid,
-      phoneNumber: user.phoneNumber!,
     );
     await _registerUserInfoInFirebase(userModel: userModel);
     await userHiveHelper.saveUser(userModel);
@@ -140,6 +140,7 @@ class LoginRepoImpl implements LoginRepo {
     required UserModel userModel,
   }) async {
     try {
+      log('Registering user info in Firestore: ${userModel.toMap()}');
       await _firestore
           .collection(ConstantVariable.users)
           .doc(userModel.uid)

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_store/core/routing/animation_route.dart';
 import 'package:my_store/core/routing/routes.dart';
@@ -9,7 +10,7 @@ import 'package:my_store/features/verfiy_email/ui/verify_email_view.dart';
 
 abstract class AppRouter {
   static final router = GoRouter(
-    initialLocation: Routes.loginView,
+    initialLocation: initialRoute(),
     routes: [
       //Register view
       GoRoute(
@@ -41,24 +42,11 @@ abstract class AppRouter {
   );
 }
 
-// Future<String> getFirstScreen() async {
-//   final isOnboardingSeen = OnboardingHive().isOnboardingSeen();
-//   if (!isOnboardingSeen) {
-//     return Routes.onboarding;
-//   }
-//   // Ensure MonitoringSystemHiveService is ready
-//   final monitoringService =
-//       await GetIt.I.getAsync<MonitoringSystemHiveService>();
-//   final farmOwnerStatus = monitoringService.getFarmOwnerStatus();
-
-//   if (farmOwnerStatus == null) {
-//     return Routes.userTypeSelectionScreen;
-//   } else if (!farmOwnerStatus) {
-//     return Routes.layoutScreens;
-//   } else if (farmOwnerStatus &&
-//       monitoringService.getFarmerSelectedPlants().isEmpty) {
-//     return Routes.plantsSelectionScreen;
-//   } else {
-//     return Routes.layoutScreens;
-//   }
-// }
+String initialRoute() {
+  User? user = FirebaseAuth.instance.currentUser;
+  if (user != null) {
+    return Routes.homeView;
+  } else {
+    return Routes.registerView;
+  }
+}

@@ -34,7 +34,6 @@ void setupDependencies() async {
   getIt.registerSingleton<LoginRepoImpl>(
     LoginRepoImpl(
       errorHandling: getIt<FirebaseAuthErrorHandling>(),
-      sharedPrefHelper: getIt<SharedPrefHelper>(),
       userHiveHelper: getIt<UserHiveHelper>(),
       firestoreErrorHandler: getIt<FirebaseFirestoreErrorHandler>(),
     ),

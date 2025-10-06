@@ -99,3 +99,20 @@ flutter_icons:
   image_path_ios: "assets/images/logo.png"
   adaptive_icon_background: "#ffffff" # لون الخلفية للأيقونات التكيفية (Adaptive Icons)
   adaptive_icon_foreground: "assets/images/logo.png"
+
+flutter_native_splash:
+  color: "#ffffff"
+  color_dark: "#ffffff"
+  fullscreen: true
+  android_gravity: fill
+  ios_content_mode: scaleToFill
+  image: assets/images/splash_logo.png
+  image_dark: assets/images/splash_logo.png
+  android: true
+  ios: true
+  web: false
+  android_12:
+    image: assets/images/splash_logo.png
+    icon_background_color: "#ffffff"
+    image_dark: assets/images/splash_logo.png
+    icon_background_color_dark: "#ffffff"

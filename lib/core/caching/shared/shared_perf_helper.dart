@@ -6,18 +6,23 @@ class SharedPrefHelper {
 
   // التهيئة الداخلية الخاصة
   SharedPrefHelper._internal() {
-    // تهيئة SharedPreferences هنا أو اتركها للاستخدام الأول
-    _init();
+    // لا نقوم بتهيئة SharedPreferences في الكونستركتور لأن العملية
+    // غير متزامنة. يجب استدعاء ensureInitialized أو init من main() قبل الاستخدام.
   }
 
   // الحصول على الـ Singleton instance
   static SharedPrefHelper get instance => _instance;
 
   late SharedPreferences _prefs; // متغير متأخر لـ SharedPreferences
+  bool _isInitialized = false;
+
+  /// Public init method that can be awaited from main()
+  Future<void> init() async => await ensureInitialized();
 
   // دالة تهيئة خاصة
   Future<void> _init() async {
     _prefs = await SharedPreferences.getInstance();
+    _isInitialized = true;
   }
 
   // تأكد من تهيئة _prefs قبل الاستخدام
@@ -28,7 +33,7 @@ class SharedPrefHelper {
   }
 
   // التحقق مما إذا كان _prefs تم تهيئته
-  bool _prefsInitialized() => _prefs != null;
+  bool _prefsInitialized() => _isInitialized;
 
   // حفظ String
   Future<void> saveString(String key, String value) async {

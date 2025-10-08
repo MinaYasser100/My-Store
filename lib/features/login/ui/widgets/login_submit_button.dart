@@ -29,7 +29,9 @@ class LoginSubmitButton extends StatelessWidget {
         }
         if (state is LoginSuccess) {
           showSuccessToast(context, 'Success', 'Login Process is Successful');
-          context.go(Routes.homeView);
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            context.go(Routes.layoutView);
+          });
         }
       },
       builder: (context, state) {

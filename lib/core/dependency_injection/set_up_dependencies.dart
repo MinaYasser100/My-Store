@@ -36,6 +36,7 @@ void setupDependencies() async {
       errorHandling: getIt<FirebaseAuthErrorHandling>(),
       userHiveHelper: getIt<UserHiveHelper>(),
       firestoreErrorHandler: getIt<FirebaseFirestoreErrorHandler>(),
+      sharedPrefHelper: getIt<SharedPrefHelper>(),
     ),
   );
 

@@ -5,6 +5,7 @@ import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:my_store/core/caching/hive/user_hive_helper.dart';
+import 'package:my_store/core/caching/shared/shared_perf_helper.dart';
 import 'package:my_store/core/firebase/firebase_auth_error_handling.dart';
 import 'package:my_store/core/firebase/firebase_firestore_error_handler.dart';
 import 'package:my_store/core/model/user_model/user_model.dart';
@@ -17,11 +18,13 @@ class LoginRepoImpl implements LoginRepo {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final UserHiveHelper userHiveHelper;
   final FirebaseFirestoreErrorHandler firestoreErrorHandler;
+  final SharedPrefHelper sharedPrefHelper;
 
   LoginRepoImpl({
     required this.errorHandling,
     required this.userHiveHelper,
     required this.firestoreErrorHandler,
+    required this.sharedPrefHelper,
   });
   @override
   Future<Either<String, User>> loginWithEmailAndPassword({
@@ -34,6 +37,7 @@ class LoginRepoImpl implements LoginRepo {
         password: password,
       );
       await _fetchAndStoreUserInfo(user.user!.uid);
+      await sharedPrefHelper.saveBool(ConstantVariable.isLogin, true);
       return Right(user.user!);
     } on FirebaseAuthException catch (e) {
       return Left(errorHandling.mapFirebaseAuthException(e));
@@ -88,6 +92,7 @@ class LoginRepoImpl implements LoginRepo {
           currentUser; // نختار المستخدم بناءً على الحالة
       if (user != null) {
         await _registerAndSaveUserGoogleInfo(user); // حفظ البيانات
+        await sharedPrefHelper.saveBool(ConstantVariable.isLogin, true);
         return Right(user);
       } else {
         return const Left('Google Sign-In failed: User is null');

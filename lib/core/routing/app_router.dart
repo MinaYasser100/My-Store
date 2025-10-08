@@ -5,13 +5,14 @@ import 'package:my_store/core/routing/routes.dart';
 import 'package:my_store/core/utils/constant.dart';
 import 'package:my_store/features/forgot_password/ui/forgot_password_view.dart';
 import 'package:my_store/features/home/ui/home_view.dart';
+import 'package:my_store/features/layout/ui/layout_view.dart';
 import 'package:my_store/features/login/ui/login_view.dart';
 import 'package:my_store/features/register/ui/register_view.dart';
 import 'package:my_store/features/verfiy_email/ui/verify_email_view.dart';
 
 abstract class AppRouter {
-  static final router = GoRouter(
-    initialLocation: checkLogin() ? Routes.homeView : Routes.loginView,
+  static GoRouter get router => GoRouter(
+    initialLocation: checkLogin() ? Routes.layoutView : Routes.loginView,
     routes: [
       //Register view
       GoRoute(
@@ -43,6 +44,11 @@ abstract class AppRouter {
       GoRoute(
         path: Routes.verifyEmailView,
         pageBuilder: (context, state) => fadeTransitionPage(VerifyEmailView()),
+      ),
+      // Layout View
+      GoRoute(
+        path: Routes.layoutView,
+        pageBuilder: (context, state) => fadeTransitionPage(LayoutView()),
       ),
     ],
   );

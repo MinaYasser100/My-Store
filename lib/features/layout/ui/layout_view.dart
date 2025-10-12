@@ -49,6 +49,7 @@ class _LayoutViewState extends State<LayoutView> {
     }
 
     return Scaffold(
+     
       body: screens[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: ColorsTheme().whiteColor,

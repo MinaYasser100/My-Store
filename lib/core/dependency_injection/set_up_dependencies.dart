@@ -5,6 +5,7 @@ import 'package:my_store/core/firebase/firebase_auth_error_handling.dart';
 import 'package:my_store/core/firebase/firebase_firestore_error_handler.dart';
 import 'package:my_store/core/internet_check/cubit/internet_check__cubit.dart';
 import 'package:my_store/features/forgot_password/data/repo/forgot_password_repo_impl.dart';
+import 'package:my_store/features/home/data/repo/products_repo.dart';
 import 'package:my_store/features/login/data/repo/login_repo_impl.dart';
 import 'package:my_store/features/register/data/repo/register_repo_impl.dart';
 import 'package:my_store/features/verfiy_email/data/repo/verify_email_repo_impl.dart';
@@ -50,4 +51,10 @@ void setupDependencies() async {
 
   // register connectivity cubit for internet
   getIt.registerSingleton<ConnectivityCubit>(ConnectivityCubit());
+
+  getIt.registerSingleton<ProductsRepoImpl>(
+    ProductsRepoImpl(
+      firestoreErrorHandler: getIt<FirebaseFirestoreErrorHandler>(),
+    ),
+  );
 }

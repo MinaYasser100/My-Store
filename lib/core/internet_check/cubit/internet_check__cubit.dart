@@ -32,9 +32,9 @@ class ConnectivityCubit extends Cubit<ConnectivityState> {
 
   /// Monitor connectivity changes with debouncing
   void _monitorConnectivityChanges() {
-    _connectivitySubscription = Connectivity()
-        .onConnectivityChanged
-        .listen((List<ConnectivityResult> result) async {
+    _connectivitySubscription = Connectivity().onConnectivityChanged.listen((
+      List<ConnectivityResult> result,
+    ) async {
       await _handleConnectivityChange(result);
     });
   }
@@ -52,7 +52,8 @@ class ConnectivityCubit extends Cubit<ConnectivityState> {
 
   /// Handle connectivity changes
   Future<void> _handleConnectivityChange(
-      List<ConnectivityResult> connectivityResults) async {
+    List<ConnectivityResult> connectivityResults,
+  ) async {
     final connectivityResult = connectivityResults.isNotEmpty
         ? connectivityResults.first
         : ConnectivityResult.none;

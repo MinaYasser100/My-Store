@@ -16,9 +16,7 @@ class ErrorWidgetApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Custom Error Widget',
-      home: CustomErrorWidget(
-        errorMessage: errorDetails.exceptionAsString(),
-      ),
+      home: CustomErrorWidget(errorMessage: errorDetails.exceptionAsString()),
     );
   }
 }
@@ -32,7 +30,9 @@ class CustomErrorWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          backgroundColor: Colors.white12, title: const Text('Error Occurred')),
+        backgroundColor: Colors.white12,
+        title: const Text('Error Occurred'),
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -49,8 +49,9 @@ class CustomErrorWidget extends StatelessWidget {
             const Padding(
               padding: EdgeInsets.all(8.0),
               child: Text(
-                  'please wait some time until  the error is resolved and try again later',
-                  textAlign: TextAlign.center),
+                'please wait some time until  the error is resolved and try again later',
+                textAlign: TextAlign.center,
+              ),
             ),
           ],
         ),

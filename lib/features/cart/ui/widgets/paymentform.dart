@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:go_router/go_router.dart';
+
 import 'package:my_store/core/model/text_field_model/text_field_model.dart';
 import 'package:my_store/core/utils/colors.dart';
 import 'package:my_store/core/widgets/custom_text_form_field.dart';
 import 'package:my_store/features/cart/ui/widgets/custom_checkBox.dart';
-import 'governorate_dropdown.dart';
-import 'fixed_country_field.dart';
+
 
 class Paymentform extends StatefulWidget {
   const Paymentform({super.key});
@@ -48,7 +47,7 @@ class _PaymentformState extends State<Paymentform> {
               controller: creditcardnumber,
               keyboardType: TextInputType.number,
               hintText: "credit card number",
-              // labelText: "credit card number",
+              
               inputFormatters: [
                 FilteringTextInputFormatter.digitsOnly,
                 LengthLimitingTextInputFormatter(16),
@@ -131,9 +130,7 @@ class _PaymentformState extends State<Paymentform> {
             onPressed: () {
               if (_formKey.currentState!.validate()) {
                 //  GoRouter.of(context).push(location)
-                creditcardnumber.clear();
-                ccv.clear();
-                ExpiryDate.clear();
+              
               }
             },
             child: const Text(

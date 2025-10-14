@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:my_store/core/routing/routes.dart';
 import 'package:my_store/core/widgets/custom_button.dart';
 import 'package:my_store/features/cart/ui/widgets/All_cart_item.dart';
 import 'package:my_store/features/cart/ui/widgets/custom_App_Bar.dart';
@@ -31,7 +33,12 @@ class CartProductsView extends StatelessWidget {
           left: 16,
           right: 16,
           bottom: 5,
-          child: CustomButton(text: "Proceed to checkout", onPressed: () {}),
+          child: CustomButton(
+            text: "Proceed to checkout",
+            onPressed: () {
+              GoRouter.of(context).push(Routes.checkoutview);
+            },
+          ),
         ),
       ],
     );

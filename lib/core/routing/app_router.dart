@@ -3,6 +3,8 @@ import 'package:my_store/core/caching/shared/shared_perf_helper.dart';
 import 'package:my_store/core/routing/animation_route.dart';
 import 'package:my_store/core/routing/routes.dart';
 import 'package:my_store/core/utils/constant.dart';
+import 'package:my_store/features/cart/ui/checkout_view.dart';
+import 'package:my_store/features/cart/ui/payment_view.dart';
 import 'package:my_store/features/forgot_password/ui/forgot_password_view.dart';
 import 'package:my_store/features/home/ui/home_view.dart';
 import 'package:my_store/features/layout/ui/layout_view.dart';
@@ -19,6 +21,17 @@ abstract class AppRouter {
         path: Routes.registerView,
         pageBuilder: (context, state) => fadeTransitionPage(RegisterView()),
       ),
+      GoRoute(
+        path: Routes.checkoutview,
+        pageBuilder: (context, state) =>
+            fadeTransitionPage(CheckoutView()),
+      ),
+      GoRoute(
+        path: Routes.paymentView,
+        pageBuilder: (context, state) =>
+            fadeTransitionPage(PaymentView()),
+      ),
+      
       // Login view
       GoRoute(
         path: Routes.loginView,

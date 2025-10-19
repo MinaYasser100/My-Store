@@ -1,6 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_store/core/utils/colors.dart';
 import 'package:my_store/features/add/ui/add_view.dart';
+import 'package:my_store/features/cart/data/repo/cart_repo.dart';
+import 'package:my_store/features/cart/logic/cart_cubit.dart';
 import 'package:my_store/features/cart/ui/cart_view.dart';
 import 'package:my_store/features/favorites/ui/favorites_view.dart';
 import 'package:my_store/features/home/ui/home_view.dart';
@@ -15,15 +20,32 @@ class LayoutView extends StatefulWidget {
 
 class _LayoutViewState extends State<LayoutView> {
   int _currentIndex = 0;
-  List<Widget> screens = const [
-    HomeView(),
-    CartView(),
-    AddView(),
-    FavoritesView(),
-    ProfileView(),
-  ];
+
+  final iconColor = ColorsTheme().primaryDark;
+  
   @override
   Widget build(BuildContext context) {
+    final currentUser = FirebaseAuth.instance.currentUser;
+
+    List<Widget> screens = [
+      const HomeView(),
+      if (currentUser != null)
+        BlocProvider(
+          create: (context) {
+            return CartCubit(
+              repo: CartRepo(firestore: FirebaseFirestore.instance),
+              userId: currentUser.uid,
+            )..listenToCart();
+          },
+          child: const CartView(),
+        )
+      else
+        const Center(child: Text('Please login first')),
+      const AddView(),
+      const FavoritesView(),
+      const ProfileView(),
+    ];
+
     final iconColor = ColorsTheme().primaryDark;
 
     Widget buildIcon(IconData iconData, String label, int index) {
@@ -49,7 +71,6 @@ class _LayoutViewState extends State<LayoutView> {
     }
 
     return Scaffold(
-     
       body: screens[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: ColorsTheme().whiteColor,

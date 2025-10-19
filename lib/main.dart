@@ -7,7 +7,7 @@ import 'package:my_store/core/dependency_injection/set_up_dependencies.dart';
 import 'package:my_store/core/routing/app_router.dart';
 import 'package:my_store/core/utils/theme_data_func.dart';
 import 'firebase_options.dart';
-
+// import 'package:cloud_firestore/cloud_firestore.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);

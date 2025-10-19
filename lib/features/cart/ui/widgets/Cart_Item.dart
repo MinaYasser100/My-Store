@@ -18,12 +18,13 @@ class CartItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Image.network(
-  cartItem.image,
-  height: 100,
-  width: 80,
-  fit: BoxFit.cover,
-  errorBuilder: (context, error, stackTrace) => const Icon(Icons.broken_image, size: 80),
-),
+                cartItem.image,
+                height: 100,
+                width: 80,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) =>
+                    const Icon(Icons.broken_image, size: 80),
+              ),
 
               const SizedBox(width: 20),
               Expanded(
@@ -42,7 +43,7 @@ class CartItem extends StatelessWidget {
                       ).copyWith(color: ColorsTheme().primaryLight),
                     ),
                     SizedBox(height: 6),
-                  
+
                     ItemQuantityDropdown(
                       initialQuantity: cartItem.quantity,
                       itemId: cartItem.id,

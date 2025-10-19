@@ -13,9 +13,6 @@ class ProductsList extends StatelessWidget {
       delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
         return ProductCardItem(
           product: products[index],
-          onFavoritePressed: () {
-            _handleFavoritePressed(context, products[index]);
-          },
           onAddToCartPressed: () {
             _handleAddToCart(context, products[index]);
           },
@@ -24,13 +21,7 @@ class ProductsList extends StatelessWidget {
     );
   }
 
-  void _handleFavoritePressed(BuildContext context, ProductModel product) {
-    // TODO: Implement favorite logic
-    debugPrint('Favorite pressed: ${product.title}');
-  }
-
   void _handleAddToCart(BuildContext context, ProductModel product) {
-    // TODO: Implement add to cart logic
     debugPrint('Add to cart: ${product.title}');
   }
 }

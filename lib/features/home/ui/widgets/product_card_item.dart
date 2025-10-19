@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_store/core/model/product_model/product_model.dart';
 import 'package:my_store/core/theme/app_style.dart';
 import 'package:my_store/core/utils/colors.dart';
+import 'package:my_store/core/utils/show_top_toast.dart';
+import 'package:my_store/features/home/data/repo/like_product_repo.dart';
+import 'package:my_store/features/home/manager/like_product_cubit/like_product_cubit.dart';
 
 class ProductCardItem extends StatelessWidget {
   const ProductCardItem({
     super.key,
     required this.product,
-    this.onFavoritePressed,
-    this.onAddToCartPressed,
+    required this.onAddToCartPressed,
   });
 
   final ProductModel product;
-  final VoidCallback? onFavoritePressed;
-  final VoidCallback? onAddToCartPressed;
+  final VoidCallback onAddToCartPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -82,17 +84,54 @@ class ProductCardItem extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
           ),
         ),
-        IconButton(
-          icon: Icon(
-            Icons.favorite_border,
-            color: ColorsTheme().primaryColor,
-            size: 22,
-          ),
-          onPressed: onFavoritePressed,
-          padding: EdgeInsets.zero,
-          constraints: const BoxConstraints(),
-        ),
+        _buildLikeButton(context),
       ],
+    );
+  }
+
+  Widget _buildLikeButton(BuildContext context) {
+    return StreamBuilder<bool>(
+      stream: context.read<LikeProductRepo>().isProductLiked(
+        product.id.toString(),
+      ),
+      builder: (context, snapshot) {
+        final isLiked = snapshot.data ?? false;
+
+        return BlocListener<LikeProductCubit, LikeProductState>(
+          listener: (context, state) {
+            if (state is LikeProductLiked &&
+                state.productId == product.id.toString()) {
+              showSuccessToast(
+                context,
+                'Success',
+                'Product added to favorites!',
+              );
+            } else if (state is LikeProductUnliked &&
+                state.productId == product.id.toString()) {
+              showSuccessToast(
+                context,
+                'Removed',
+                'Product removed from favorites.',
+              );
+            } else if (state is LikeProductFailure) {
+              showErrorToast(context, 'Error', state.error);
+            }
+          },
+          child: GestureDetector(
+            onTap: snapshot.hasData
+                ? () => context.read<LikeProductCubit>().toggleLikeStatus(
+                    product.id.toString(),
+                    isLiked,
+                  )
+                : null,
+            child: Icon(
+              isLiked ? Icons.favorite : Icons.favorite_border,
+              color: ColorsTheme().primaryDark,
+              size: 22,
+            ),
+          ),
+        );
+      },
     );
   }
 

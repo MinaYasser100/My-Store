@@ -4,17 +4,18 @@ import 'package:my_store/core/caching/hive/user_hive_helper.dart';
 import 'package:my_store/core/firebase/firebase_firestore_error_handler.dart';
 import 'package:my_store/core/utils/constant.dart';
 
-abstract class ProductLikeRepo {
+abstract class LikeProductRepo {
   Future<Either<String, String>> likeProduct(String productId);
   Future<Either<String, String>> unlikeProduct(String productId);
+  Stream<bool> isProductLiked(String productId);
 }
 
-class ProductLikeRepoImpl implements ProductLikeRepo {
+class LikeProductRepoImpl implements LikeProductRepo {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final UserHiveHelper userHiveHelper;
   final FirebaseFirestoreErrorHandler firestoreErrorHandler;
 
-  ProductLikeRepoImpl({
+  LikeProductRepoImpl({
     required this.userHiveHelper,
     required this.firestoreErrorHandler,
   });
@@ -22,10 +23,8 @@ class ProductLikeRepoImpl implements ProductLikeRepo {
   @override
   Future<Either<String, String>> likeProduct(String productId) async {
     try {
-      // اجلب الـ product من مكان تاني أو استخدم productId فقط
       final userModel = userHiveHelper.getUser(ConstantVariable.uId);
 
-      // خزن الـ productId فقط
       await _firestore
           .collection(ConstantVariable.users)
           .doc(userModel!.uid)
@@ -66,5 +65,22 @@ class ProductLikeRepoImpl implements ProductLikeRepo {
     } catch (e) {
       return const Left('Removing product from favorites failed');
     }
+  }
+
+  @override
+  Stream<bool> isProductLiked(String productId) {
+    final userModel = userHiveHelper.getUser(ConstantVariable.uId);
+
+    if (userModel == null) {
+      return Stream.value(false);
+    }
+
+    return _firestore
+        .collection(ConstantVariable.users)
+        .doc(userModel.uid)
+        .collection(ConstantVariable.likesCollection)
+        .doc(productId)
+        .snapshots()
+        .map((snapshot) => snapshot.exists);
   }
 }

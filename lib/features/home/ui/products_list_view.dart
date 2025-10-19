@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_store/core/dependency_injection/set_up_dependencies.dart';
 import 'package:my_store/core/model/product_model/product_model.dart';
-import 'package:my_store/features/home/manager/cubit/products_cubit.dart';
+import 'package:my_store/core/utils/show_top_toast.dart';
+import 'package:my_store/features/home/data/repo/like_product_repo.dart';
+import 'package:my_store/features/home/manager/like_product_cubit/like_product_cubit.dart';
 import 'package:my_store/features/home/ui/widgets/products_empty_state.dart';
 import 'package:my_store/features/home/ui/widgets/products_list.dart';
 import 'package:my_store/features/home/ui/widgets/products_loading_state.dart';
+
+import '../manager/products_cubit/products_cubit.dart';
 
 class ProductsBlocComsumer extends StatelessWidget {
   const ProductsBlocComsumer({super.key});
@@ -26,16 +31,28 @@ class ProductsBlocComsumer extends StatelessWidget {
           return const ProductsEmptyState();
         }
 
-        return ProductsList(products: products);
+        return MultiRepositoryProvider(
+          providers: [
+            RepositoryProvider<LikeProductRepo>.value(
+              value: getIt<LikeProductRepoImpl>(),
+            ),
+          ],
+          child: BlocProvider(
+            create: (context) => LikeProductCubit(getIt<LikeProductRepoImpl>()),
+            child: ProductsList(products: products),
+          ),
+        );
       },
     );
   }
 
   void _handleStateChanges(BuildContext context, ProductsState state) {
-    // TODO: Handle state changes like errors or success messages
     if (state is ProductsFeatchFailure) {
-      // Show error snackbar or dialog
-      debugPrint('Error loading products: ${state.error}');
+      showErrorToast(
+        context,
+        'Error',
+        'An error occurred while fetching products.',
+      );
     }
   }
 }

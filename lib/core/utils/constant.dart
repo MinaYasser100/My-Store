@@ -13,4 +13,5 @@ class ConstantVariable {
   static const String userBox = 'userBox';
   static const String productsCollection = 'Products';
   static const String likesCollection = 'Likes';
+  static const String myCartCollection = 'MyCart';
 }

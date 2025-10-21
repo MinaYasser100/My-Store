@@ -11,17 +11,8 @@ class ProductsList extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverList(
       delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
-        return ProductCardItem(
-          product: products[index],
-          onAddToCartPressed: () {
-            _handleAddToCart(context, products[index]);
-          },
-        );
+        return ProductCardItem(product: products[index]);
       }, childCount: products.length),
     );
-  }
-
-  void _handleAddToCart(BuildContext context, ProductModel product) {
-    debugPrint('Add to cart: ${product.title}');
   }
 }

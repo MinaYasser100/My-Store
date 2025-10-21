@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_store/core/dependency_injection/set_up_dependencies.dart';
 import 'package:my_store/core/model/product_model/product_model.dart';
 import 'package:my_store/core/utils/show_top_toast.dart';
+import 'package:my_store/features/home/data/repo/add_to_cart_repo.dart';
 import 'package:my_store/features/home/data/repo/like_product_repo.dart';
+import 'package:my_store/features/home/manager/cart_product_cubit/cart_product_cubit.dart';
 import 'package:my_store/features/home/manager/like_product_cubit/like_product_cubit.dart';
 import 'package:my_store/features/home/ui/widgets/products_empty_state.dart';
 import 'package:my_store/features/home/ui/widgets/products_list.dart';
@@ -37,8 +39,17 @@ class ProductsBlocComsumer extends StatelessWidget {
               value: getIt<LikeProductRepoImpl>(),
             ),
           ],
-          child: BlocProvider(
-            create: (context) => LikeProductCubit(getIt<LikeProductRepoImpl>()),
+          child: MultiBlocProvider(
+            providers: [
+              BlocProvider<LikeProductCubit>(
+                create: (context) =>
+                    LikeProductCubit(getIt<LikeProductRepoImpl>()),
+              ),
+              BlocProvider(
+                create: (context) =>
+                    CartProductCubit(getIt<AddOrUpdateProductToCartRepoImpl>()),
+              ),
+            ],
             child: ProductsList(products: products),
           ),
         );

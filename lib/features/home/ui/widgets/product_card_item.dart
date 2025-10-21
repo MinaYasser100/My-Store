@@ -5,17 +5,13 @@ import 'package:my_store/core/theme/app_style.dart';
 import 'package:my_store/core/utils/colors.dart';
 import 'package:my_store/core/utils/show_top_toast.dart';
 import 'package:my_store/features/home/data/repo/like_product_repo.dart';
+import 'package:my_store/features/home/manager/cart_product_cubit/cart_product_cubit.dart';
 import 'package:my_store/features/home/manager/like_product_cubit/like_product_cubit.dart';
 
 class ProductCardItem extends StatelessWidget {
-  const ProductCardItem({
-    super.key,
-    required this.product,
-    required this.onAddToCartPressed,
-  });
+  const ProductCardItem({super.key, required this.product});
 
   final ProductModel product;
-  final VoidCallback onAddToCartPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -149,17 +145,30 @@ class ProductCardItem extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 8),
-        _buildAddToCartButton(),
+        BlocListener<CartProductCubit, CartProductState>(
+          listener: (context, state) {
+            if (state is CartProductSuccess) {
+              showSuccessToast(context, 'Success', 'Product added to cart!');
+            } else if (state is CartProductFailure) {
+              showErrorToast(context, 'Error', state.message);
+            }
+          },
+          child: _buildAddToCartButton(() {
+            context.read<CartProductCubit>().addProductToCart(
+              product.id.toString(),
+            );
+          }),
+        ),
       ],
     );
   }
 
-  Widget _buildAddToCartButton() {
+  Widget _buildAddToCartButton(void Function()? onTap) {
     return Material(
       color: ColorsTheme().primaryDark,
       borderRadius: BorderRadius.circular(8),
       child: InkWell(
-        onTap: onAddToCartPressed,
+        onTap: onTap,
         borderRadius: BorderRadius.circular(8),
         child: Container(
           width: 32,

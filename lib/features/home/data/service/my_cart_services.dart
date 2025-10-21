@@ -10,7 +10,7 @@ class MyCartServices {
     UserModel userModel,
     String productId,
   ) async {
-    final docRef = await _firestore
+    final docRef = _firestore
         .collection(ConstantVariable.users)
         .doc(userModel.uid)
         .collection(ConstantVariable.myCartCollection)

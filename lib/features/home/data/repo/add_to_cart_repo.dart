@@ -5,27 +5,23 @@ import 'package:my_store/core/firebase/firebase_firestore_error_handler.dart';
 import 'package:my_store/core/utils/constant.dart';
 import 'package:my_store/features/home/data/service/my_cart_services.dart';
 
-abstract class AddToCartRepo {
-  Future<Either<String, void>> addToCart({
-    required String productId,
-    required int quantity,
-  });
+abstract class AddOrUpdateProductToCartRepo {
+  Future<Either<String, void>> addOrUpdateToCart({required String productId});
 }
 
-class AddToCartRepoImpl implements AddToCartRepo {
+class AddOrUpdateProductToCartRepoImpl implements AddOrUpdateProductToCartRepo {
   final FirebaseFirestoreErrorHandler firestoreErrorHandler;
   final UserHiveHelper userHiveHelper;
   final MyCartServices myCartServices;
 
-  AddToCartRepoImpl({
+  AddOrUpdateProductToCartRepoImpl({
     required this.firestoreErrorHandler,
     required this.userHiveHelper,
     required this.myCartServices,
   });
   @override
-  Future<Either<String, void>> addToCart({
+  Future<Either<String, void>> addOrUpdateToCart({
     required String productId,
-    required int quantity,
   }) async {
     try {
       final userModel = userHiveHelper.getUser(ConstantVariable.uId);

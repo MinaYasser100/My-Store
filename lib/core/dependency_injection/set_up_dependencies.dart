@@ -4,6 +4,7 @@ import 'package:my_store/core/caching/shared/shared_perf_helper.dart';
 import 'package:my_store/core/firebase/firebase_auth_error_handling.dart';
 import 'package:my_store/core/firebase/firebase_firestore_error_handler.dart';
 import 'package:my_store/core/internet_check/cubit/internet_check__cubit.dart';
+import 'package:my_store/features/layout/repo/cart_repo.dart';
 import 'package:my_store/features/forgot_password/data/repo/forgot_password_repo_impl.dart';
 import 'package:my_store/features/home/data/repo/add_to_cart_repo.dart';
 import 'package:my_store/features/home/data/repo/like_product_repo.dart';
@@ -67,6 +68,11 @@ void setupDependencies() async {
       firestoreErrorHandler: getIt<FirebaseFirestoreErrorHandler>(),
     ),
   );
+
+  getIt.registerSingleton<CartRepoImpl>(
+    CartRepoImpl(userHiveHelper: getIt<UserHiveHelper>()),
+  );
+
   getIt.registerSingleton<MyCartServices>(MyCartServices());
   getIt.registerSingleton<AddOrUpdateProductToCartRepoImpl>(
     AddOrUpdateProductToCartRepoImpl(

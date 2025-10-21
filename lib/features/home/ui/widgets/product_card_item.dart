@@ -154,9 +154,7 @@ class ProductCardItem extends StatelessWidget {
             }
           },
           child: _buildAddToCartButton(() {
-            context.read<CartProductCubit>().addProductToCart(
-              product.id.toString(),
-            );
+            context.read<CartProductCubit>().addProductToCart(product);
           }),
         ),
       ],

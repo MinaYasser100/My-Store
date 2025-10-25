@@ -25,22 +25,11 @@ class _LayoutViewState extends State<LayoutView> {
   
   @override
   Widget build(BuildContext context) {
-    final currentUser = FirebaseAuth.instance.currentUser;
+    
 
     List<Widget> screens = [
       const HomeView(),
-      if (currentUser != null)
-        BlocProvider(
-          create: (context) {
-            return CartCubit(
-              repo: CartRepo(firestore: FirebaseFirestore.instance),
-              userId: currentUser.uid,
-            )..listenToCart();
-          },
-          child: const CartView(),
-        )
-      else
-        const Center(child: Text('Please login first')),
+      const CartView(),
       const AddView(),
       const FavoritesView(),
       const ProfileView(),

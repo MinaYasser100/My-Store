@@ -10,6 +10,7 @@ class CustomHomeAppBar extends StatelessWidget {
     return SliverAppBar(
       pinned: true,
       expandedHeight: 80.0,
+      centerTitle: false,
       actionsPadding: const EdgeInsets.all(10),
       leading: Padding(
         padding: const EdgeInsets.only(left: 10.0, top: 4.0, bottom: 4.0),

@@ -38,6 +38,7 @@ class _LayoutViewState extends State<LayoutView> {
   @override
   Widget build(BuildContext context) {
     final iconColor = ColorsTheme().primaryDark;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     Widget buildIcon(IconData iconData, String label, int index) {
       final isSelected = index == _currentIndex;
@@ -120,7 +121,9 @@ class _LayoutViewState extends State<LayoutView> {
     return Scaffold(
       body: screens[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: ColorsTheme().whiteColor,
+        backgroundColor: isDark
+            ? ColorsTheme().secondaryColor
+            : ColorsTheme().whiteColor,
         currentIndex: _currentIndex,
         showSelectedLabels: false,
         showUnselectedLabels: false,

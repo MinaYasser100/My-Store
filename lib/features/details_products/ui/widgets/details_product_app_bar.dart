@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_store/core/routing/routes.dart';
-import 'package:my_store/core/utils/colors.dart';
 import 'package:my_store/features/details_products/ui/widgets/cart_icon_with_badge.dart';
 import 'package:my_store/features/layout/repo/cart_repo.dart';
 
@@ -18,22 +17,20 @@ class DetailsProductAppBar extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return AppBar(
-      backgroundColor: ColorsTheme().whiteColor,
+      backgroundColor: theme.scaffoldBackgroundColor,
       elevation: 0,
       leading: IconButton(
         icon: Row(
           children: [
-            Icon(
-              Icons.arrow_back_ios,
-              color: ColorsTheme().primaryDark,
-              size: 20,
-            ),
+            Icon(Icons.arrow_back_ios, color: theme.iconTheme.color, size: 20),
             Expanded(
               child: Text(
                 'Back',
                 style: TextStyle(
-                  color: ColorsTheme().primaryDark,
+                  color: theme.textTheme.bodyLarge?.color,
                   fontSize: 14,
                 ),
                 overflow: TextOverflow.visible,
@@ -47,7 +44,7 @@ class DetailsProductAppBar extends StatelessWidget
       title: Text(
         productTitle,
         style: TextStyle(
-          color: ColorsTheme().primaryDark,
+          color: theme.textTheme.bodyLarge?.color,
           fontSize: 18,
           fontWeight: FontWeight.w600,
         ),

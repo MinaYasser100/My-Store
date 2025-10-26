@@ -46,6 +46,7 @@ class _AddToBasketSectionState extends State<AddToBasketSection> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return BlocListener<
       DetailsAddProductToCartCubit,
       DetailsAddProductToCartState
@@ -70,10 +71,10 @@ class _AddToBasketSectionState extends State<AddToBasketSection> {
       child: Container(
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: ColorsTheme().whiteColor,
+          color: isDark ? ColorsTheme().secondaryColor : Colors.white,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
+              color: Colors.black.withValues(alpha: 0.05),
               blurRadius: 10,
               offset: const Offset(0, -5),
             ),

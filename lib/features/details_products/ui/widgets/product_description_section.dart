@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_store/core/theme/app_style.dart';
+import 'package:my_store/core/utils/colors.dart';
 
 class ProductDescriptionSection extends StatelessWidget {
   const ProductDescriptionSection({super.key, this.description});
@@ -8,6 +9,7 @@ class ProductDescriptionSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
@@ -15,16 +17,20 @@ class ProductDescriptionSection extends StatelessWidget {
         children: [
           Text(
             description ?? 'No description available',
-            style: AppTextStyles.styleRegular14sp(
-              context,
-            ).copyWith(color: Colors.black87, height: 1.6),
+            style: AppTextStyles.styleRegular14sp(context).copyWith(
+              color: isDark ? ColorsTheme().whiteColor : Colors.black87,
+              height: 1.6,
+            ),
           ),
           const SizedBox(height: 16),
           Text(
             'Grown in Gilroy, CA by ${_extractSupplier()}',
-            style: AppTextStyles.styleRegular14sp(
-              context,
-            ).copyWith(color: Colors.grey[600], fontStyle: FontStyle.italic),
+            style: AppTextStyles.styleRegular14sp(context).copyWith(
+              color: isDark
+                  ? ColorsTheme().grayColor
+                  : ColorsTheme().secondaryColor,
+              fontStyle: FontStyle.italic,
+            ),
           ),
           const SizedBox(height: 100), // Space for bottom button
         ],

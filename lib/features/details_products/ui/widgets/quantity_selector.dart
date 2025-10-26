@@ -15,16 +15,21 @@ class QuantitySelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 4),
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey[300]!),
+        border: Border.all(
+          color: isDark ? Colors.grey[700]! : Colors.grey[300]!,
+        ),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Row(
         children: [
           IconButton(
-            icon: const Icon(Icons.remove, size: 20),
+            icon: Icon(Icons.remove, size: 20, color: theme.iconTheme.color),
             onPressed: onDecrement,
             padding: EdgeInsets.zero,
             constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
@@ -39,7 +44,7 @@ class QuantitySelector extends StatelessWidget {
             ),
           ),
           IconButton(
-            icon: const Icon(Icons.add, size: 20),
+            icon: Icon(Icons.add, size: 20, color: theme.iconTheme.color),
             onPressed: onIncrement,
             padding: EdgeInsets.zero,
             constraints: const BoxConstraints(minWidth: 32, minHeight: 32),

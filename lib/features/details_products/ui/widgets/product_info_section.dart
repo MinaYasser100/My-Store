@@ -24,26 +24,33 @@ class ProductInfoSection extends StatelessWidget {
   }
 
   Widget _buildPriceRow(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
           '${product.price?.toStringAsFixed(0) ?? '0'} LE each',
-          style: AppTextStyles.styleBold16sp(
-            context,
-          ).copyWith(fontSize: 20, color: ColorsTheme().primaryDark),
+          style: AppTextStyles.styleBold16sp(context).copyWith(
+            fontSize: 20,
+            color: isDark
+                ? ColorsTheme().whiteColor
+                : ColorsTheme().primaryColor,
+          ),
         ),
       ],
     );
   }
 
   Widget _buildSupplierRow(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Row(
       children: [
         Text(
           product.category ?? 'Unknown Category',
           style: AppTextStyles.styleRegular14sp(context).copyWith(
-            color: ColorsTheme().primaryColor,
+            color: isDark
+                ? ColorsTheme().whiteColor
+                : ColorsTheme().secondaryColor,
             decoration: TextDecoration.underline,
           ),
         ),
@@ -51,7 +58,9 @@ class ProductInfoSection extends StatelessWidget {
         Icon(
           Icons.arrow_forward_ios,
           size: 12,
-          color: ColorsTheme().primaryColor,
+          color: isDark
+              ? ColorsTheme().whiteColor
+              : ColorsTheme().secondaryColor,
         ),
       ],
     );

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:my_store/core/theme/app_style.dart';
-import 'package:my_store/core/utils/colors.dart';
 import 'package:my_store/features/layout/repo/cart_repo.dart';
 
 class CartIconWithBadge extends StatelessWidget {
@@ -11,6 +10,8 @@ class CartIconWithBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return StreamBuilder<int>(
       stream: cartRepo.getTotalQuantity(),
       builder: (context, snapshot) {
@@ -22,7 +23,7 @@ class CartIconWithBadge extends StatelessWidget {
             IconButton(
               icon: Icon(
                 Icons.shopping_cart_outlined,
-                color: ColorsTheme().primaryDark,
+                color: theme.iconTheme.color,
               ),
               onPressed: onPressed,
             ),

@@ -14,15 +14,20 @@ class AddToBasketButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final buttonColor = theme.brightness == Brightness.dark
+        ? ColorsTheme().primaryLight
+        : ColorsTheme().primaryDark;
+
     return ElevatedButton(
       onPressed: isLoading ? null : onPressed,
       style: ElevatedButton.styleFrom(
-        backgroundColor: ColorsTheme().primaryDark,
+        backgroundColor: buttonColor,
         foregroundColor: Colors.white,
         padding: const EdgeInsets.symmetric(vertical: 16),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         elevation: 0,
-        disabledBackgroundColor: ColorsTheme().primaryDark.withOpacity(0.6),
+        disabledBackgroundColor: buttonColor.withOpacity(0.6),
       ),
       child: isLoading
           ? const SizedBox(

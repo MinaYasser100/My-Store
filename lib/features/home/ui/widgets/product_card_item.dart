@@ -17,12 +17,13 @@ class ProductCardItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return GestureDetector(
       onTap: () {
         context.push(Routes.detailsProductView, extra: product);
       },
       child: Card(
-        color: ColorsTheme().whiteColor,
+        color: isDark ? ColorsTheme().secondaryColor : ColorsTheme().whiteColor,
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Row(
           children: [
@@ -129,7 +130,7 @@ class ProductCardItem extends StatelessWidget {
                 : null,
             child: Icon(
               isLiked ? Icons.favorite : Icons.favorite_border,
-              color: ColorsTheme().primaryDark,
+              color: isLiked ? Colors.red : ColorsTheme().primaryDark,
               size: 22,
             ),
           ),

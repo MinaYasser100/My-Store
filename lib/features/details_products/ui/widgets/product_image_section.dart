@@ -8,10 +8,13 @@ class ProductImageSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
     return Container(
       width: double.infinity,
       height: 350,
-      color: ColorsTheme().whiteColor,
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      color: isDark ? ColorsTheme().secondaryColor : ColorsTheme().whiteColor,
       child: imageUrl != null && imageUrl!.isNotEmpty
           ? Image.network(
               imageUrl!,
@@ -23,7 +26,9 @@ class ProductImageSection extends StatelessWidget {
                 if (loadingProgress == null) return child;
                 return Center(
                   child: CircularProgressIndicator(
-                    color: ColorsTheme().primaryColor,
+                    color: isDark
+                        ? ColorsTheme().whiteColor
+                        : ColorsTheme().primaryColor,
                   ),
                 );
               },
@@ -33,9 +38,20 @@ class ProductImageSection extends StatelessWidget {
   }
 
   Widget _buildErrorImage() {
-    return Container(
-      color: Colors.grey[200],
-      child: Icon(Icons.image_not_supported, size: 80, color: Colors.grey[400]),
+    return Builder(
+      builder: (context) {
+        final theme = Theme.of(context);
+        final isDark = theme.brightness == Brightness.dark;
+
+        return Container(
+          color: isDark ? Colors.grey[800] : Colors.grey[200],
+          child: Icon(
+            Icons.image_not_supported,
+            size: 80,
+            color: isDark ? Colors.grey[600] : Colors.grey[400],
+          ),
+        );
+      },
     );
   }
 }

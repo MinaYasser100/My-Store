@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:my_store/core/model/product_model/product_model.dart';
+import 'package:my_store/core/routing/routes.dart';
 import 'package:my_store/core/theme/app_style.dart';
 import 'package:my_store/core/utils/colors.dart';
 import 'package:my_store/core/utils/show_top_toast.dart';
@@ -15,28 +17,33 @@ class ProductCardItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: ColorsTheme().whiteColor,
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: Row(
-        children: [
-          _buildProductImage(),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildTitleWithFavorite(context),
-                  const SizedBox(height: 4),
-                  _buildDescriptionWithAddButton(context),
-                ],
+    return GestureDetector(
+      onTap: () {
+        context.push(Routes.detailsProductView, extra: product);
+      },
+      child: Card(
+        color: ColorsTheme().whiteColor,
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: Row(
+          children: [
+            _buildProductImage(),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildTitleWithFavorite(context),
+                    const SizedBox(height: 4),
+                    _buildDescriptionWithAddButton(context),
+                  ],
+                ),
               ),
             ),
-          ),
-          const SizedBox(width: 8),
-        ],
+            const SizedBox(width: 8),
+          ],
+        ),
       ),
     );
   }

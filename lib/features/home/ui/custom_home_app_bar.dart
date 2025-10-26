@@ -17,14 +17,7 @@ class CustomHomeAppBar extends StatelessWidget {
         ),
       ),
       title: Text('My Store'),
-      actions: [
-        IconButton(
-          icon: Icon(Icons.search),
-          onPressed: () {
-            // Open search
-          },
-        ),
-      ],
+      actions: [IconButton(icon: Icon(Icons.search), onPressed: () {})],
     );
   }
 }

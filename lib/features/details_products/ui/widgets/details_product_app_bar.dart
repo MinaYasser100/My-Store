@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:my_store/core/routing/routes.dart';
 import 'package:my_store/core/utils/colors.dart';
+import 'package:my_store/features/details_products/ui/widgets/cart_icon_with_badge.dart';
+import 'package:my_store/features/layout/repo/cart_repo.dart';
 
 class DetailsProductAppBar extends StatelessWidget
     implements PreferredSizeWidget {
-  const DetailsProductAppBar({super.key, required this.productTitle});
+  const DetailsProductAppBar({
+    super.key,
+    required this.productTitle,
+    required this.cartRepo,
+  });
 
   final String productTitle;
+  final CartRepo cartRepo;
 
   @override
   Widget build(BuildContext context) {
@@ -47,15 +56,13 @@ class DetailsProductAppBar extends StatelessWidget
       ),
       centerTitle: true,
       actions: [
-        IconButton(
-          icon: Icon(
-            Icons.shopping_cart_outlined,
-            color: ColorsTheme().primaryDark,
-          ),
+        CartIconWithBadge(
+          cartRepo: cartRepo,
           onPressed: () {
-            // TODO: Navigate to cart
+            context.push(Routes.cartView);
           },
         ),
+        const SizedBox(width: 8),
       ],
     );
   }

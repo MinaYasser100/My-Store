@@ -4,6 +4,7 @@ import 'package:my_store/core/model/product_model/product_model.dart';
 import 'package:my_store/core/routing/animation_route.dart';
 import 'package:my_store/core/routing/routes.dart';
 import 'package:my_store/core/utils/constant.dart';
+import 'package:my_store/features/cart/ui/cart_view.dart';
 import 'package:my_store/features/details_products/ui/details_product_view.dart';
 import 'package:my_store/features/forgot_password/ui/forgot_password_view.dart';
 import 'package:my_store/features/home/ui/home_view.dart';
@@ -59,6 +60,10 @@ abstract class AppRouter {
           final product = state.extra as ProductModel;
           return fadeTransitionPage(DetailsProductView(product: product));
         },
+      ),
+      GoRoute(
+        path: Routes.cartView,
+        pageBuilder: (context, state) => fadeTransitionPage(CartView()),
       ),
     ],
   );

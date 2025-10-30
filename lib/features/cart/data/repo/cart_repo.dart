@@ -10,7 +10,7 @@ class CartRepo {
     return firestore
         .collection('Users')
         .doc(userId)
-        .collection('cart')
+        .collection('MyCart')
         .snapshots()
         .map((snapshot) => snapshot.docs
             .map((doc) => CartItemModel.fromJson(doc.data(), doc.id))
@@ -22,7 +22,7 @@ class CartRepo {
     await firestore
         .collection('Users')
         .doc(userId)
-        .collection('cart')
+        .collection('MyCart')
         .doc(itemId)
         .update({'quantity': quantity});
   }
@@ -33,7 +33,7 @@ class CartRepo {
     await firestore
         .collection('Users')
         .doc(userId)
-        .collection('cart')
+        .collection('MyCart')
         .doc(itemId)
         .delete();
   }

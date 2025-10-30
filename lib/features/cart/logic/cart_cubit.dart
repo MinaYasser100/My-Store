@@ -12,7 +12,7 @@ class CartCubit extends Cubit<CartState> {
     emit(CartLoading());
     repo.getUserCart(userId).listen(
           (cartItems) {
-           
+            
 
             final subtotal = cartItems.fold<double>(
               0.0,

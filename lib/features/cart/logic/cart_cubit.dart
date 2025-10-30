@@ -10,11 +10,9 @@ class CartCubit extends Cubit<CartState> {
 
   void listenToCart() {
     emit(CartLoading());
-    repo
-        .getUserCart(userId)
-        .listen(
+    repo.getUserCart(userId).listen(
           (cartItems) {
-            cartItems.forEach((item) {});
+           
 
             final subtotal = cartItems.fold<double>(
               0.0,
@@ -27,6 +25,7 @@ class CartCubit extends Cubit<CartState> {
           },
         );
   }
+
 
   Future<void> changeQuantity(String itemId, int newQuantity) async {
     await repo.updateQuantity(userId, itemId, newQuantity);

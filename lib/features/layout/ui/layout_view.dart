@@ -8,6 +8,7 @@ import 'package:my_store/features/layout/cart_cubit/cart_cubit.dart';
 import 'package:my_store/features/cart/ui/cart_view.dart';
 import 'package:my_store/features/favorites/ui/favorites_view.dart';
 import 'package:my_store/features/home/ui/home_view.dart';
+import 'package:my_store/features/profile/ui/profile_screen.dart';
 import 'package:my_store/features/profile/ui/profile_view.dart';
 
 class LayoutView extends StatefulWidget {
@@ -27,12 +28,12 @@ class _LayoutViewState extends State<LayoutView> {
     super.dispose();
   }
 
-  List<Widget> screens = const [
-    HomeView(),
-    CartView(),
-    AddView(),
-    FavoritesView(),
-    ProfileView(),
+  List<Widget> screens = [
+    const HomeView(),
+    const CartView(),
+    const AddView(),
+    const FavoritesView(),
+     ProfileScreen(),
   ];
 
   @override

@@ -12,6 +12,10 @@ import 'package:my_store/features/layout/ui/layout_view.dart';
 import 'package:my_store/features/login/ui/login_view.dart';
 import 'package:my_store/features/register/ui/register_view.dart';
 import 'package:my_store/features/verfiy_email/ui/verify_email_view.dart';
+import 'package:my_store/features/profile/ui/profile_screen.dart';
+import 'package:my_store/features/profile/ui/personal_info_screen.dart';
+import 'package:my_store/features/profile/ui/saved_addresses_screen.dart';
+import 'package:my_store/features/profile/ui/add_address_screen.dart';
 
 abstract class AppRouter {
   static GoRouter get router => GoRouter(
@@ -65,6 +69,28 @@ abstract class AppRouter {
         path: Routes.cartView,
         pageBuilder: (context, state) => fadeTransitionPage(CartView()),
       ),
+      // Profile View
+GoRoute(
+  path: Routes.profileView,
+  pageBuilder: (context, state) => fadeTransitionPage(ProfileScreen()),
+),
+
+// Personal Info View
+GoRoute(
+  path: Routes.personalInfoView,
+  pageBuilder: (context, state) => fadeTransitionPage(PersonalInfoScreen()),
+),
+
+// Saved Addresses View
+GoRoute(
+  path: Routes.savedAddressesView,
+  pageBuilder: (context, state) => fadeTransitionPage(SavedAddressesScreen()),
+),
+GoRoute(
+  path: Routes.addAddressView,
+  pageBuilder: (context, state) => fadeTransitionPage(AddAddressScreen()),
+),
+
     ],
   );
 

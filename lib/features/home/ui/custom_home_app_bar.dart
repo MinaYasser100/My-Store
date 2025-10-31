@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+// import 'package:go_router/go_router.dart';
+// import 'package:my_store/core/routing/routes.dart';
 
 class CustomHomeAppBar extends StatelessWidget {
   const CustomHomeAppBar({super.key});
@@ -21,7 +23,7 @@ class CustomHomeAppBar extends StatelessWidget {
         IconButton(
           icon: Icon(Icons.search),
           onPressed: () {
-            // Open search
+            // context.push(Routes.searchView);
           },
         ),
       ],

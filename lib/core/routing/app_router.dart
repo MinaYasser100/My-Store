@@ -9,6 +9,7 @@ import 'package:my_store/features/layout/ui/layout_view.dart';
 import 'package:my_store/features/login/ui/login_view.dart';
 import 'package:my_store/features/register/ui/register_view.dart';
 import 'package:my_store/features/verfiy_email/ui/verify_email_view.dart';
+//import 'package:my_store/features/search/ui/search_view.dart';
 
 abstract class AppRouter {
   static GoRouter get router => GoRouter(
@@ -50,6 +51,10 @@ abstract class AppRouter {
         path: Routes.layoutView,
         pageBuilder: (context, state) => fadeTransitionPage(LayoutView()),
       ),
+      //    GoRoute(
+      //     path: Routes.searchView,
+      //    pageBuilder: (context, state) => fadeTransitionPage(SearchView()),
+      // ),
     ],
   );
 

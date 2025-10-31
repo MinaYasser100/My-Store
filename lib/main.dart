@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_store/core/caching/hive/user_hive_helper.dart';
 import 'package:my_store/core/caching/shared/shared_perf_helper.dart';
 import 'package:my_store/core/dependency_injection/set_up_dependencies.dart';
 import 'package:my_store/core/routing/app_router.dart';
+import 'package:my_store/core/theme/theme_cubit/theme_cubit.dart';
 import 'package:my_store/core/utils/theme_data_func.dart';
 import 'firebase_options.dart';
 // import 'package:cloud_firestore/cloud_firestore.dart';
@@ -24,11 +26,20 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(
-      child: MaterialApp.router(
-        debugShowCheckedModeBanner: false,
-        theme: themeDataFunc(),
-        routerConfig: AppRouter.router,
+    return BlocProvider(
+      create: (context) => ThemeCubit(),
+      child: BlocBuilder<ThemeCubit, ThemeState>(
+        builder: (context, state) {
+          return ScreenUtilInit(
+            child: MaterialApp.router(
+              debugShowCheckedModeBanner: false,
+              theme: themeDataFunc(isDark: state is ThemeDark),
+              darkTheme: themeDataFunc(isDark: true),
+              themeMode: state is ThemeDark ? ThemeMode.dark : ThemeMode.light,
+              routerConfig: AppRouter.router,
+            ),
+          );
+        },
       ),
     );
   }

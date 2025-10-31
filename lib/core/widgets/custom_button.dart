@@ -11,14 +11,14 @@ class CustomButton extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
-        // color: Colors.blue,
-        // boxShadow: [
-        //   BoxShadow(
-        //     color: ColorsTheme().primaryDark.withOpacity(0.3),
-        //     blurRadius: 5,
-        //     offset: const Offset(0, 0), // موضع الظل
-        //   ),
-        // ],
+        color: Colors.blue,
+        boxShadow: [
+          BoxShadow(
+            color: ColorsTheme().primaryDark.withOpacity(0.3),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Padding(
         padding: const EdgeInsets.all(8.0),

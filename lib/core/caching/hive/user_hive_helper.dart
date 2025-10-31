@@ -26,7 +26,7 @@ class UserHiveHelper {
     await box.put(ConstantVariable.uId, user);
   }
 
-  static UserModel? getUser(String key) {
+  UserModel? getUser(String key) {
     final box = Hive.box<UserModel>(ConstantVariable.userBox);
     return box.get(key);
   }

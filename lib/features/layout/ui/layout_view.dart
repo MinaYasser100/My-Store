@@ -1,18 +1,21 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_store/core/caching/hive/user_hive_helper.dart';
+import 'package:my_store/core/dependency_injection/set_up_dependencies.dart';
 import 'package:my_store/core/utils/colors.dart';
+import 'package:my_store/core/utils/constant.dart';
 import 'package:my_store/features/add/ui/add_view.dart';
 import 'package:my_store/features/cart/data/repo/cart_repo.dart';
 import 'package:my_store/features/cart/logic/cart_cubit.dart';
 import 'package:my_store/features/cart/ui/cart_view.dart';
 import 'package:my_store/features/favorites/data/repo/favorites_repo.dart';
+import 'package:my_store/features/favorites/manager/favorites_cubit.dart';
 import 'package:my_store/features/favorites/ui/favorites_view.dart';
 import 'package:my_store/features/home/ui/home_view.dart';
+import 'package:my_store/features/layout/ui/widgets/cart_nav_icon_with_badge.dart';
+import 'package:my_store/features/layout/ui/widgets/favorites_nav_icon_with_badge.dart';
+import 'package:my_store/features/layout/ui/widgets/layout_nav_icon.dart';
 import 'package:my_store/features/profile/ui/profile_view.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:my_store/features/favorites/manager/favorites_cubit.dart';
 
 class LayoutView extends StatefulWidget {
   const LayoutView({super.key});
@@ -23,162 +26,40 @@ class LayoutView extends StatefulWidget {
 
 class _LayoutViewState extends State<LayoutView> {
   int _currentIndex = 0;
+  late final CartCubit _cartCubit;
+  late final FavoritesCubit _favoritesCubit;
 
-  final iconColor = ColorsTheme().primaryDark;
-  
+  @override
+  void initState() {
+    super.initState();
+    final userId =
+        getIt<UserHiveHelper>().getUser(ConstantVariable.uId)?.uid ?? '';
+    _cartCubit = CartCubit(
+      repo: CartRepo(firestore: getIt()),
+      userId: userId,
+    );
+    _cartCubit.listenToCart();
+    _favoritesCubit = FavoritesCubit(favoritesRepo: getIt<FavoritesRepoImpl>());
+  }
+
+  @override
+  void dispose() {
+    _cartCubit.close();
+    _favoritesCubit.close();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    List<Widget> screens = [
+    final screens = [
       const HomeView(),
       const CartView(),
       const AddView(),
       const FavoritesView(),
       const ProfileView(),
     ];
-
-    final iconColor = ColorsTheme().primaryDark;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
-    Widget buildIcon(IconData iconData, String label, int index) {
-      final isSelected = index == _currentIndex;
-      return Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(iconData, color: iconColor),
-          const SizedBox(height: 4),
-          Text(label, style: TextStyle(color: iconColor, fontSize: 12)),
-          const SizedBox(height: 6),
-          // underline that appears only for selected item and spans under icon+label
-          Container(
-            height: 3,
-            width: 30,
-            decoration: BoxDecoration(
-              color: isSelected ? iconColor : Colors.transparent,
-              borderRadius: BorderRadius.circular(2),
-            ),
-          ),
-        ],
-      );
-    }
-
-    Widget buildCartIconWithBadge(int index) {
-      final isSelected = index == _currentIndex;
-      return StreamBuilder<int>(
-        stream: _cartCubit.getTotalQuantity(),
-        builder: (context, snapshot) {
-          final totalQuantity = snapshot.data ?? 0;
-
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  Icon(Icons.shopping_cart_outlined, color: iconColor),
-                  if (totalQuantity > 0)
-                    Positioned(
-                      right: -8,
-                      top: -4,
-                      child: Container(
-                        padding: const EdgeInsets.all(4),
-                        decoration: BoxDecoration(
-                          color: Colors.red,
-                          shape: BoxShape.circle,
-                        ),
-                        constraints: const BoxConstraints(
-                          minWidth: 18,
-                          minHeight: 18,
-                        ),
-                        child: Text(
-                          totalQuantity > 99 ? '99+' : '$totalQuantity',
-                          style: AppTextStyles.styleBold10sp(
-                            context,
-                          ).copyWith(color: Colors.white),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ),
-                ],
-              ),
-              const SizedBox(height: 4),
-              Text('Cart', style: TextStyle(color: iconColor, fontSize: 12)),
-              const SizedBox(height: 6),
-              Container(
-                height: 3,
-                width: 30,
-                decoration: BoxDecoration(
-                  color: isSelected ? iconColor : Colors.transparent,
-                  borderRadius: BorderRadius.circular(2),
-                ),
-              ),
-            ],
-          );
-        },
-      );
-    }
-
-    Widget buildFavoritesIconWithBadge(int index) {
-      final isSelected = index == _currentIndex;
-      return BlocBuilder<FavoritesCubit, FavoritesState>(
-        bloc: _favoritesCubit,
-        builder: (context, state) {
-          final favoritesCount = state is FavoritesUpdated
-              ? state.favorites.length
-              : 0;
-
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  Icon(Icons.favorite_border, color: iconColor),
-                  if (favoritesCount > 0)
-                    Positioned(
-                      right: -8,
-                      top: -4,
-                      child: Container(
-                        padding: const EdgeInsets.all(4),
-                        decoration: BoxDecoration(
-                          color: Colors.red,
-                          shape: BoxShape.circle,
-                        ),
-                        constraints: const BoxConstraints(
-                          minWidth: 18,
-                          minHeight: 18,
-                        ),
-                        child: Text(
-                          favoritesCount > 99 ? '99+' : '$favoritesCount',
-                          style: AppTextStyles.styleBold10sp(
-                            context,
-                          ).copyWith(color: Colors.white),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ),
-                ],
-              ),
-              const SizedBox(height: 4),
-              Text(
-                'Favorites',
-                style: TextStyle(color: iconColor, fontSize: 12),
-              ),
-              const SizedBox(height: 6),
-              Container(
-                height: 3,
-                width: 30,
-                decoration: BoxDecoration(
-                  color: isSelected ? iconColor : Colors.transparent,
-                  borderRadius: BorderRadius.circular(2),
-                ),
-              ),
-            ],
-          );
-        },
-      );
-    }
 
     return Scaffold(
       body: BlocProvider.value(
@@ -196,27 +77,42 @@ class _LayoutViewState extends State<LayoutView> {
         onTap: (i) => setState(() => _currentIndex = i),
         items: [
           BottomNavigationBarItem(
-            icon: buildIcon(Icons.home, 'Home', 0),
+            icon: LayoutNavIcon(
+              iconData: Icons.home,
+              label: 'Home',
+              isSelected: _currentIndex == 0,
+            ),
             label: '',
             tooltip: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: buildCartIconWithBadge(1),
+            icon: CartNavIconWithBadge(isSelected: _currentIndex == 1),
             label: '',
             tooltip: 'Cart',
           ),
           BottomNavigationBarItem(
-            icon: buildIcon(Icons.add, 'Add', 2),
+            icon: LayoutNavIcon(
+              iconData: Icons.add,
+              label: 'Add',
+              isSelected: _currentIndex == 2,
+            ),
             label: '',
             tooltip: 'Add',
           ),
           BottomNavigationBarItem(
-            icon: buildFavoritesIconWithBadge(3),
+            icon: FavoritesNavIconWithBadge(
+              isSelected: _currentIndex == 3,
+              favoritesCubit: _favoritesCubit,
+            ),
             label: '',
             tooltip: 'Favorites',
           ),
           BottomNavigationBarItem(
-            icon: buildIcon(Icons.person_outline, 'Profile', 4),
+            icon: LayoutNavIcon(
+              iconData: Icons.person_outline,
+              label: 'Profile',
+              isSelected: _currentIndex == 4,
+            ),
             label: '',
             tooltip: 'Profile',
           ),

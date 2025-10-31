@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get_it/get_it.dart';
 import 'package:my_store/core/caching/hive/user_hive_helper.dart';
 import 'package:my_store/core/caching/shared/shared_perf_helper.dart';
@@ -21,6 +22,8 @@ import 'package:my_store/features/verfiy_email/data/repo/verify_email_repo_impl.
 final getIt = GetIt.instance;
 
 void setupDependencies() async {
+  getIt.registerSingleton<FirebaseFirestore>(FirebaseFirestore.instance);
+
   getIt.registerSingleton<FirebaseAuthErrorHandling>(
     FirebaseAuthErrorHandling(),
   );

@@ -1,6 +1,6 @@
 class CartItemModel {
   final String id;
-  final String productId;
+  final int productId;
   final String name;
   final double price;
   final String image;
@@ -18,15 +18,26 @@ class CartItemModel {
   double get itemTotal => price * quantity;
 
   factory CartItemModel.fromJson(Map<String, dynamic> json, String id) {
-    final double price = (json['price'] is int)
-        ? (json['price'] as int).toDouble()
-        : (json['price'] ?? 0.0);
-    final int quantity = (json['quantity'] ?? 1) is int
-        ? json['quantity'] as int
-        : int.parse((json['quantity'] ?? '1').toString());
+    final priceValue = json['price'];
+    final double price = priceValue is int
+        ? priceValue.toDouble()
+        : priceValue is String
+        ? double.tryParse(priceValue) ?? 0.0
+        : (priceValue as double? ?? 0.0);
+
+    final quantityValue = json['quantity'] ?? 1;
+    final int quantity = quantityValue is int
+        ? quantityValue
+        : int.tryParse(quantityValue.toString()) ?? 1;
+
+    final productIdValue = json['productId'];
+    final int productId = productIdValue is int
+        ? productIdValue
+        : int.tryParse(productIdValue.toString()) ?? 0;
+
     return CartItemModel(
       id: id,
-      productId: json['productId'] ?? '',
+      productId: productId,
       name: json['name'] ?? '',
       price: price,
       image: json['image'] ?? '',
@@ -46,7 +57,7 @@ class CartItemModel {
 
   CartItemModel copyWith({
     String? id,
-    String? productId,
+    int? productId,
     String? name,
     double? price,
     String? image,

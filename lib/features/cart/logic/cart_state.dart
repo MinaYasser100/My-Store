@@ -1,26 +1,25 @@
-import 'package:equatable/equatable.dart';
 import 'package:my_store/features/cart/data/models/cart_item_model.dart';
 
-abstract class CartState extends Equatable {
-  @override
-  List<Object?> get props => [];
+abstract class CartState {
+  const CartState();
 }
-class CartInitial extends CartState {}
 
-class CartLoading extends CartState {}
+class CartInitial extends CartState {
+  const CartInitial();
+}
+
+class CartLoading extends CartState {
+  const CartLoading();
+}
 
 class CartLoaded extends CartState {
   final List<CartItemModel> cartItems;
   final double subtotal;
 
-  CartLoaded({required this.cartItems, required this.subtotal});
-
-  @override
-  List<Object?> get props => [cartItems, subtotal];
+  const CartLoaded({required this.cartItems, required this.subtotal});
 }
+
 class CartError extends CartState {
   final String message;
-  CartError(this.message);
-  @override
-  List<Object?> get props => [message];
+  const CartError(this.message);
 }

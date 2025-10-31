@@ -6,26 +6,39 @@ class FavoriteEmpty extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          // Lottie.asset(
-          //   'assets/animations/Favorite_heart.json',
-          //   width: 200,
-          //   height: 200,
-          //   fit: BoxFit.fill,
-          // ),
-          const SizedBox(height: 20),
-          const Text(
-            'No favorites yet!',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-          const Text(
-            'Start adding items to your favorites by tapping the heart icon on product you love!',
-            style: TextStyle(fontSize: 14),
-          ),
-        ],
+      child: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.favorite_border,
+              size: 100,
+              color: theme.primaryColor.withOpacity(0.3),
+            ),
+            const SizedBox(height: 24),
+            Text(
+              'No favorites yet!',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: theme.textTheme.bodyLarge?.color,
+              ),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              'Start adding items to your favorites by tapping the heart icon on products you love!',
+              style: TextStyle(
+                fontSize: 14,
+                color: theme.textTheme.bodyMedium?.color,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -6,6 +6,7 @@ import 'package:my_store/features/add/ui/add_view.dart';
 import 'package:my_store/features/layout/repo/cart_repo.dart';
 import 'package:my_store/features/layout/cart_cubit/cart_cubit.dart';
 import 'package:my_store/features/cart/ui/cart_view.dart';
+import 'package:my_store/features/favorites/data/repo/favorites_repo.dart';
 import 'package:my_store/features/favorites/ui/favorites_view.dart';
 import 'package:my_store/features/home/ui/home_view.dart';
 import 'package:my_store/features/profile/ui/profile_view.dart';
@@ -22,10 +23,18 @@ class LayoutView extends StatefulWidget {
 class _LayoutViewState extends State<LayoutView> {
   int _currentIndex = 0;
   final CartCubit _cartCubit = CartCubit(getIt<CartRepoImpl>());
+  late final FavoritesCubit _favoritesCubit;
+
+  @override
+  void initState() {
+    super.initState();
+    _favoritesCubit = FavoritesCubit(favoritesRepo: getIt<FavoritesRepoImpl>());
+  }
 
   @override
   void dispose() {
     _cartCubit.close();
+    _favoritesCubit.close();
     super.dispose();
   }
 
@@ -120,9 +129,70 @@ class _LayoutViewState extends State<LayoutView> {
       );
     }
 
+    Widget buildFavoritesIconWithBadge(int index) {
+      final isSelected = index == _currentIndex;
+      return BlocBuilder<FavoritesCubit, FavoritesState>(
+        bloc: _favoritesCubit,
+        builder: (context, state) {
+          final favoritesCount = state is FavoritesUpdated
+              ? state.favorites.length
+              : 0;
+
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  Icon(Icons.favorite_border, color: iconColor),
+                  if (favoritesCount > 0)
+                    Positioned(
+                      right: -8,
+                      top: -4,
+                      child: Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          shape: BoxShape.circle,
+                        ),
+                        constraints: const BoxConstraints(
+                          minWidth: 18,
+                          minHeight: 18,
+                        ),
+                        child: Text(
+                          favoritesCount > 99 ? '99+' : '$favoritesCount',
+                          style: AppTextStyles.styleBold10sp(
+                            context,
+                          ).copyWith(color: Colors.white),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+              const SizedBox(height: 4),
+              Text(
+                'Favorites',
+                style: TextStyle(color: iconColor, fontSize: 12),
+              ),
+              const SizedBox(height: 6),
+              Container(
+                height: 3,
+                width: 30,
+                decoration: BoxDecoration(
+                  color: isSelected ? iconColor : Colors.transparent,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+            ],
+          );
+        },
+      );
+    }
+
     return Scaffold(
-      body: BlocProvider(
-        create: (_) => FavoritesCubit(),
+      body: BlocProvider.value(
+        value: _favoritesCubit,
         child: screens[_currentIndex],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -151,7 +221,7 @@ class _LayoutViewState extends State<LayoutView> {
             tooltip: 'Add',
           ),
           BottomNavigationBarItem(
-            icon: buildIcon(Icons.favorite_border, 'Favorites', 3),
+            icon: buildFavoritesIconWithBadge(3),
             label: '',
             tooltip: 'Favorites',
           ),

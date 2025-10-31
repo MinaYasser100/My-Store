@@ -5,10 +5,13 @@ class CustomFavoriteAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return SliverAppBar(
       pinned: true,
       expandedHeight: 80.0,
-      actionsPadding: EdgeInsets.all(10),
+      backgroundColor: theme.scaffoldBackgroundColor,
+      actionsPadding: const EdgeInsets.all(10),
       leading: Padding(
         padding: const EdgeInsets.only(left: 10.0, top: 4.0, bottom: 4.0),
         child: ClipRRect(
@@ -16,12 +19,15 @@ class CustomFavoriteAppBar extends StatelessWidget {
           child: Image.asset("assets/images/logo.png", fit: BoxFit.cover),
         ),
       ),
-      title: Text('My Favorites'),
+      title: Text(
+        'My Favorites',
+        style: TextStyle(color: theme.textTheme.bodyLarge?.color),
+      ),
       actions: [
         IconButton(
-          icon: Icon(Icons.search),
+          icon: Icon(Icons.search, color: theme.iconTheme.color),
           onPressed: () {
-            // Open search
+            // TODO: Implement search in favorites
           },
         ),
       ],

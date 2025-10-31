@@ -9,6 +9,8 @@ import 'package:my_store/features/cart/ui/cart_view.dart';
 import 'package:my_store/features/favorites/ui/favorites_view.dart';
 import 'package:my_store/features/home/ui/home_view.dart';
 import 'package:my_store/features/profile/ui/profile_view.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_store/features/favorites/manager/favorites_cubit.dart';
 
 class LayoutView extends StatefulWidget {
   const LayoutView({super.key});
@@ -119,7 +121,10 @@ class _LayoutViewState extends State<LayoutView> {
     }
 
     return Scaffold(
-      body: screens[_currentIndex],
+      body: BlocProvider(
+        create: (_) => FavoritesCubit(),
+        child: screens[_currentIndex],
+      ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: isDark
             ? ColorsTheme().secondaryColor

@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_store/core/dependency_injection/set_up_dependencies.dart';
 import 'package:my_store/core/utils/colors.dart';
+import 'package:my_store/features/home/data/repo/products_repo.dart';
+import 'package:my_store/features/home/manager/products_cubit/products_cubit.dart';
+import 'package:my_store/features/home/ui/products_list_view.dart';
 
 import 'custom_home_app_bar.dart';
 
@@ -8,60 +13,25 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      slivers: [
-        CustomHomeAppBar(),
-        SliverList(
-          delegate: SliverChildBuilderDelegate((
-            BuildContext context,
-            int index,
-          ) {
-            return Card(
-              color: ColorsTheme().whiteColor,
-              margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Row(
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(12),
-                      bottomLeft: Radius.circular(12),
-                    ),
-                    child: Image.network(
-                      'https://picsum.photos/200/300?random=$index',
-                      width: 100,
-                      height: 100,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Product #$index',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(height: 4),
-                        Text(
-                          'Description for product item',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            );
-          }, childCount: 20),
-        ),
-      ],
+    return BlocProvider(
+      create: (context) =>
+          ProductsCubit(getIt<ProductsRepoImpl>())..getAllProducts(),
+      child: Builder(
+        builder: (context) {
+          return RefreshIndicator(
+            backgroundColor: ColorsTheme().whiteColor,
+            color: ColorsTheme().primaryColor,
+            displacement: 50,
+            strokeWidth: 3,
+            onRefresh: () async {
+              context.read<ProductsCubit>().getAllProducts();
+            },
+            child: CustomScrollView(
+              slivers: [CustomHomeAppBar(), ProductsBlocComsumer()],
+            ),
+          );
+        },
+      ),
     );
   }
 }

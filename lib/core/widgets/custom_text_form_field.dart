@@ -36,6 +36,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
               cursorColor: ColorsTheme().primaryDark,
               onChanged: (v) => fieldState.didChange(v),
               obscureText: isObscured,
+             
               keyboardType: widget.textFieldModel.keyboardType,
               autofocus: widget.textFieldModel.autofocus,
               focusNode: widget.textFieldModel.focusNode,
@@ -65,9 +66,15 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
                         ),
                       )
                     : null,
-                border: InputBorder.none,
+                border: _customOutlineInputBorder(),
                 focusedBorder: _customOutlineInputBorder(),
-                enabledBorder: InputBorder.none,
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16),
+                  borderSide: BorderSide(
+                    color: ColorsTheme().primaryLight,
+                    width: 1.5,
+                  ),
+                ),
               ),
             ),
             if (fieldState.errorText != null)

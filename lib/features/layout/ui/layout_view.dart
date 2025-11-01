@@ -12,6 +12,7 @@ import 'package:my_store/features/favorites/data/repo/favorites_repo.dart';
 import 'package:my_store/features/favorites/manager/favorites_cubit.dart';
 import 'package:my_store/features/favorites/ui/favorites_view.dart';
 import 'package:my_store/features/home/ui/home_view.dart';
+import 'package:my_store/features/profile/ui/profile_screen.dart';
 import 'package:my_store/features/layout/ui/widgets/cart_nav_icon_with_badge.dart';
 import 'package:my_store/features/layout/ui/widgets/favorites_nav_icon_with_badge.dart';
 import 'package:my_store/features/layout/ui/widgets/layout_nav_icon.dart';
@@ -58,7 +59,7 @@ class _LayoutViewState extends State<LayoutView> {
       const CartView(),
       const AddView(),
       const FavoritesView(),
-      const ProfileView(),
+      ProfileScreen(),
     ];
 
     return Scaffold(

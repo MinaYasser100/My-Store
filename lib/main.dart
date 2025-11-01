@@ -9,6 +9,10 @@ import 'package:my_store/core/routing/app_router.dart';
 import 'package:my_store/core/theme/theme_cubit/theme_cubit.dart';
 import 'package:my_store/core/utils/theme_data_func.dart';
 import 'firebase_options.dart';
+import 'features/profile/ui/personal_info_screen.dart';
+import 'features/profile/ui/profile_screen.dart';
+import 'features/profile/ui/profile_screen.dart';
+
 // import 'package:cloud_firestore/cloud_firestore.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

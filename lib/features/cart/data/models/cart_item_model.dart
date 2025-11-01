@@ -1,7 +1,7 @@
 class CartItemModel {
   final String id;
   final int productId;
-  final String name;
+  final String title;
   final double price;
   final String image;
   final int quantity;
@@ -9,7 +9,7 @@ class CartItemModel {
   CartItemModel({
     required this.id,
     required this.productId,
-    required this.name,
+    required this.title,
     required this.price,
     required this.image,
     required this.quantity,
@@ -38,7 +38,7 @@ class CartItemModel {
     return CartItemModel(
       id: id,
       productId: productId,
-      name: json['name'] ?? '',
+      title: json['title'] ?? '',
       price: price,
       image: json['image'] ?? '',
       quantity: quantity,
@@ -48,7 +48,7 @@ class CartItemModel {
   Map<String, dynamic> toJson() {
     return {
       'productId': productId,
-      'name': name,
+      'title': title,
       'price': price,
       'image': image,
       'quantity': quantity,
@@ -66,7 +66,7 @@ class CartItemModel {
     return CartItemModel(
       id: id ?? this.id,
       productId: productId ?? this.productId,
-      name: name ?? this.name,
+      title: name ?? this.title,
       price: price ?? this.price,
       image: image ?? this.image,
       quantity: quantity ?? this.quantity,

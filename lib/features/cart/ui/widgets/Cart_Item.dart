@@ -7,6 +7,7 @@ import 'package:my_store/features/cart/ui/widgets/dropdown.dart';
 class CartItem extends StatelessWidget {
   const CartItem({super.key, required this.cartItem});
   final CartItemModel cartItem;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -33,7 +34,8 @@ class CartItem extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      cartItem.name,
+                      cartItem.title,
+                      maxLines: 2,
                       style: AppTextStyles.styleRegular16sp(context),
                     ),
                     Text(
@@ -52,7 +54,12 @@ class CartItem extends StatelessWidget {
                 ),
               ),
 
-              Text("${cartItem.itemTotal.toStringAsFixed(2)} LE"),
+              Text(
+                "${cartItem.itemTotal.toStringAsFixed(2)} LE",
+                style: AppTextStyles.styleRegular16sp(
+                  context,
+                ).copyWith(color: ColorsTheme().primaryLight),
+              ),
             ],
           ),
           SizedBox(height: 20),

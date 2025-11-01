@@ -29,22 +29,21 @@ class _ItemQuantityDropdownState extends State<ItemQuantityDropdown> {
     return DropdownButton<int>(
       value: selectedQuantity,
       menuMaxHeight: 250,
-      items: List<int>.generate(11, (i) => i) // 0 to 10
-          .map(
-            (qty) => DropdownMenuItem(
-              value: qty,
-              child: Text('$qty'),
-            ),
-          )
-          .toList(),
+      items:
+          List<int>.generate(11, (i) => i) // 0 to 10
+              .map((qty) => DropdownMenuItem(value: qty, child: Text('$qty')))
+              .toList(),
       onChanged: (value) async {
         if (value != null) {
           setState(() => selectedQuantity = value);
           final cubit = context.read<CartCubit>();
+
           if (value == 0) {
-            await cubit.repo.deleteFromCart(cubit.userId, widget.itemId);
+            cubit.repo
+                .deleteFromCart(cubit.userId, widget.itemId)
+                .then((_) => cubit.listenToCart());
           } else {
-            await cubit.changeQuantity(widget.itemId, value);
+            cubit.changeQuantity(widget.itemId, value);
           }
         }
       },

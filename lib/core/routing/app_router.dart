@@ -108,7 +108,20 @@ GoRoute(
         },
       ),
 
+GoRoute(
+  path: Routes.personalInfoView,
+  pageBuilder: (context, state) => fadeTransitionPage(PersonalInfoScreen()),
+),
 
+// Saved Addresses View
+GoRoute(
+  path: Routes.savedAddressesView,
+  pageBuilder: (context, state) => fadeTransitionPage(SavedAddressesScreen()),
+),
+GoRoute(
+  path: Routes.addAddressView,
+  pageBuilder: (context, state) => fadeTransitionPage(AddAddressScreen()),
+),
 
     ],
   );

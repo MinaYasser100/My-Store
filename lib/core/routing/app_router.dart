@@ -83,21 +83,20 @@ abstract class AppRouter {
         path: Routes.cartView,
         pageBuilder: (context, state) => fadeTransitionPage(CartView()),
       ),
-GoRoute(
-  path: Routes.confirmview,
-  pageBuilder: (context, state) {
-    return fadeTransitionPage(
-      BlocProvider(
-        create: (context) => CartCubit(
-          repo: CartRepo(firestore: FirebaseFirestore.instance),
-          userId: FirebaseAuth.instance.currentUser!.uid,
-        )..listenToCart(),
-        child: const ConfirmView(),
+      GoRoute(
+        path: Routes.confirmview,
+        pageBuilder: (context, state) {
+          return fadeTransitionPage(
+            BlocProvider(
+              create: (context) => CartCubit(
+                repo: CartRepo(firestore: FirebaseFirestore.instance),
+                userId: FirebaseAuth.instance.currentUser!.uid,
+              )..listenToCart(),
+              child: const ConfirmView(),
+            ),
+          );
+        },
       ),
-    );
-  },
-),
-
     ],
   );
 

@@ -88,11 +88,7 @@ abstract class AppRouter {
         pageBuilder: (context, state) => fadeTransitionPage(CartView()),
       ),
 
-      
-
-
-
-
+    
 GoRoute(
         path: Routes.confirmview,
         pageBuilder: (context, state) {
@@ -107,7 +103,10 @@ GoRoute(
           );
         },
       ),
-
+GoRoute(
+  path: Routes.profileView,
+  pageBuilder: (context, state) => fadeTransitionPage(ProfileScreen()),
+),
 GoRoute(
   path: Routes.personalInfoView,
   pageBuilder: (context, state) => fadeTransitionPage(PersonalInfoScreen()),

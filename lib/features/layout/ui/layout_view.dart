@@ -7,7 +7,7 @@ import 'package:my_store/core/utils/constant.dart';
 import 'package:my_store/features/add/ui/add_view.dart';
 import 'package:my_store/features/cart/data/repo/cart_repo.dart';
 import 'package:my_store/features/cart/logic/cart_cubit.dart';
-import 'package:my_store/features/cart/ui/cart_view.dart';
+import 'package:my_store/features/cart/ui/views/cart_view.dart';
 import 'package:my_store/features/favorites/data/repo/favorites_repo.dart';
 import 'package:my_store/features/favorites/manager/favorites_cubit.dart';
 import 'package:my_store/features/favorites/ui/favorites_view.dart';

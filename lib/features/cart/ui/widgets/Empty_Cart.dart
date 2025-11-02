@@ -29,9 +29,9 @@ class EmptyCart extends StatelessWidget {
               ),
               const SizedBox(height: 30),
               CustomButton(
-                text: "Return To Home",
+                text: "Back To Home",
                 onPressed: () {
-                  GoRouter.of(context).push(Routes.homeView);
+                  // GoRouter.of(context).push(Routes.homeView);
                 },
               ),
             ],

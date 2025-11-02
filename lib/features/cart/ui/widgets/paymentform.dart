@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:my_store/core/model/text_field_model/text_field_model.dart';
+import 'package:my_store/core/routing/app_router.dart';
+import 'package:my_store/core/routing/routes.dart';
 import 'package:my_store/core/utils/colors.dart';
 import 'package:my_store/core/widgets/custom_text_form_field.dart';
 import 'package:my_store/features/cart/ui/widgets/custom_checkBox.dart';
@@ -127,7 +130,7 @@ class _PaymentformState extends State<Paymentform> {
             ),
             onPressed: () {
               if (_formKey.currentState!.validate()) {
-                //  GoRouter.of(context).push(location)
+                GoRouter.of(context).push(Routes.confirmview);
               }
             },
             child: const Text(

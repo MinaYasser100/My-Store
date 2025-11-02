@@ -1,12 +1,18 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_store/core/caching/shared/shared_perf_helper.dart';
 import 'package:my_store/core/model/product_model/product_model.dart';
 import 'package:my_store/core/routing/animation_route.dart';
 import 'package:my_store/core/routing/routes.dart';
 import 'package:my_store/core/utils/constant.dart';
-import 'package:my_store/features/cart/ui/checkout_view.dart';
-import 'package:my_store/features/cart/ui/payment_view.dart';
-import 'package:my_store/features/cart/ui/cart_view.dart';
+import 'package:my_store/features/cart/data/repo/cart_repo.dart';
+import 'package:my_store/features/cart/logic/cart_cubit.dart';
+import 'package:my_store/features/cart/ui/views/cart_view.dart';
+import 'package:my_store/features/cart/ui/views/checkout_view.dart';
+import 'package:my_store/features/cart/ui/views/confirm_view.dart';
+import 'package:my_store/features/cart/ui/views/payment_view.dart';
 import 'package:my_store/features/details_products/ui/details_product_view.dart';
 import 'package:my_store/features/forgot_password/ui/forgot_password_view.dart';
 import 'package:my_store/features/home/ui/home_view.dart';
@@ -26,15 +32,14 @@ abstract class AppRouter {
       ),
       GoRoute(
         path: Routes.checkoutview,
-        pageBuilder: (context, state) =>
-            fadeTransitionPage(CheckoutView()),
+        pageBuilder: (context, state) => fadeTransitionPage(CheckoutView()),
       ),
+
       GoRoute(
         path: Routes.paymentView,
-        pageBuilder: (context, state) =>
-            fadeTransitionPage(PaymentView()),
+        pageBuilder: (context, state) => fadeTransitionPage(PaymentView()),
       ),
-      
+
       // Login view
       GoRoute(
         path: Routes.loginView,
@@ -78,6 +83,21 @@ abstract class AppRouter {
         path: Routes.cartView,
         pageBuilder: (context, state) => fadeTransitionPage(CartView()),
       ),
+GoRoute(
+  path: Routes.confirmview,
+  pageBuilder: (context, state) {
+    return fadeTransitionPage(
+      BlocProvider(
+        create: (context) => CartCubit(
+          repo: CartRepo(firestore: FirebaseFirestore.instance),
+          userId: FirebaseAuth.instance.currentUser!.uid,
+        )..listenToCart(),
+        child: const ConfirmView(),
+      ),
+    );
+  },
+),
+
     ],
   );
 

@@ -17,7 +17,8 @@ class TotalCartSection extends StatelessWidget {
           subtotal = state.subtotal;
         }
         return Container(
-          padding: EdgeInsets.all(22),
+          padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 8),
+
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

@@ -91,16 +91,17 @@ abstract class AppRouter {
       ),
       // Search View
       GoRoute(
- path: '/search',
-  pageBuilder: (context, state) => fadeTransitionPage(const SearchView()),
-),
-// Help & Support View
-GoRoute(
-  path: Routes.helpSupportView,
-  pageBuilder: (context, state) => fadeTransitionPage(const HelpSupportView()),
+        path: '/search',
+        pageBuilder: (context, state) => fadeTransitionPage(const SearchView()),
+      ),
+      // Help & Support View
+      GoRoute(
+        path: Routes.helpSupportView,
+        pageBuilder: (context, state) =>
+            fadeTransitionPage(const HelpSupportView()),
+      ),
 
-    
-GoRoute(
+      GoRoute(
         path: Routes.confirmview,
         pageBuilder: (context, state) {
           return fadeTransitionPage(
@@ -114,25 +115,26 @@ GoRoute(
           );
         },
       ),
-GoRoute(
-  path: Routes.profileView,
-  pageBuilder: (context, state) => fadeTransitionPage(ProfileScreen()),
-),
-GoRoute(
-  path: Routes.personalInfoView,
-  pageBuilder: (context, state) => fadeTransitionPage(PersonalInfoScreen()),
-),
+      GoRoute(
+        path: Routes.profileView,
+        pageBuilder: (context, state) => fadeTransitionPage(ProfileScreen()),
+      ),
+      GoRoute(
+        path: Routes.personalInfoView,
+        pageBuilder: (context, state) =>
+            fadeTransitionPage(PersonalInfoScreen()),
+      ),
 
-// Saved Addresses View
-GoRoute(
-  path: Routes.savedAddressesView,
-  pageBuilder: (context, state) => fadeTransitionPage(SavedAddressesScreen()),
-),
-GoRoute(
-  path: Routes.addAddressView,
-  pageBuilder: (context, state) => fadeTransitionPage(AddAddressScreen()),
-),
-
+      // Saved Addresses View
+      GoRoute(
+        path: Routes.savedAddressesView,
+        pageBuilder: (context, state) =>
+            fadeTransitionPage(SavedAddressesScreen()),
+      ),
+      GoRoute(
+        path: Routes.addAddressView,
+        pageBuilder: (context, state) => fadeTransitionPage(AddAddressScreen()),
+      ),
     ],
   );
 

@@ -16,7 +16,6 @@ import 'package:my_store/features/profile/ui/profile_screen.dart';
 import 'package:my_store/features/layout/ui/widgets/cart_nav_icon_with_badge.dart';
 import 'package:my_store/features/layout/ui/widgets/favorites_nav_icon_with_badge.dart';
 import 'package:my_store/features/layout/ui/widgets/layout_nav_icon.dart';
-import 'package:my_store/features/profile/ui/profile_view.dart';
 
 class LayoutView extends StatefulWidget {
   const LayoutView({super.key});

@@ -17,17 +17,21 @@ class SearchCubit extends Cubit<SearchState> {
     emit(SearchLoading());
 
     try {
-      final snapshot = await _firestore
-          .collection('Products')
-          .where('title', isGreaterThanOrEqualTo: query)
-          .where('title', isLessThanOrEqualTo: '$query\uf8ff')
-          .get();
+      final snapshot = await _firestore.collection('Products').get();
 
-      final results = snapshot.docs
+      final allResults = snapshot.docs
           .map((doc) => ProductModel.fromJson(doc.data()))
           .toList();
 
-      emit(SearchLoaded(results));
+      final filterResults = allResults
+          .where(
+            (product) =>
+                product.title?.toLowerCase().contains(query.toLowerCase()) ??
+                false,
+          )
+          .toList();
+
+      emit(SearchLoaded(filterResults));
     } catch (e) {
       emit(SearchError('Search failed: ${e.toString()}'));
     }

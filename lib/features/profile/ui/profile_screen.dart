@@ -99,7 +99,7 @@ class ProfileScreen extends StatelessWidget {
               title: 'Help & Support',
               subtitle: 'Get help with your account',
               onTap: () {
-                context.push('/help');
+                context.push(Routes.helpSupportView);
               },
             ),
 

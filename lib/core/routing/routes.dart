@@ -14,6 +14,9 @@ class Routes {
   static const String registerView = '/register';
   static const String loginView = '/login';
   static const String homeView = '/home';
+  static const String confirmview = '/confirm_view';
+  static const String checkoutview = '/checkout_view';
+  static const String paymentView = '/payment_view';
   static const String forgotPasswordView = '/forgot-password';
   static const String verifyEmailView = '/verify-email';
   static const String classesView = '/classes';
@@ -24,5 +27,9 @@ class Routes {
   static const String cartView = '/cart';
   static const String searchView = '/search';
   static const String helpSupportView = '/help-support';
+  static const String profileView = '/profile';
+  static const String personalInfoView = '/personal-info';
+  static const String savedAddressesView = '/saved-addresses';
+  static const String addAddressView = '/add-address';
 
 }

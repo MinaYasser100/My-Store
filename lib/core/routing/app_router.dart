@@ -1,10 +1,18 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_store/core/caching/shared/shared_perf_helper.dart';
 import 'package:my_store/core/model/product_model/product_model.dart';
 import 'package:my_store/core/routing/animation_route.dart';
 import 'package:my_store/core/routing/routes.dart';
 import 'package:my_store/core/utils/constant.dart';
-import 'package:my_store/features/cart/ui/cart_view.dart';
+import 'package:my_store/features/cart/data/repo/cart_repo.dart';
+import 'package:my_store/features/cart/logic/cart_cubit.dart';
+import 'package:my_store/features/cart/ui/views/cart_view.dart';
+import 'package:my_store/features/cart/ui/views/checkout_view.dart';
+import 'package:my_store/features/cart/ui/views/confirm_view.dart';
+import 'package:my_store/features/cart/ui/views/payment_view.dart';
 import 'package:my_store/features/details_products/ui/details_product_view.dart';
 import 'package:my_store/features/forgot_password/ui/forgot_password_view.dart';
 import 'package:my_store/features/home/ui/home_view.dart';
@@ -14,6 +22,10 @@ import 'package:my_store/features/register/ui/register_view.dart';
 import 'package:my_store/features/verfiy_email/ui/verify_email_view.dart';
 import 'package:my_store/features/search/ui/search_view.dart';
 import 'package:my_store/features/help_support/help_support_view.dart';
+import 'package:my_store/features/profile/ui/profile_screen.dart';
+import 'package:my_store/features/profile/ui/personal_info_screen.dart';
+import 'package:my_store/features/profile/ui/saved_addresses_screen.dart';
+import 'package:my_store/features/profile/ui/add_address_screen.dart';
 
 abstract class AppRouter {
   static GoRouter get router => GoRouter(
@@ -24,6 +36,16 @@ abstract class AppRouter {
         path: Routes.registerView,
         pageBuilder: (context, state) => fadeTransitionPage(RegisterView()),
       ),
+      GoRoute(
+        path: Routes.checkoutview,
+        pageBuilder: (context, state) => fadeTransitionPage(CheckoutView()),
+      ),
+
+      GoRoute(
+        path: Routes.paymentView,
+        pageBuilder: (context, state) => fadeTransitionPage(PaymentView()),
+      ),
+
       // Login view
       GoRoute(
         path: Routes.loginView,
@@ -76,6 +98,39 @@ abstract class AppRouter {
 GoRoute(
   path: Routes.helpSupportView,
   pageBuilder: (context, state) => fadeTransitionPage(const HelpSupportView()),
+
+    
+GoRoute(
+        path: Routes.confirmview,
+        pageBuilder: (context, state) {
+          return fadeTransitionPage(
+            BlocProvider(
+              create: (context) => CartCubit(
+                repo: CartRepo(firestore: FirebaseFirestore.instance),
+                userId: FirebaseAuth.instance.currentUser!.uid,
+              )..listenToCart(),
+              child: const ConfirmView(),
+            ),
+          );
+        },
+      ),
+GoRoute(
+  path: Routes.profileView,
+  pageBuilder: (context, state) => fadeTransitionPage(ProfileScreen()),
+),
+GoRoute(
+  path: Routes.personalInfoView,
+  pageBuilder: (context, state) => fadeTransitionPage(PersonalInfoScreen()),
+),
+
+// Saved Addresses View
+GoRoute(
+  path: Routes.savedAddressesView,
+  pageBuilder: (context, state) => fadeTransitionPage(SavedAddressesScreen()),
+),
+GoRoute(
+  path: Routes.addAddressView,
+  pageBuilder: (context, state) => fadeTransitionPage(AddAddressScreen()),
 ),
 
     ],

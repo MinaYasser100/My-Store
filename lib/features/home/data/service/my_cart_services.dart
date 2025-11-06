@@ -28,6 +28,7 @@ class MyCartServices {
         addedAt: FieldValue.serverTimestamp(),
         title: productModel.title!,
         price: productModel.price!.toString(),
+       image: productModel.image,
       );
       await docRef.set(myCartModel.toMap());
     }

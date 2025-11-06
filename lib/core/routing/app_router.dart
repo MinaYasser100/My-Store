@@ -20,6 +20,8 @@ import 'package:my_store/features/layout/ui/layout_view.dart';
 import 'package:my_store/features/login/ui/login_view.dart';
 import 'package:my_store/features/register/ui/register_view.dart';
 import 'package:my_store/features/verfiy_email/ui/verify_email_view.dart';
+import 'package:my_store/features/search/ui/search_view.dart';
+import 'package:my_store/features/help_support/help_support_view.dart';
 import 'package:my_store/features/profile/ui/profile_screen.dart';
 import 'package:my_store/features/profile/ui/personal_info_screen.dart';
 import 'package:my_store/features/profile/ui/saved_addresses_screen.dart';
@@ -87,6 +89,15 @@ abstract class AppRouter {
         path: Routes.cartView,
         pageBuilder: (context, state) => fadeTransitionPage(CartView()),
       ),
+      // Search View
+      GoRoute(
+ path: '/search',
+  pageBuilder: (context, state) => fadeTransitionPage(const SearchView()),
+),
+// Help & Support View
+GoRoute(
+  path: Routes.helpSupportView,
+  pageBuilder: (context, state) => fadeTransitionPage(const HelpSupportView()),
 
     
 GoRoute(

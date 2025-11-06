@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_store/core/theme/theme_cubit/theme_cubit.dart';
-
+import 'package:my_store/core/routing/routes.dart';
+import 'package:go_router/go_router.dart';
 class CustomHomeAppBar extends StatelessWidget {
   const CustomHomeAppBar({super.key});
 
@@ -33,7 +34,10 @@ class CustomHomeAppBar extends StatelessWidget {
             );
           },
         ),
-        IconButton(icon: const Icon(Icons.search), onPressed: () {}),
+
+        IconButton(icon: const Icon(Icons.search), onPressed: ()  {
+          context.push(Routes.searchView);
+        }),
       ],
     );
   }

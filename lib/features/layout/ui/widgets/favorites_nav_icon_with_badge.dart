@@ -31,7 +31,10 @@ class FavoritesNavIconWithBadge extends StatelessWidget {
             Stack(
               clipBehavior: Clip.none,
               children: [
-                Icon(Icons.favorite_border, color: iconColor),
+                Icon(
+                  isSelected ? Icons.favorite : Icons.favorite_border,
+                  color: iconColor,
+                ),
                 if (favoritesCount > 0)
                   Positioned(
                     right: -8,

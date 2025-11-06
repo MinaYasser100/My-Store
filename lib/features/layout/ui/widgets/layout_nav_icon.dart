@@ -7,9 +7,11 @@ class LayoutNavIcon extends StatelessWidget {
     required this.iconData,
     required this.label,
     required this.isSelected,
+    this.activeIconData,
   });
 
   final IconData iconData;
+  final IconData? activeIconData;
   final String label;
   final bool isSelected;
 
@@ -20,7 +22,10 @@ class LayoutNavIcon extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(iconData, color: iconColor),
+        Icon(
+          isSelected ? (activeIconData ?? iconData) : iconData,
+          color: iconColor,
+        ),
         const SizedBox(height: 4),
         Text(label, style: TextStyle(color: iconColor, fontSize: 12)),
         const SizedBox(height: 6),

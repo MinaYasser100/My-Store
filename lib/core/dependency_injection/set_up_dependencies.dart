@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get_it/get_it.dart';
 import 'package:my_store/core/caching/hive/user_hive_helper.dart';
 import 'package:my_store/core/caching/shared/shared_perf_helper.dart';
@@ -6,6 +7,8 @@ import 'package:my_store/core/firebase/firebase_firestore_error_handler.dart';
 import 'package:my_store/core/internet_check/cubit/internet_check__cubit.dart';
 import 'package:my_store/features/details_products/data/repo/add_product_to_cart_repo.dart';
 import 'package:my_store/features/details_products/data/service/details_my_cart_services.dart';
+import 'package:my_store/features/favorites/data/repo/favorites_repo.dart';
+import 'package:my_store/features/favorites/data/service/favorites_service.dart';
 import 'package:my_store/features/layout/repo/cart_repo.dart';
 import 'package:my_store/features/forgot_password/data/repo/forgot_password_repo_impl.dart';
 import 'package:my_store/features/home/data/repo/add_to_cart_repo.dart';
@@ -19,6 +22,8 @@ import 'package:my_store/features/verfiy_email/data/repo/verify_email_repo_impl.
 final getIt = GetIt.instance;
 
 void setupDependencies() async {
+  getIt.registerSingleton<FirebaseFirestore>(FirebaseFirestore.instance);
+
   getIt.registerSingleton<FirebaseAuthErrorHandling>(
     FirebaseAuthErrorHandling(),
   );
@@ -92,5 +97,14 @@ void setupDependencies() async {
       userHiveHelper: getIt<UserHiveHelper>(),
       myCartServices: getIt<MyCartServices>(),
     ),
+  );
+
+  // Favorites dependencies
+  getIt.registerSingleton<FavoritesService>(
+    FavoritesService(userHiveHelper: getIt<UserHiveHelper>()),
+  );
+
+  getIt.registerSingleton<FavoritesRepoImpl>(
+    FavoritesRepoImpl(favoritesService: getIt<FavoritesService>()),
   );
 }

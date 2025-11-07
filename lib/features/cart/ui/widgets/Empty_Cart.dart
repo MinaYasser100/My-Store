@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:my_store/core/routing/routes.dart';
 import 'package:my_store/core/utils/colors.dart';
 import 'package:my_store/core/widgets/custom_button.dart';
 

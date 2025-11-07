@@ -78,9 +78,16 @@ class _LayoutViewState extends State<LayoutView> {
         items: [
           BottomNavigationBarItem(
             icon: LayoutNavIcon(
-              iconData: Icons.home,
+              iconData: Icons.home_outlined,
+              activeIconData: Icons.home,
               label: 'Home',
-              isSelected: _currentIndex == 0,
+              isSelected: false,
+            ),
+            activeIcon: LayoutNavIcon(
+              iconData: Icons.home_outlined,
+              activeIconData: Icons.home,
+              label: 'Home',
+              isSelected: true,
             ),
             label: '',
             tooltip: 'Home',
@@ -110,6 +117,7 @@ class _LayoutViewState extends State<LayoutView> {
           BottomNavigationBarItem(
             icon: LayoutNavIcon(
               iconData: Icons.person_outline,
+              activeIconData: Icons.person,
               label: 'Profile',
               isSelected: _currentIndex == 4,
             ),

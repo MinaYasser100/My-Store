@@ -27,7 +27,12 @@ class CartNavIconWithBadge extends StatelessWidget {
             Stack(
               clipBehavior: Clip.none,
               children: [
-                Icon(Icons.shopping_cart_outlined, color: iconColor),
+                Icon(
+                  isSelected
+                      ? Icons.shopping_cart
+                      : Icons.shopping_cart_outlined,
+                  color: iconColor,
+                ),
                 if (totalQuantity > 0)
                   Positioned(
                     right: -8,

@@ -91,6 +91,7 @@ GoRoute(
   pageBuilder: (context, state) => fadeTransitionPage(AddAddressScreen()),
 ),
 
+
     ],
   );
 

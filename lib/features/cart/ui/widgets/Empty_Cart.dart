@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:my_store/core/utils/colors.dart';
 import 'package:my_store/core/widgets/custom_button.dart';
 
 class EmptyCart extends StatelessWidget {
@@ -13,17 +12,32 @@ class EmptyCart extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
-            color: ColorsTheme().grayColor,
+            color: Theme.of(context).colorScheme.surface,
+            border: Border.all(
+              color: Theme.of(context).colorScheme.outline.withOpacity(0.1),
+            ),
           ),
           padding: const EdgeInsets.all(24),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text("Your cart is empty!"),
+              Text(
+                "Your cart is empty!",
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurface,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
               const SizedBox(height: 10),
-              const Text(
+              Text(
                 "Head back to the products page to check out our produce",
+                style: TextStyle(
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onSurface.withOpacity(0.8),
+                ),
               ),
               const SizedBox(height: 30),
               CustomButton(

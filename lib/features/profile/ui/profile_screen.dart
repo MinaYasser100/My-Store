@@ -4,6 +4,7 @@ import 'package:my_store/core/routing/routes.dart';
 import 'package:my_store/core/utils/constant.dart';
 import 'package:my_store/core/caching/hive/user_hive_helper.dart';
 import 'package:my_store/core/model/user_model/user_model.dart';
+import 'package:my_store/features/profile/ui/custom_profile_app_bar.dart';
 
 class ProfileScreen extends StatelessWidget {
   ProfileScreen({super.key});
@@ -16,46 +17,8 @@ class ProfileScreen extends StatelessWidget {
     final UserModel? user = _userHiveHelper.getUser(ConstantVariable.uId);
 
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        centerTitle: false,
-        titleSpacing: 16,
-        title: Row(
-          children: [
-            Container(
-              width: 45,
-              height: 45,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: const Color(0xFF0D1C3C), width: 2.5),
-              ),
-              clipBehavior: Clip.antiAlias,
-              child: Image.asset(
-                'assets/images/logo.png',
-                fit: BoxFit.cover,
-              ),
-            ),
-            const SizedBox(width: 10),
-            const Text(
-              'My Profile',
-              style: TextStyle(
-                color: Color(0xFF0D1C3C),
-                fontWeight: FontWeight.w600,
-                fontSize: 25,
-              ),
-            ),
-          ],
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.search),
-            color: const Color(0xFF0D1C3C),
-            onPressed: () {},
-          ),
-        ],
-      ),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      appBar: CustomProfileAppBar(),
 
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
@@ -66,6 +29,7 @@ class ProfileScreen extends StatelessWidget {
 
             // 🧠 Dynamic Welcome Card
             _buildCard(
+              context: context,
               icon: Icons.person,
               title: user != null
                   ? 'Welcome, ${user.firstName} ${user.lastName} !'
@@ -78,6 +42,7 @@ class ProfileScreen extends StatelessWidget {
 
             // Personal Info
             _buildCard(
+              context: context,
               title: 'Personal Information',
               subtitle: 'Manage your account details',
               onTap: () {
@@ -87,6 +52,7 @@ class ProfileScreen extends StatelessWidget {
 
             // Saved Addresses
             _buildCard(
+              context: context,
               title: 'Saved Addresses',
               subtitle: 'Manage delivery addresses',
               onTap: () {
@@ -96,6 +62,7 @@ class ProfileScreen extends StatelessWidget {
 
             // Help & Support
             _buildCard(
+              context: context,
               title: 'Help & Support',
               subtitle: 'Get help with your account',
               onTap: () {
@@ -105,6 +72,7 @@ class ProfileScreen extends StatelessWidget {
 
             // About
             _buildCard(
+              context: context,
               title: 'About My Store',
               subtitle: 'Learn more about us',
               onTap: () {},
@@ -142,9 +110,12 @@ class ProfileScreen extends StatelessWidget {
             const SizedBox(height: 24),
             Image.asset('assets/images/logo.png', height: 40),
             const SizedBox(height: 8),
-            const Text(
+            Text(
               'My Store App v1.0',
-              style: TextStyle(color: Colors.grey, fontSize: 13),
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                fontSize: 13,
+              ),
             ),
             const SizedBox(height: 20),
           ],
@@ -155,6 +126,7 @@ class ProfileScreen extends StatelessWidget {
 
   /// ✅ Reusable Card Builder
   Widget _buildCard({
+    required BuildContext context,
     IconData? icon,
     required String title,
     String? subtitle,
@@ -163,30 +135,37 @@ class ProfileScreen extends StatelessWidget {
   }) {
     return Card(
       elevation: 0,
-      color: Colors.white,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      color: Theme.of(context).colorScheme.surface,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: BorderSide(
+          color: Theme.of(context).colorScheme.outline.withOpacity(0.1),
+        ),
+      ),
       shadowColor: Colors.black.withOpacity(0.05),
       child: ListTile(
         leading: icon != null
             ? CircleAvatar(
                 radius: 20,
-                backgroundColor: const Color(0xFFF5F6FA),
-                child: Icon(icon, color: const Color(0xFF0D1C3C)),
+                backgroundColor: Theme.of(
+                  context,
+                ).colorScheme.primaryContainer.withOpacity(0.2),
+                child: Icon(icon, color: Theme.of(context).colorScheme.primary),
               )
             : null,
         title: Text(
           title,
-          style: const TextStyle(
+          style: TextStyle(
             fontWeight: FontWeight.w600,
-            color: Color(0xFF0D1C3C),
+            color: Theme.of(context).colorScheme.onSurface,
           ),
         ),
         subtitle: subtitle != null ? Text(subtitle) : null,
         trailing: isClickable
-            ? const Icon(
+            ? Icon(
                 Icons.arrow_forward_ios,
                 size: 16,
-                color: Colors.grey,
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.4),
               )
             : null,
         onTap: onTap,

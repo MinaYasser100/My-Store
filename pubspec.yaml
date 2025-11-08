@@ -105,8 +105,8 @@ flutter_icons:
   adaptive_icon_foreground: "assets/images/logo.png"
 
 flutter_native_splash:
-  color: "#ffffff"
-  color_dark: "#ffffff"
+  color: "#000C25"
+  color_dark: "#000C25"
   fullscreen: true
   android_gravity: fill
   ios_content_mode: scaleToFill
@@ -117,6 +117,6 @@ flutter_native_splash:
   web: false
   android_12:
     image: assets/images/splash_logo.png
-    icon_background_color: "#ffffff"
+    icon_background_color: "#000C25"
     image_dark: assets/images/splash_logo.png
-    icon_background_color_dark: "#ffffff"
+    icon_background_color_dark: "#000C25"

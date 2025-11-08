@@ -7,11 +7,9 @@ class CustomCheckbox extends FormField<bool> {
     super.key,
     required String label,
     required ValueChanged<bool?> onChanged,
-    bool initialValue = false,
-    FormFieldValidator<bool>? validator,
+    bool super.initialValue = false,
+    super.validator,
   }) : super(
-         initialValue: initialValue,
-         validator: validator,
          builder: (FormFieldState<bool> state) {
            return Column(
              crossAxisAlignment: CrossAxisAlignment.start,

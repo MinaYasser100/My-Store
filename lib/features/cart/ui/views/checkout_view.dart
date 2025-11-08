@@ -19,7 +19,7 @@ class CheckoutView extends StatelessWidget {
             HeaderCheckout(),
             SizedBox(height: 20),
             Padding(
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.all(16),
               child: ShippingAddressForm(),
             ),
           ],

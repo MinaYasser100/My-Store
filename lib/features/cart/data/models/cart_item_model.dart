@@ -55,21 +55,5 @@ class CartItemModel {
     };
   }
 
-  CartItemModel copyWith({
-    String? id,
-    int? productId,
-    String? name,
-    double? price,
-    String? image,
-    int? quantity,
-  }) {
-    return CartItemModel(
-      id: id ?? this.id,
-      productId: productId ?? this.productId,
-      title: name ?? this.title,
-      price: price ?? this.price,
-      image: image ?? this.image,
-      quantity: quantity ?? this.quantity,
-    );
-  }
+
 }

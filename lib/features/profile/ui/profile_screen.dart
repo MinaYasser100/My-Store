@@ -75,7 +75,10 @@ class ProfileScreen extends StatelessWidget {
               context: context,
               title: 'About My Store',
               subtitle: 'Learn more about us',
-              onTap: () {},
+              onTap: () {
+                context.push(Routes.about);
+              },
+
             ),
 
             const SizedBox(height: 16),

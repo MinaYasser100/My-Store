@@ -7,6 +7,7 @@ import 'package:my_store/core/model/product_model/product_model.dart';
 import 'package:my_store/core/routing/animation_route.dart';
 import 'package:my_store/core/routing/routes.dart';
 import 'package:my_store/core/utils/constant.dart';
+import 'package:my_store/features/about/about.dart';
 import 'package:my_store/features/cart/data/repo/cart_repo.dart';
 import 'package:my_store/features/cart/logic/cart_cubit.dart';
 import 'package:my_store/features/cart/ui/views/cart_view.dart';
@@ -134,6 +135,10 @@ abstract class AppRouter {
       GoRoute(
         path: Routes.addAddressView,
         pageBuilder: (context, state) => fadeTransitionPage(AddAddressScreen()),
+      ),
+      GoRoute(
+        path: Routes.about,
+        pageBuilder: (context, state) => fadeTransitionPage(AboutMyStoreScreen()),
       ),
     ],
   );

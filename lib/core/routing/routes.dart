@@ -31,5 +31,5 @@ class Routes {
   static const String personalInfoView = '/personal-info';
   static const String savedAddressesView = '/saved-addresses';
   static const String addAddressView = '/add-address';
-
+  static const String about = '/about';
 }

@@ -27,7 +27,7 @@ class CartProductsView extends StatelessWidget {
           top: 0,
           left: 0,
           right: 0,
-          child: Customappbar(Title: "My Cart", icon: Icons.search),
+          child: Customappbar(Title: "My Cart"),
         ),
         Positioned(
           left: 16,

@@ -1,220 +1,271 @@
 import 'package:flutter/material.dart';
 
+void main() {
+  runApp(const AboutMyStoreScreen());
+}
+
 class AboutMyStoreScreen extends StatelessWidget {
   const AboutMyStoreScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    const Color kPrimaryColor = Color(0xFF0D2857);
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'About My Store',
+      theme: ThemeData(
+        scaffoldBackgroundColor: const Color(0xFFF7F9FC),
+        fontFamily: 'Poppins',
+        textTheme: const TextTheme(
+          bodyMedium: TextStyle(
+            fontSize: 14,
+            color: Color(0xFF4A4A4A),
+            height: 1.5,
+          ),
+        ),
+      ),
+      home: const AboutMyStore(),
+    );
+  }
+}
+
+class AboutMyStore extends StatelessWidget {
+  const AboutMyStore({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    const Color primaryColor = Color(0xFF0D2857);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF7F9FC),
       appBar: AppBar(
         backgroundColor: Colors.white,
-        elevation: 0,
+        elevation: 0.5,
+        centerTitle: true,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: kPrimaryColor),
-          onPressed: () => Navigator.pop(context),
+          icon: const Icon(Icons.arrow_back_ios_new, color: primaryColor, size: 20),
+          onPressed: () {},
         ),
         title: const Text(
-          "About My Store",
+          'About My Store',
           style: TextStyle(
-            color: kPrimaryColor,
-            fontWeight: FontWeight.bold,
+            color: primaryColor,
+            fontWeight: FontWeight.w600,
+            fontSize: 18,
           ),
         ),
-        centerTitle: true,
       ),
       body: ListView(
+        physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.all(16),
         children: [
-          // Welcome Section
-          Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
+          _buildInfoCard(
+            icon: Icons.favorite,
+            title: 'Welcome to My Store',
+            content:
+                'We\'re passionate about bringing you the freshest, highest-quality produce directly from local farms to your table. Our commitment to sustainability and supporting local communities drives everything we do.',
+          ),
+          const SizedBox(height: 16),
+          _buildInfoCard(
+            icon: Icons.eco,
+            title: 'Our Mission',
+            content:
+                'To create a sustainable food system that connects conscious consumers with local farmers, promoting fresh, organic produce while supporting agricultural communities.',
+            bullets: const [
+              'Sourced directly from local farms',
+              '100% organic and pesticide-free',
+              'Supporting sustainable farming practices',
+            ],
+          ),
+          const SizedBox(height: 16),
+          _buildValuesCard(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInfoCard({
+    required IconData icon,
+    required String title,
+    required String content,
+    List<String>? bullets,
+  }) {
+    const Color primaryColor = Color(0xFF0D2857);
+
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12.withAlpha(13),
+            blurRadius: 6,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      padding: const EdgeInsets.all(18),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              CircleAvatar(
+                radius: 22,
+                backgroundColor: primaryColor.withAlpha(26),
+                child: Icon(icon, color: primaryColor, size: 20),
+              ),
+              const SizedBox(width: 12),
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: primaryColor,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Text(
+            content,
+            style: const TextStyle(
+              fontSize: 14,
+              color: Color(0xFF4A4A4A),
+              height: 1.6,
             ),
-            elevation: 1,
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Row(
-                    children: [
-                      Icon(Icons.favorite, color: kPrimaryColor),
-                      SizedBox(width: 8),
-                      Text(
-                        "Welcome to My Store 💚",
-                        style: TextStyle(
-                          color: kPrimaryColor,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
+          ),
+          if (bullets != null) ...[
+            const SizedBox(height: 12),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: bullets
+                  .map(
+                    (b) => Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 4),
+                      child: Row(
+                        children: [
+                          const Icon(Icons.circle, size: 6, color: primaryColor),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              b,
+                              style: const TextStyle(
+                                fontSize: 14,
+                                color: Color(0xFF4A4A4A),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                  SizedBox(height: 12),
-                  Text(
-                    "At My Store, we’re dedicated to offering you the freshest and most natural products — straight from local farms to your home. We care deeply about sustainability, the environment, and the people who make it all possible.",
-                    style: TextStyle(
-                      fontSize: 15,
-                      height: 1.5,
-                      color: Colors.black87,
                     ),
-                  ),
-                ],
-              ),
+                  )
+                  .toList(),
+            ),
+          ]
+        ],
+      ),
+    );
+  }
+
+  Widget _buildValuesCard() {
+    const Color primaryColor = Color(0xFF0D2857);
+
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12.withAlpha(13),
+            blurRadius: 6,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      padding: const EdgeInsets.all(18),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Our Values',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: primaryColor,
             ),
           ),
+          const SizedBox(height: 18),
 
-          const SizedBox(height: 16),
-
-          // Mission Section
-          Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
-            elevation: 1,
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Row(
-                    children: [
-                      Icon(Icons.eco, color: kPrimaryColor),
-                      SizedBox(width: 8),
-                      Text(
-                        "Our Mission 🌱",
-                        style: TextStyle(
-                          color: kPrimaryColor,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 12),
-                  Text(
-                    "We aim to build a sustainable food network that connects conscious customers with hardworking farmers, promoting organic products and protecting nature.",
-                    style: TextStyle(fontSize: 15, height: 1.5),
-                  ),
-                  SizedBox(height: 12),
-                  Text("• Fresh & healthy products always available"),
-                  Text("• Locally sourced from trusted farms"),
-                  Text("• 100% organic, pesticide-free produce"),
-                ],
-              ),
-            ),
-          ),
-
-          const SizedBox(height: 16),
-
-          // Values Section
-          Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
-            elevation: 1,
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+          // العمودين العموديين متوازيين
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Column(
                 children: [
-                  const Row(
-                    children: [
-                      Icon(Icons.wb_sunny, color: kPrimaryColor),
-                      SizedBox(width: 8),
-                      Text(
-                        "Our Values 🌾",
-                        style: TextStyle(
-                          color: kPrimaryColor,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
+                  _buildValueItem(
+                    icon: Icons.eco_outlined,
+                    title: 'Sustainability',
+                    subtitle: 'Eco-friendly practices',
                   ),
-                  const SizedBox(height: 16),
-
-                  // Values Grid
-                  GridView.count(
-                    shrinkWrap: true,
-                    crossAxisCount: 2,
-                    childAspectRatio: 3,
-                    physics: const NeverScrollableScrollPhysics(),
-                    children: const [
-                      _ValueItem(
-                        icon: Icons.eco_outlined,
-                        title: "Sustainability",
-                        subtitle: "Eco-friendly practices",
-                      ),
-                      _ValueItem(
-                        icon: Icons.favorite_border,
-                        title: "Quality",
-                        subtitle: "Fresh, premium produce",
-                      ),
-                      _ValueItem(
-                        icon: Icons.people_alt_outlined,
-                        title: "Community",
-                        subtitle: "Supporting local farmers",
-                      ),
-                      _ValueItem(
-                        icon: Icons.location_on_outlined,
-                        title: "Local",
-                        subtitle: "Sourced nearby",
-                      ),
-                    ],
+                  const SizedBox(height: 20),
+                  _buildValueItem(
+                    icon: Icons.people_outline,
+                    title: 'Community',
+                    subtitle: 'Supporting local farmers',
                   ),
                 ],
               ),
-            ),
-          ),
-
-          const SizedBox(height: 20),
-
-          // Footer
-          const Center(
-            child: Text(
-              "© 2025 My Store. All rights reserved.",
-              style: TextStyle(color: Colors.grey, fontSize: 13),
-            ),
+              Column(
+                children: [
+                  _buildValueItem(
+                    icon: Icons.favorite_outline,
+                    title: 'Quality',
+                    subtitle: 'Fresh, premium produce',
+                  ),
+                  const SizedBox(height: 20),
+                  _buildValueItem(
+                    icon: Icons.location_on_outlined,
+                    title: 'Local',
+                    subtitle: 'Sourced nearby',
+                  ),
+                ],
+              ),
+            ],
           ),
         ],
       ),
     );
   }
-}
 
-class _ValueItem extends StatelessWidget {
-  final IconData icon;
-  final String title;
-  final String subtitle;
-
-  const _ValueItem({
-    required this.icon,
-    required this.title,
-    required this.subtitle,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    const Color kPrimaryColor = Color(0xFF0D2857);
-
+  Widget _buildValueItem({
+    required IconData icon,
+    required String title,
+    required String subtitle,
+  }) {
+    const Color primaryColor = Color(0xFF0D2857);
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(icon, color: kPrimaryColor),
+        CircleAvatar(
+          radius: 24,
+          backgroundColor: primaryColor.withAlpha(20),
+          child: Icon(icon, color: primaryColor, size: 22),
+        ),
+        const SizedBox(height: 8),
         Text(
           title,
           style: const TextStyle(
-            color: kPrimaryColor,
-            fontWeight: FontWeight.bold,
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+            color: primaryColor,
           ),
         ),
+        const SizedBox(height: 4),
         Text(
           subtitle,
-          style: const TextStyle(color: Colors.black54, fontSize: 13),
+          style: const TextStyle(
+            fontSize: 12,
+            color: Color(0xFF7B7B7B),
+          ),
         ),
       ],
     );

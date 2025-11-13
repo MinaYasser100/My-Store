@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_store/core/utils/colors.dart';
+import 'package:my_store/core/widgets/product_image.dart'; // <-- 1. إضافة الإمبورت
 
 class ProductImageSection extends StatelessWidget {
   const ProductImageSection({super.key, this.imageUrl});
@@ -15,43 +16,16 @@ class ProductImageSection extends StatelessWidget {
       height: 350,
       padding: const EdgeInsets.symmetric(vertical: 10),
       color: isDark ? ColorsTheme().secondaryColor : ColorsTheme().whiteColor,
-      child: imageUrl != null && imageUrl!.isNotEmpty
-          ? Image.network(
-              imageUrl!,
-              fit: BoxFit.contain,
-              errorBuilder: (context, error, stackTrace) {
-                return _buildErrorImage();
-              },
-              loadingBuilder: (context, child, loadingProgress) {
-                if (loadingProgress == null) return child;
-                return Center(
-                  child: CircularProgressIndicator(
-                    color: isDark
-                        ? ColorsTheme().whiteColor
-                        : ColorsTheme().primaryColor,
-                  ),
-                );
-              },
-            )
-          : _buildErrorImage(),
+      // --- 2. تم استبدال الكود القديم بالكود الجديد ---
+      child: ProductImageWidget(
+        imageString: imageUrl,
+        fit: BoxFit.contain, // <-- استخدمنا نفس الـ fit الأصلي
+        borderRadius: 0, // <-- مش محتاجين radius هنا
+        // ملحوظة: مش هنبعت width أو height عشان الـ Widget ياخد حجم الـ Container
+      ),
+      // ------------------------------------------
     );
   }
 
-  Widget _buildErrorImage() {
-    return Builder(
-      builder: (context) {
-        final theme = Theme.of(context);
-        final isDark = theme.brightness == Brightness.dark;
-
-        return Container(
-          color: isDark ? Colors.grey[800] : Colors.grey[200],
-          child: Icon(
-            Icons.image_not_supported,
-            size: 80,
-            color: isDark ? Colors.grey[600] : Colors.grey[400],
-          ),
-        );
-      },
-    );
-  }
+  // --- 3. تم حذف دالة _buildErrorImage() لإننا مش محتاجينها ---
 }

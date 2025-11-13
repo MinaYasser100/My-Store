@@ -9,9 +9,9 @@ class SavedAddressesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _firestore = FirebaseFirestore.instance;
-    final _userHiveHelper = UserHiveHelper();
-    final userModel = _userHiveHelper.getUser(ConstantVariable.uId);
+    final firestore = FirebaseFirestore.instance;
+    final userHiveHelper = UserHiveHelper();
+    final userModel = userHiveHelper.getUser(ConstantVariable.uId);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -41,7 +41,7 @@ class SavedAddressesScreen extends StatelessWidget {
         child: userModel == null
             ? const Center(child: Text("User not found"))
             : StreamBuilder<QuerySnapshot>(
-                stream: _firestore
+                stream: firestore
                     .collection(ConstantVariable.users)
                     .doc(userModel.uid)
                     .collection(ConstantVariable.addressesCollection)

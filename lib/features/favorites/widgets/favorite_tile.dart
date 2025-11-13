@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_store/core/model/product_model/product_model.dart';
-import 'package:my_store/features/details_products/ui/details_product_view.dart';
+import 'package:my_store/core/widgets/product_image.dart'; // <-- 1. إضافة الإمبورت
 
 class FavoriteTile extends StatelessWidget {
   final ProductModel product;
@@ -20,55 +20,23 @@ class FavoriteTile extends StatelessWidget {
       elevation: 4,
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       color: theme.cardColor,
-      child: InkWell(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => DetailsProductView(product: product),
-            ),
-          );
-        },
-        child: ListTile(
-          leading: ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: Image.network(
-              product.image ?? "",
-              width: 60,
-              height: 60,
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) {
-                return Container(
-                  width: 60,
-                  height: 60,
-                  color: Colors.grey[300],
-                  child: const Icon(
-                    Icons.image_not_supported,
-                    color: Colors.grey,
-                  ),
-                );
-              },
-              loadingBuilder: (context, child, loadingProgress) {
-                if (loadingProgress == null) return child;
-                return Container(
-                  width: 60,
-                  height: 60,
-                  color: Colors.grey[200],
-                  child: const Center(
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  ),
-                );
-              },
-            ),
-          ),
-          title: Text(
-            product.title ?? "",
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              color: theme.textTheme.bodyLarge?.color,
-              fontWeight: FontWeight.w500,
-            ),
+      child: ListTile(
+        // --- 2. تم استبدال الكود القديم بالكود الجديد ---
+        leading: ProductImageWidget(
+          imageString: product.image,
+          width: 60,
+          height: 60,
+          fit: BoxFit.cover,
+          borderRadius: 8.0, // نفس الـ radius اللي كان موجود
+        ),
+        // ------------------------------------------
+        title: Text(
+          product.title ?? "",
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            color: theme.textTheme.bodyLarge?.color,
+            fontWeight: FontWeight.w500,
           ),
           subtitle: Text(
             "${product.price?.toStringAsFixed(0) ?? "0"} LE",

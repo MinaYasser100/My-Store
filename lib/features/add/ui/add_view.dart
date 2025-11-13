@@ -1,9 +1,10 @@
 import 'dart:io';
+import 'dart:convert';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:path/path.dart' as p; // استيراد مكتبة path
+import 'package:path/path.dart' as p;
 
 const Color kPrimaryColor = Color(0xFF0D2857);
 const Color kBg = Color(0xFFF7F9FC);
@@ -18,16 +19,14 @@ class AddView extends StatefulWidget {
 class _AddViewState extends State<AddView> {
   final _formKey = GlobalKey<FormState>();
 
-  final _nameCtrl = TextEditingController();
+  final _nameCtrl = TextEditingController(); // سيتم حفظه كـ 'title'
   final _priceCtrl = TextEditingController();
-  final _supplierCtrl = TextEditingController();
   final _descriptionCtrl = TextEditingController();
 
   final _picker = ImagePicker();
   XFile? _image;
   bool _saving = false;
 
-  // --- التغيير: فئات الملابس ---
   final List<String> _categories = const [
     'T-shirts',
     'Pants',
@@ -36,30 +35,22 @@ class _AddViewState extends State<AddView> {
     'Accessories',
     'Outerwear',
   ];
-  String _selectedCategory = 'T-shirts'; // --- التغيير: الفئة الافتراضية ---
-
-  // --- الحذف: تم إزالة متغيرات المعلومات الغذائية ---
-  // bool _vegan = false;
-  // bool _glutenFree = false;
-  // bool _dairyFree = false;
-  // bool _organic = false;
+  String _selectedCategory = 'T-shirts';
 
   @override
   void dispose() {
     _nameCtrl.dispose();
     _priceCtrl.dispose();
-    _supplierCtrl.dispose();
     _descriptionCtrl.dispose();
     super.dispose();
   }
 
   Future<void> _pickImage() async {
-    // --- التعديل: إضافة تحديد للحجم الأقصى لتقليل حجم الصورة ---
     final picked = await _picker.pickImage(
       source: ImageSource.gallery,
-      imageQuality: 85, // ضغط الصورة بنسبة 85%
-      maxWidth: 1024, // تحديد أقصى عرض
-      maxHeight: 1024, // تحديد أقصى ارتفاع
+      imageQuality: 70,
+      maxWidth: 600,
+      maxHeight: 600,
     );
     if (picked != null) {
       setState(() => _image = picked);
@@ -74,31 +65,24 @@ class _AddViewState extends State<AddView> {
     FocusScope.of(context).unfocus();
 
     try {
-      String? imageUrl;
+      String? base64Image;
 
       if (_image != null) {
         final file = File(_image!.path);
-        final fileName = '${DateTime.now().millisecondsSinceEpoch}${p.extension(_image!.path)}';
-        final ref = FirebaseStorage.instance.ref().child('product_images').child(fileName);
-
-        final uploadTask = ref.putFile(file);
-        final snapshot = await uploadTask.whenComplete(() => null);
-        imageUrl = await snapshot.ref.getDownloadURL();
-        debugPrint('Image uploaded successfully: $imageUrl');
+        final Uint8List imageBytes = await file.readAsBytes();
+        base64Image = base64Encode(imageBytes);
       }
 
       final price = double.tryParse(_priceCtrl.text.trim()) ?? 0.0;
+
       final product = {
-        'name': _nameCtrl.text.trim(),
+        'title': _nameCtrl.text.trim(),
         'price': price,
-        'supplier': _supplierCtrl.text.trim(), // سيبقى اسم الحقل كما هو في الفايربيس
         'category': _selectedCategory,
         'description': _descriptionCtrl.text.trim(),
-        // --- الحذف: تم إزالة كائن المعلومات الغذائية ---
-        // 'dietary': { ... },
-        'imageUrl': imageUrl,
-        'imagePath': _image?.path,
-        'createdAt': FieldValue.serverTimestamp(),
+        'image': base64Image,
+        'id': null,
+        'rating': null,
       };
 
       await FirebaseFirestore.instance.collection('products').add(product);
@@ -108,7 +92,7 @@ class _AddViewState extends State<AddView> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Product added successfully to Firebase!'),
+            content: Text('Product added successfully!'),
             backgroundColor: Colors.green,
           ),
         );
@@ -117,8 +101,6 @@ class _AddViewState extends State<AddView> {
         setState(() {
           _image = null;
           _selectedCategory = _categories.first;
-          // --- الحذف: تم إزالة إعادة تعيين المتغيرات الغذائية ---
-          // _vegan = _glutenFree = _dairyFree = _organic = false;
           _priceCtrl.clear();
         });
       }
@@ -127,7 +109,8 @@ class _AddViewState extends State<AddView> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Failed to add product: ${e.message ?? "Unknown error"}'),
+            content:
+                Text('Failed to add product: ${e.message ?? "Unknown error"}'),
             backgroundColor: Colors.red,
           ),
         );
@@ -137,7 +120,8 @@ class _AddViewState extends State<AddView> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('An unexpected error occurred. Please try again.'),
+            content:
+                Text('An unexpected error occurred. Please try again.'),
             backgroundColor: Colors.red,
           ),
         );
@@ -157,26 +141,15 @@ class _AddViewState extends State<AddView> {
       backgroundColor: kBg,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        elevation: 0.5,
-        centerTitle: true,
+        elevation: 0,
         title: const Text(
           'Add Product',
           style: TextStyle(
             color: kPrimaryColor,
-            fontWeight: FontWeight.w600,
-            fontSize: 18,
+            fontWeight: FontWeight.bold,
           ),
         ),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, color: kPrimaryColor, size: 20),
-          onPressed: () => Navigator.of(context).maybePop(),
-        ),
-        actions: const [
-          Padding(
-            padding: EdgeInsetsDirectional.only(end: 12),
-            child: Icon(Icons.search, color: kPrimaryColor, size: 22),
-          ),
-        ],
+        iconTheme: const IconThemeData(color: kPrimaryColor),
       ),
       body: SafeArea(
         child: Form(
@@ -187,48 +160,36 @@ class _AddViewState extends State<AddView> {
             children: [
               _sectionCard(
                 title: 'Product Image',
-                // --- التغيير: تمت إضافة Center ---
                 child: Center(
                   child: InkWell(
                     onTap: _pickImage,
-                    borderRadius: BorderRadius.circular(12),
-                    child: Container(
-                      // --- التغيير: تم تعديل الحجم ---
-                      height: 200,
-                      width: 200,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: const Color(0xFFE4E8EE), width: 1.2),
-                      ),
-                      child: _image == null
-                          ? Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Icon(Icons.add, size: 28, color: kPrimaryColor),
-                                const SizedBox(height: 6),
-                                Text(
-                                  'Tap to upload image',
-                                  style: t.bodyMedium?.copyWith(color: const Color(0xFF6B7280)),
-                                ),
-                                const SizedBox(height: 2),
-                                Text(
-                                  'PNG, JPG up to 10MB',
-                                  style: t.labelMedium?.copyWith(color: const Color(0xFF9CA3AF)),
-                                ),
-                              ],
-                            )
-                          : ClipRRect(
+                    child: _image == null
+                        ? Container(
+                            width: 140,
+                            height: 140,
+                            decoration: BoxDecoration(
+                              color: Colors.grey.shade200,
                               borderRadius: BorderRadius.circular(12),
-                              child: Image.file(
-                                File(_image!.path),
-                                width: double.infinity,
-                                height: double.infinity,
-                                // --- التغيير: عرض الصورة كاملة ---
-                                fit: BoxFit.contain,
+                              border: Border.all(
+                                color: Colors.grey.shade400,
+                                width: 1.2,
                               ),
                             ),
-                    ),
+                            child: const Icon(
+                              Icons.camera_alt,
+                              size: 50,
+                              color: kPrimaryColor,
+                            ),
+                          )
+                        : ClipRRect(
+                            borderRadius: BorderRadius.circular(12),
+                            child: Image.file(
+                              File(_image!.path),
+                              width: 140,
+                              height: 140,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
                   ),
                 ),
               ),
@@ -242,8 +203,12 @@ class _AddViewState extends State<AddView> {
                       child: TextFormField(
                         controller: _nameCtrl,
                         textInputAction: TextInputAction.next,
-                        decoration: _inputDecoration(hint: 'Enter product name'),
-                        validator: (v) => (v == null || v.trim().isEmpty) ? 'Required' : null,
+                        decoration:
+                            _inputDecoration(hint: 'Enter product name'),
+                        validator: (v) =>
+                            (v == null || v.trim().isEmpty)
+                                ? 'Required'
+                                : null,
                       ),
                     ),
                     const SizedBox(height: 12),
@@ -251,9 +216,11 @@ class _AddViewState extends State<AddView> {
                       label: 'Price *',
                       child: TextFormField(
                         controller: _priceCtrl,
-                        keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                        keyboardType:
+                            const TextInputType.numberWithOptions(decimal: true),
                         textInputAction: TextInputAction.next,
-                        decoration: _inputDecoration(hint: '0.00', suffix: 'LE'),
+                        decoration:
+                            _inputDecoration(hint: '0.00', suffix: 'LE'),
                         validator: (v) {
                           final s = v?.trim() ?? '';
                           if (s.isEmpty) return 'Required';
@@ -265,24 +232,14 @@ class _AddViewState extends State<AddView> {
                     ),
                     const SizedBox(height: 12),
                     _LabeledField(
-                      // --- التغيير: تم تغيير العنوان ---
-                      label: 'Brand/Supplier *',
-                      child: TextFormField(
-                        controller: _supplierCtrl,
-                        textInputAction: TextInputAction.next,
-                        // --- التغيير: تم تغيير النص المؤقت ---
-                        decoration: _inputDecoration(hint: 'Brand or supplier name'),
-                        validator: (v) => (v == null || v.trim().isEmpty) ? 'Required' : null,
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    _LabeledField(
                       label: 'Category',
                       child: _CategoryDropdown(
                         value: _selectedCategory,
                         items: _categories,
                         onChanged: (val) {
-                          if (val != null) setState(() => _selectedCategory = val);
+                          if (val != null) {
+                            setState(() => _selectedCategory = val);
+                          }
                         },
                       ),
                     ),
@@ -293,35 +250,33 @@ class _AddViewState extends State<AddView> {
                         controller: _descriptionCtrl,
                         maxLines: 4,
                         textInputAction: TextInputAction.newline,
-                        decoration: _inputDecoration(hint: 'Describe your product...'),
+                        decoration: _inputDecoration(
+                            hint: 'Describe your product...'),
                       ),
                     ),
                   ],
                 ),
               ),
-              // --- الحذف: تم إزالة كارت المعلومات الغذائية ---
-              // const SizedBox(height: 16),
-              // _sectionCard( ... dietary info ... ),
               const SizedBox(height: 20),
               SizedBox(
                 width: double.infinity,
                 height: 48,
                 child: ElevatedButton(
+                  onPressed: _saving ? null : _submit,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: kPrimaryColor,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
-                  onPressed: _saving ? null : _submit,
                   child: _saving
-                      ? const SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
-                        )
+                      ? const CircularProgressIndicator(color: Colors.white)
                       : const Text(
                           'Add Product',
-                          style: TextStyle(fontWeight: FontWeight.w600),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                 ),
               ),
@@ -366,25 +321,17 @@ class _AddViewState extends State<AddView> {
     );
   }
 
-  // --- الحذف: تم إزالة ودجت _dietChip ---
-  // Widget _dietChip(...) { ... }
-
   InputDecoration _inputDecoration({String? hint, String? suffix}) {
     return InputDecoration(
       hintText: hint,
-      // --- التغيير: استخدام suffixText بدلاً من suffixIcon ---
       suffixText: suffix,
       suffixStyle: const TextStyle(
         color: Color(0xFF6B7280),
         fontWeight: FontWeight.w600,
       ),
-      // --- الحذف: تمت إزالة suffixIcon و constraints ---
-      // suffixIcon: suffix != null
-      //     ? Padding(...)
-      //     : null,
-      // suffixIconConstraints: const BoxConstraints(minWidth: 0, minHeight: 0),
       isDense: true,
-      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+      contentPadding:
+          const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
       filled: true,
       fillColor: Colors.white,
       enabledBorder: OutlineInputBorder(
@@ -447,16 +394,15 @@ class _CategoryDropdown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField<String>(
-      // --- التغيير: تم تحديث القيمة الأولية (لضمان التوافق مع التغييرات) ---
-      // --- إصلاح: تم تغيير 'value' إلى 'initialValue' لمعالجة التحذير ---
-      initialValue: items.contains(value) ? value : items.first,
+      value: items.contains(value) ? value : items.first,
       items: items
           .map((e) => DropdownMenuItem(value: e, child: Text(e)))
           .toList(),
       onChanged: onChanged,
       decoration: InputDecoration(
         isDense: true,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
         filled: true,
         fillColor: Colors.white,
         enabledBorder: OutlineInputBorder(

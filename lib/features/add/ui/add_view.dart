@@ -4,7 +4,6 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:path/path.dart' as p;
 
 const Color kPrimaryColor = Color(0xFF0D2857);
 const Color kBg = Color(0xFFF7F9FC);
@@ -19,7 +18,7 @@ class AddView extends StatefulWidget {
 class _AddViewState extends State<AddView> {
   final _formKey = GlobalKey<FormState>();
 
-  final _nameCtrl = TextEditingController(); // سيتم حفظه كـ 'title'
+  final _nameCtrl = TextEditingController();
   final _priceCtrl = TextEditingController();
   final _descriptionCtrl = TextEditingController();
 
@@ -28,14 +27,12 @@ class _AddViewState extends State<AddView> {
   bool _saving = false;
 
   final List<String> _categories = const [
-    'T-shirts',
-    'Pants',
-    'Dresses',
-    'Shoes',
-    'Accessories',
-    'Outerwear',
+    "women's clothing",
+    "men's clothing",
+    "jewelery",
+    "electronics",
   ];
-  String _selectedCategory = 'T-shirts';
+  String _selectedCategory = "women's clothing";
 
   @override
   void dispose() {
@@ -81,18 +78,22 @@ class _AddViewState extends State<AddView> {
         'category': _selectedCategory,
         'description': _descriptionCtrl.text.trim(),
         'image': base64Image,
-        'id': null,
         'rating': null,
+        'createdAt': FieldValue.serverTimestamp(),
       };
 
-      await FirebaseFirestore.instance.collection('products').add(product);
+      // 🔹 إضافة المنتج داخل الكولكشن حسب الفئة
+      await FirebaseFirestore.instance
+          .collection(_selectedCategory.toLowerCase())
+          .add(product);
 
-      debugPrint('Product added to Firestore: $product');
+      debugPrint('✅ Product added to "${_selectedCategory}" collection: $product');
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Product added successfully!'),
+          SnackBar(
+            content:
+                Text('Product added successfully to ${_selectedCategory}!'),
             backgroundColor: Colors.green,
           ),
         );
@@ -205,10 +206,9 @@ class _AddViewState extends State<AddView> {
                         textInputAction: TextInputAction.next,
                         decoration:
                             _inputDecoration(hint: 'Enter product name'),
-                        validator: (v) =>
-                            (v == null || v.trim().isEmpty)
-                                ? 'Required'
-                                : null,
+                        validator: (v) => (v == null || v.trim().isEmpty)
+                            ? 'Required'
+                            : null,
                       ),
                     ),
                     const SizedBox(height: 12),
@@ -216,8 +216,8 @@ class _AddViewState extends State<AddView> {
                       label: 'Price *',
                       child: TextFormField(
                         controller: _priceCtrl,
-                        keyboardType:
-                            const TextInputType.numberWithOptions(decimal: true),
+                        keyboardType: const TextInputType.numberWithOptions(
+                            decimal: true),
                         textInputAction: TextInputAction.next,
                         decoration:
                             _inputDecoration(hint: '0.00', suffix: 'LE'),
@@ -395,9 +395,8 @@ class _CategoryDropdown extends StatelessWidget {
   Widget build(BuildContext context) {
     return DropdownButtonFormField<String>(
       value: items.contains(value) ? value : items.first,
-      items: items
-          .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-          .toList(),
+      items:
+          items.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
       onChanged: onChanged,
       decoration: InputDecoration(
         isDense: true,
@@ -415,7 +414,8 @@ class _CategoryDropdown extends StatelessWidget {
         ),
       ),
       borderRadius: BorderRadius.circular(12),
-      icon: const Icon(Icons.keyboard_arrow_down_rounded, color: kPrimaryColor),
+      icon:
+          const Icon(Icons.keyboard_arrow_down_rounded, color: kPrimaryColor),
     );
   }
 }

@@ -38,19 +38,19 @@ class FavoriteTile extends StatelessWidget {
             color: theme.textTheme.bodyLarge?.color,
             fontWeight: FontWeight.w500,
           ),
-        ),
-        subtitle: Text(
-          "${product.price?.toStringAsFixed(0) ?? "0"} LE",
-          style: TextStyle(
-            color: theme.primaryColor,
-            fontWeight: FontWeight.bold,
-            fontSize: 16,
+          subtitle: Text(
+            "${product.price?.toStringAsFixed(0) ?? "0"} LE",
+            style: TextStyle(
+              color: theme.primaryColor,
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+            ),
           ),
-        ),
-        trailing: IconButton(
-          icon: const Icon(Icons.favorite, color: Colors.red),
-          onPressed: onRemove,
-          tooltip: 'Remove from favorites',
+          trailing: IconButton(
+            icon: const Icon(Icons.favorite, color: Colors.red),
+            onPressed: onRemove,
+            tooltip: 'Remove from favorites',
+          ),
         ),
       ),
     );

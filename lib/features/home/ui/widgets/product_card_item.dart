@@ -1,7 +1,9 @@
+import 'dart:convert';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:my_store/core/model/product_model/product_model.dart';
+import 'package:my_store/core/model/product_model/product_model.dart'; // <-- 1. تم إضافة الإمبورت
 import 'package:my_store/core/routing/routes.dart';
 import 'package:my_store/core/theme/app_style.dart';
 import 'package:my_store/core/utils/colors.dart';
@@ -27,7 +29,7 @@ class ProductCardItem extends StatelessWidget {
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Row(
           children: [
-            _buildProductImage(),
+            _buildProductImage(), // <-- تم تعديل الدالة دي
             const SizedBox(width: 12),
             Expanded(
               child: Padding(
@@ -49,30 +51,58 @@ class ProductCardItem extends StatelessWidget {
     );
   }
 
+  // --- دالة عرض الصورة المعدلة ---
   Widget _buildProductImage() {
+    final String? imageString = product.image;
+
+    // A placeholder widget to use on error or if no image
+    final placeholder = Container(
+      width: 100,
+      height: 100,
+      color: Colors.grey[300],
+      child: Icon(
+        Icons.image_not_supported,
+        color: Colors.grey[600],
+        size: 40,
+      ),
+    );
+
+    Widget imageWidget;
+
+    if (imageString == null || imageString.isEmpty) {
+      imageWidget = placeholder;
+    } else if (imageString.startsWith('http')) {
+      // 1. It's a URL (from fakestoreapi)
+      imageWidget = Image.network(
+        imageString,
+        width: 100,
+        height: 100,
+        fit: BoxFit.fill,
+        errorBuilder: (context, error, stackTrace) => placeholder,
+      );
+    } else {
+      // 2. Assume it's a Base64 string (from AddView)
+      try {
+        final Uint8List imageBytes = base64Decode(imageString);
+        imageWidget = Image.memory(
+          imageBytes,
+          width: 100,
+          height: 100,
+          fit: BoxFit.fill,
+        );
+      } catch (e) {
+        // If decoding fails, show placeholder
+        debugPrint('Failed to decode Base64 image: $e');
+        imageWidget = placeholder;
+      }
+    }
+
     return ClipRRect(
       borderRadius: const BorderRadius.only(
         topLeft: Radius.circular(12),
         bottomLeft: Radius.circular(12),
       ),
-      child: Image.network(
-        product.image ?? '',
-        width: 100,
-        height: 100,
-        fit: BoxFit.fill,
-        errorBuilder: (context, error, stackTrace) {
-          return Container(
-            width: 100,
-            height: 100,
-            color: Colors.grey[300],
-            child: Icon(
-              Icons.image_not_supported,
-              color: Colors.grey[600],
-              size: 40,
-            ),
-          );
-        },
-      ),
+      child: imageWidget,
     );
   }
 
@@ -95,7 +125,7 @@ class ProductCardItem extends StatelessWidget {
 
   Widget _buildLikeButton(BuildContext context) {
     return StreamBuilder<bool>(
-      stream: context.read<LikeProductRepo>().isProductLiked(
+      stream: context.read<LikeProductRepo>().isProductLiked( // <-- 2. تم تصحيح: استخدام LikeProductRepo
         product.id.toString(),
       ),
       builder: (context, snapshot) {
@@ -123,7 +153,7 @@ class ProductCardItem extends StatelessWidget {
           },
           child: GestureDetector(
             onTap: snapshot.hasData
-                ? () => context.read<LikeProductCubit>().toggleLikeStatus(
+                ? () => context.read<LikeProductCubit>().toggleLikeStatus( // <-- 3. تم تصحيح: استخدام toggleLikeStatus
                     product.id.toString(),
                     isLiked,
                   )

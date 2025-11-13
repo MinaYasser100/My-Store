@@ -3,6 +3,7 @@ import 'package:my_store/core/theme/app_style.dart';
 import 'package:my_store/core/utils/colors.dart';
 import 'package:my_store/features/cart/data/models/cart_item_model.dart';
 import 'package:my_store/features/cart/ui/widgets/dropdown.dart';
+import 'package:my_store/core/widgets/product_image.dart'; // <-- 1. إضافة الإمبورت
 
 class CartItem extends StatelessWidget {
   const CartItem({super.key, required this.cartItem});
@@ -18,14 +19,15 @@ class CartItem extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Image.network(
-                cartItem.image,
+              // --- 2. تم استبدال الكود القديم بالكود الجديد ---
+              ProductImageWidget(
+                imageString: cartItem.image,
                 height: 100,
                 width: 80,
                 fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) =>
-                    const Icon(Icons.broken_image, size: 80),
+                borderRadius: 0, // No border radius needed here
               ),
+              // ------------------------------------------
 
               const SizedBox(width: 20),
               Expanded(
@@ -45,7 +47,6 @@ class CartItem extends StatelessWidget {
                       ).copyWith(color: ColorsTheme().primaryLight),
                     ),
                     SizedBox(height: 6),
-
                     ItemQuantityDropdown(
                       initialQuantity: cartItem.quantity,
                       itemId: cartItem.id,
@@ -53,7 +54,6 @@ class CartItem extends StatelessWidget {
                   ],
                 ),
               ),
-
               Text(
                 "${cartItem.itemTotal.toStringAsFixed(2)} LE",
                 style: AppTextStyles.styleRegular16sp(

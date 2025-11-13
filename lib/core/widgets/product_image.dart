@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
-import 'package.flutter/material.dart';
+import 'package:flutter/material.dart'; // <-- تم تصحيح الخطأ هنا
 
 class ProductImageWidget extends StatelessWidget {
   final String? imageString;

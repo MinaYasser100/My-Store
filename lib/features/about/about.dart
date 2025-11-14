@@ -41,8 +41,14 @@ class AboutMyStore extends StatelessWidget {
         elevation: 0.5,
         centerTitle: true,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, color: primaryColor, size: 20),
-          onPressed: () {},
+          icon: const Icon(
+            Icons.arrow_back_ios_new,
+            color: primaryColor,
+            size: 20,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         title: const Text(
           'About My Store',
@@ -143,7 +149,11 @@ class AboutMyStore extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(vertical: 4),
                       child: Row(
                         children: [
-                          const Icon(Icons.circle, size: 6, color: primaryColor),
+                          const Icon(
+                            Icons.circle,
+                            size: 6,
+                            color: primaryColor,
+                          ),
                           const SizedBox(width: 8),
                           Expanded(
                             child: Text(
@@ -160,7 +170,7 @@ class AboutMyStore extends StatelessWidget {
                   )
                   .toList(),
             ),
-          ]
+          ],
         ],
       ),
     );
@@ -262,10 +272,7 @@ class AboutMyStore extends StatelessWidget {
         const SizedBox(height: 4),
         Text(
           subtitle,
-          style: const TextStyle(
-            fontSize: 12,
-            color: Color(0xFF7B7B7B),
-          ),
+          style: const TextStyle(fontSize: 12, color: Color(0xFF7B7B7B)),
         ),
       ],
     );

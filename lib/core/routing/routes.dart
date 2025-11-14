@@ -17,6 +17,7 @@ class Routes {
   static const String confirmview = '/confirm_view';
   static const String checkoutview = '/checkout_view';
   static const String paymentView = '/payment_view';
+  static const String orderSuccessView = '/order_success_view';
   static const String forgotPasswordView = '/forgot-password';
   static const String verifyEmailView = '/verify-email';
   static const String classesView = '/classes';

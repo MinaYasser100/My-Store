@@ -37,4 +37,18 @@ class CartRepo {
         .doc(itemId)
         .delete();
   }
+
+  Future<void> clearCart(String userId) async {
+    final cartRef = firestore
+        .collection('Users')
+        .doc(userId)
+        .collection('MyCart');
+    final snapshot = await cartRef.get();
+    if (snapshot.docs.isEmpty) return;
+    final batch = firestore.batch();
+    for (final doc in snapshot.docs) {
+      batch.delete(doc.reference);
+    }
+    await batch.commit();
+  }
 }

@@ -14,6 +14,7 @@ import 'package:my_store/features/cart/ui/views/cart_view.dart';
 import 'package:my_store/features/cart/ui/views/checkout_view.dart';
 import 'package:my_store/features/cart/ui/views/confirm_view.dart';
 import 'package:my_store/features/cart/ui/views/payment_view.dart';
+import 'package:my_store/features/cart/ui/views/order_success_view.dart';
 import 'package:my_store/features/details_products/ui/details_product_view.dart';
 import 'package:my_store/features/forgot_password/ui/forgot_password_view.dart';
 import 'package:my_store/features/home/ui/home_view.dart';
@@ -112,6 +113,20 @@ abstract class AppRouter {
                 userId: FirebaseAuth.instance.currentUser!.uid,
               )..listenToCart(),
               child: const ConfirmView(),
+            ),
+          );
+        },
+      ),
+      GoRoute(
+        path: Routes.orderSuccessView,
+        pageBuilder: (context, state) {
+          return fadeTransitionPage(
+            BlocProvider(
+              create: (context) => CartCubit(
+                repo: CartRepo(firestore: FirebaseFirestore.instance),
+                userId: FirebaseAuth.instance.currentUser!.uid,
+              )..listenToCart(),
+              child: const OrderSuccessView(),
             ),
           );
         },

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:my_store/core/routing/routes.dart';
 import 'package:my_store/core/theme/app_style.dart';
 import 'package:my_store/core/widgets/custom_button.dart';
 import 'package:my_store/features/cart/logic/cart_cubit.dart';
@@ -70,7 +72,7 @@ class ConfirmAllItems extends StatelessWidget {
                 child: CustomButton(
                   text: 'Confirm Order',
                   onPressed: () {
-                    // GoRouter.of(context).push(Routes.checkoutview);
+                    GoRouter.of(context).push(Routes.orderSuccessView);
                   },
                 ),
               ),

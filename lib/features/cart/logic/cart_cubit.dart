@@ -28,4 +28,8 @@ class CartCubit extends Cubit<CartState> {
   Future<void> changeQuantity(String itemId, int newQuantity) async {
     await repo.updateQuantity(userId, itemId, newQuantity);
   }
+
+  Future<void> clearCart() async {
+    await repo.clearCart(userId);
+  }
 }

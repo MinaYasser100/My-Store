@@ -11,29 +11,32 @@ class Customappbar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(
-      backgroundColor: Colors.white,
+    final theme = Theme.of(context);
 
-      elevation: 1,
-      title: Text(Title, style: TextStyle(color: Colors.black)),
+    return AppBar(
+      backgroundColor: theme.scaffoldBackgroundColor,
+      elevation: 0,
+      title: Text(
+        Title,
+        style: TextStyle(color: theme.textTheme.bodyLarge?.color),
+      ),
       leading: Padding(
-        padding: const EdgeInsets.only(left: 15),
+        padding: const EdgeInsets.only(left: 10.0, top: 4.0, bottom: 4.0),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(10),
-          child: Image.asset(
-            "assets/images/logo.png",
-            width: 20,
-            height: 20,
-            fit: BoxFit.cover,
-          ),
+          borderRadius: BorderRadius.circular(10.0),
+          child: Image.asset("assets/images/logo.png", fit: BoxFit.cover),
         ),
       ),
       actions: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 14),
-          child: Icon(icon, color: Colors.black),
-        ),
+        if (icon != null)
+          IconButton(
+            icon: Icon(icon, color: theme.iconTheme.color),
+            onPressed: () {
+              // TODO: Implement action
+            },
+          ),
       ],
+      actionsPadding: const EdgeInsets.all(10),
     );
   }
 }

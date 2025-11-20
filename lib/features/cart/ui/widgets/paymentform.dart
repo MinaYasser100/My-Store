@@ -97,8 +97,9 @@ class _PaymentformState extends State<Paymentform> {
               hintText: "MM/YY",
               labelText: "ExpiryDate",
               validator: (v) {
-                if (v == null || v.trim().isEmpty)
+                if (v == null || v.trim().isEmpty) {
                   return "Please enter your Expiry date";
+                }
                 final regex = RegExp(r'^(0[1-9]|1[0-2])\/\d{2}$');
                 if (!regex.hasMatch(v)) return "Enter a valid format MM/YY";
                 return null;

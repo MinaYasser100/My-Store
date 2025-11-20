@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:my_store/core/model/text_field_model/text_field_model.dart';
 import 'package:my_store/core/routing/routes.dart';
 import 'package:my_store/core/utils/colors.dart';
 import 'package:my_store/core/widgets/custom_text_form_field.dart';
+import 'package:my_store/core/utils/constant.dart';
+import 'package:my_store/core/caching/hive/user_hive_helper.dart';
 import 'governorate_dropdown.dart';
 import 'fixed_country_field.dart';
 
@@ -34,6 +37,8 @@ class _ShippingAddressFormState extends State<ShippingAddressForm> {
 
   @override
   Widget build(BuildContext context) {
+    final userModel = UserHiveHelper().getUser(ConstantVariable.uId);
+
     return Form(
       key: _formKey,
       autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -67,6 +72,60 @@ class _ShippingAddressFormState extends State<ShippingAddressForm> {
                   : null,
             ),
           ),
+
+          const SizedBox(height: 8),
+          if (userModel != null)
+            StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance
+                  .collection(ConstantVariable.users)
+                  .doc(userModel.uid)
+                  .collection(ConstantVariable.addressesCollection)
+                  .orderBy('createdAt', descending: true)
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const SizedBox.shrink();
+                }
+
+                if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                  return const SizedBox.shrink();
+                }
+
+                final docs = snapshot.data!.docs;
+
+                return DropdownButtonFormField<String>(
+                  decoration: InputDecoration(
+                    labelText: "Saved addresses",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 14,
+                    ),
+                  ),
+                  items: docs.map((doc) {
+                    final data = doc.data() as Map<String, dynamic>;
+                    final label = (data['label'] ?? 'Unnamed Address')
+                        .toString();
+                    final fullAddress =
+                        "${data['address'] ?? ''}, ${data['city'] ?? ''}, ${data['country'] ?? ''}";
+                    return DropdownMenuItem<String>(
+                      value: fullAddress,
+                      child: Text(label),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    if (value != null) {
+                      setState(() {
+                        addressController.text = value;
+                      });
+                    }
+                  },
+                  hint: const Text("Choose from saved addresses"),
+                );
+              },
+            ),
 
           const SizedBox(height: 12),
           const FixedCountryField(),

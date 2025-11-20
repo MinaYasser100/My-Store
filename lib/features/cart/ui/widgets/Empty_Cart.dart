@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_store/core/widgets/custom_button.dart';
+
 
 class EmptyCart extends StatelessWidget {
   const EmptyCart({super.key});
@@ -40,12 +40,7 @@ class EmptyCart extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 30),
-              CustomButton(
-                text: "Back To Home",
-                onPressed: () {
-                  // GoRouter.of(context).push(Routes.homeView);
-                },
-              ),
+            
             ],
           ),
         ),

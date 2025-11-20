@@ -18,22 +18,10 @@ class CartItemModel {
   double get itemTotal => price * quantity;
 
   factory CartItemModel.fromJson(Map<String, dynamic> json, String id) {
-    final priceValue = json['price'];
-    final double price = priceValue is int
-        ? priceValue.toDouble()
-        : priceValue is String
-        ? double.tryParse(priceValue) ?? 0.0
-        : (priceValue as double? ?? 0.0);
+    final double price = double.tryParse(json['price'] ?? '0') ?? 0.0;
 
-    final quantityValue = json['quantity'] ?? 1;
-    final int quantity = quantityValue is int
-        ? quantityValue
-        : int.tryParse(quantityValue.toString()) ?? 1;
-
-    final productIdValue = json['productId'];
-    final int productId = productIdValue is int
-        ? productIdValue
-        : int.tryParse(productIdValue.toString()) ?? 0;
+    final int quantity = json['quantity'] ?? 1;
+    final int productId = json['productId'] ?? 0;
 
     return CartItemModel(
       id: id,
@@ -44,16 +32,4 @@ class CartItemModel {
       quantity: quantity,
     );
   }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'productId': productId,
-      'title': title,
-      'price': price,
-      'image': image,
-      'quantity': quantity,
-    };
-  }
-
-
 }

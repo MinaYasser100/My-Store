@@ -84,10 +84,7 @@ class _AddViewState extends State<AddView> {
         'category': _selectedCategory,
         'description': _descriptionCtrl.text.trim(),
         'image': imageValue, // <-- استخدام المتغير الجديد
-        'rating': {
-          'rate': 0.0,
-          'count': 0,
-        },
+        'rating': {'rate': 0.0, 'count': 0},
         'createdAt': FieldValue.serverTimestamp(),
       };
 
@@ -146,16 +143,23 @@ class _AddViewState extends State<AddView> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: kBg,
+      backgroundColor: isDark ? Theme.of(context).scaffoldBackgroundColor : kBg,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: isDark
+            ? Theme.of(context).scaffoldBackgroundColor
+            : Colors.white,
         elevation: 0,
-        title: const Text(
+        title: Text(
           'Add Product',
-          style: TextStyle(color: kPrimaryColor, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            color:
+                Theme.of(context).textTheme.bodyLarge?.color ?? kPrimaryColor,
+            fontWeight: FontWeight.bold,
+          ),
         ),
-        iconTheme: const IconThemeData(color: kPrimaryColor),
+        iconTheme: IconThemeData(color: Theme.of(context).iconTheme.color),
       ),
       body: SafeArea(
         child: Form(
@@ -176,9 +180,16 @@ class _AddViewState extends State<AddView> {
                             decoration: BoxDecoration(
                               color: Colors.grey.shade200,
                               borderRadius: BorderRadius.circular(12),
-                              border: Border.all(color: Colors.grey.shade400, width: 1.2),
+                              border: Border.all(
+                                color: Colors.grey.shade400,
+                                width: 1.2,
+                              ),
                             ),
-                            child: const Icon(Icons.camera_alt, size: 50, color: kPrimaryColor),
+                            child: const Icon(
+                              Icons.camera_alt,
+                              size: 50,
+                              color: kPrimaryColor,
+                            ),
                           )
                         : ClipRRect(
                             borderRadius: BorderRadius.circular(12),
@@ -202,8 +213,11 @@ class _AddViewState extends State<AddView> {
                       child: TextFormField(
                         controller: _nameCtrl,
                         textInputAction: TextInputAction.next,
-                        decoration: _inputDecoration(hint: 'Enter product name'),
-                        validator: (v) => (v == null || v.trim().isEmpty) ? 'Required' : null,
+                        decoration: _inputDecoration(
+                          hint: 'Enter product name',
+                        ),
+                        validator: (v) =>
+                            (v == null || v.trim().isEmpty) ? 'Required' : null,
                       ),
                     ),
                     const SizedBox(height: 12),
@@ -211,9 +225,14 @@ class _AddViewState extends State<AddView> {
                       label: 'Price *',
                       child: TextFormField(
                         controller: _priceCtrl,
-                        keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                        keyboardType: const TextInputType.numberWithOptions(
+                          decimal: true,
+                        ),
                         textInputAction: TextInputAction.next,
-                        decoration: _inputDecoration(hint: '0.00', suffix: 'LE'),
+                        decoration: _inputDecoration(
+                          hint: '0.00',
+                          suffix: 'LE',
+                        ),
                         validator: (v) {
                           final s = v?.trim() ?? '';
                           if (s.isEmpty) return 'Required';
@@ -230,7 +249,8 @@ class _AddViewState extends State<AddView> {
                         value: _selectedCategory,
                         items: _categories,
                         onChanged: (val) {
-                          if (val != null) setState(() => _selectedCategory = val);
+                          if (val != null)
+                            setState(() => _selectedCategory = val);
                         },
                       ),
                     ),
@@ -241,7 +261,9 @@ class _AddViewState extends State<AddView> {
                         controller: _descriptionCtrl,
                         maxLines: 4,
                         textInputAction: TextInputAction.newline,
-                        decoration: _inputDecoration(hint: 'Describe your product...'),
+                        decoration: _inputDecoration(
+                          hint: 'Describe your product...',
+                        ),
                       ),
                     ),
                   ],
@@ -255,13 +277,18 @@ class _AddViewState extends State<AddView> {
                   onPressed: _saving ? null : _submit,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: kPrimaryColor,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
                   child: _saving
                       ? const CircularProgressIndicator(color: Colors.white)
                       : const Text(
                           'Add Product',
-                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                 ),
               ),
@@ -274,20 +301,38 @@ class _AddViewState extends State<AddView> {
   }
 
   Widget _sectionCard({required String title, required Widget child}) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: isDark ? Theme.of(context).cardColor : Colors.white,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
-          BoxShadow(color: Colors.black12.withAlpha(13), blurRadius: 6, offset: const Offset(0, 3)),
+          BoxShadow(
+            color: Colors.black12.withAlpha(13),
+            blurRadius: 6,
+            offset: const Offset(0, 3),
+          ),
         ],
-        border: Border.all(color: const Color(0xFFE9EEF5), width: 1),
+        border: Border.all(
+          color: isDark
+              ? Colors.grey[700] ?? const Color(0xFFE9EEF5)
+              : const Color(0xFFE9EEF5),
+          width: 1,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: kPrimaryColor)),
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color:
+                  Theme.of(context).textTheme.bodyLarge?.color ?? kPrimaryColor,
+            ),
+          ),
           const SizedBox(height: 12),
           child,
         ],
@@ -296,24 +341,39 @@ class _AddViewState extends State<AddView> {
   }
 
   InputDecoration _inputDecoration({String? hint, String? suffix}) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return InputDecoration(
       hintText: hint,
       suffixText: suffix,
-      suffixStyle: const TextStyle(color: Color(0xFF6B7280), fontWeight: FontWeight.w600),
+      suffixStyle: TextStyle(
+        color: isDark ? Colors.grey[400] : const Color(0xFF6B7280),
+        fontWeight: FontWeight.w600,
+      ),
       isDense: true,
       contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
       filled: true,
-      fillColor: Colors.white,
+      fillColor: isDark ? Theme.of(context).cardColor : Colors.white,
       enabledBorder: OutlineInputBorder(
-        borderSide: const BorderSide(color: Color(0xFFE4E8EE), width: 1.2),
+        borderSide: BorderSide(
+          color: isDark
+              ? Colors.grey[700] ?? const Color(0xFFE4E8EE)
+              : const Color(0xFFE4E8EE),
+          width: 1.2,
+        ),
         borderRadius: BorderRadius.circular(12),
       ),
       focusedBorder: OutlineInputBorder(
         borderSide: const BorderSide(color: kPrimaryColor, width: 1.4),
         borderRadius: BorderRadius.circular(12),
       ),
-      errorBorder: OutlineInputBorder(borderSide: const BorderSide(color: Colors.redAccent), borderRadius: BorderRadius.circular(12)),
-      focusedErrorBorder: OutlineInputBorder(borderSide: const BorderSide(color: Colors.redAccent, width: 1.4), borderRadius: BorderRadius.circular(12)),
+      errorBorder: OutlineInputBorder(
+        borderSide: const BorderSide(color: Colors.redAccent),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderSide: const BorderSide(color: Colors.redAccent, width: 1.4),
+        borderRadius: BorderRadius.circular(12),
+      ),
     );
   }
 }
@@ -328,7 +388,16 @@ class _LabeledField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: const TextStyle(color: Color(0xFF374151), fontWeight: FontWeight.w600, fontSize: 14)),
+        Text(
+          label,
+          style: TextStyle(
+            color:
+                Theme.of(context).textTheme.bodyLarge?.color ??
+                const Color(0xFF374151),
+            fontWeight: FontWeight.w600,
+            fontSize: 14,
+          ),
+        ),
         const SizedBox(height: 8),
         child,
       ],
@@ -341,21 +410,36 @@ class _CategoryDropdown extends StatelessWidget {
   final List<String> items;
   final ValueChanged<String?> onChanged;
 
-  const _CategoryDropdown({required this.value, required this.items, required this.onChanged});
+  const _CategoryDropdown({
+    required this.value,
+    required this.items,
+    required this.onChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return DropdownButtonFormField<String>(
       value: items.contains(value) ? value : items.first,
-      items: items.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
+      items: items
+          .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+          .toList(),
       onChanged: onChanged,
       decoration: InputDecoration(
         isDense: true,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 12,
+          vertical: 14,
+        ),
         filled: true,
-        fillColor: Colors.white,
+        fillColor: isDark ? Theme.of(context).cardColor : Colors.white,
         enabledBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: Color(0xFFE4E8EE), width: 1.2),
+          borderSide: BorderSide(
+            color: isDark
+                ? Colors.grey[700] ?? const Color(0xFFE4E8EE)
+                : const Color(0xFFE4E8EE),
+            width: 1.2,
+          ),
           borderRadius: BorderRadius.circular(12),
         ),
         focusedBorder: OutlineInputBorder(

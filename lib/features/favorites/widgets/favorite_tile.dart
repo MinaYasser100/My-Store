@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_store/core/model/product_model/product_model.dart';
-import 'package:my_store/core/widgets/product_image.dart'; // <-- 1. إضافة الإمبورت
+import 'package:my_store/core/widgets/product_image.dart';
 
 class FavoriteTile extends StatelessWidget {
   final ProductModel product;
@@ -21,15 +21,13 @@ class FavoriteTile extends StatelessWidget {
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       color: theme.cardColor,
       child: ListTile(
-        // --- 2. تم استبدال الكود القديم بالكود الجديد ---
         leading: ProductImageWidget(
           imageString: product.image,
           width: 60,
           height: 60,
           fit: BoxFit.cover,
-          borderRadius: 8.0, // نفس الـ radius اللي كان موجود
+          borderRadius: 8.0,
         ),
-        // ------------------------------------------
         title: Text(
           product.title ?? "",
           maxLines: 2,

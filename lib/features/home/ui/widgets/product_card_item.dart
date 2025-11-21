@@ -60,11 +60,7 @@ class ProductCardItem extends StatelessWidget {
       width: 100,
       height: 100,
       color: Colors.grey[300],
-      child: Icon(
-        Icons.image_not_supported,
-        color: Colors.grey[600],
-        size: 40,
-      ),
+      child: Icon(Icons.image_not_supported, color: Colors.grey[600], size: 40),
     );
 
     Widget imageWidget;
@@ -125,7 +121,8 @@ class ProductCardItem extends StatelessWidget {
 
   Widget _buildLikeButton(BuildContext context) {
     return StreamBuilder<bool>(
-      stream: context.read<LikeProductRepo>().isProductLiked( // <-- 2. تم تصحيح: استخدام LikeProductRepo
+      stream: context.read<LikeProductRepo>().isProductLiked(
+        // <-- 2. تم تصحيح: استخدام LikeProductRepo
         product.id.toString(),
       ),
       builder: (context, snapshot) {
@@ -153,14 +150,15 @@ class ProductCardItem extends StatelessWidget {
           },
           child: GestureDetector(
             onTap: snapshot.hasData
-                ? () => context.read<LikeProductCubit>().toggleLikeStatus( // <-- 3. تم تصحيح: استخدام toggleLikeStatus
+                ? () => context.read<LikeProductCubit>().toggleLikeStatus(
+                    // <-- 3. تم تصحيح: استخدام toggleLikeStatus
                     product.id.toString(),
                     isLiked,
                   )
                 : null,
             child: Icon(
               isLiked ? Icons.favorite : Icons.favorite_border,
-              color: isLiked ? Colors.red : ColorsTheme().primaryDark,
+              color: isLiked ? Colors.red : Theme.of(context).iconTheme.color,
               size: 22,
             ),
           ),
@@ -170,6 +168,7 @@ class ProductCardItem extends StatelessWidget {
   }
 
   Widget _buildDescriptionWithAddButton(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Row(
       children: [
         Expanded(
@@ -179,7 +178,7 @@ class ProductCardItem extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             style: AppTextStyles.styleRegular14sp(
               context,
-            ).copyWith(color: Colors.grey[600]),
+            ).copyWith(color: isDark ? Colors.grey[400] : Colors.grey[600]),
           ),
         ),
         const SizedBox(width: 8),

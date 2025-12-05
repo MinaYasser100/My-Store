@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:my_store/core/routing/routes.dart';
 import 'package:my_store/core/theme/app_style.dart';
 import 'package:my_store/features/layout/repo/cart_repo.dart';
+import 'package:go_router/go_router.dart';
 
 class CartIconWithBadge extends StatelessWidget {
   const CartIconWithBadge({super.key, required this.cartRepo, this.onPressed});
@@ -25,7 +27,8 @@ class CartIconWithBadge extends StatelessWidget {
                 Icons.shopping_cart_outlined,
                 color: theme.iconTheme.color,
               ),
-              onPressed: onPressed,
+              onPressed:
+                  onPressed ?? () => context.push(Routes.layoutView, extra: 1),
             ),
             if (totalQuantity > 0)
               Positioned(

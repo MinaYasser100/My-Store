@@ -55,9 +55,7 @@ class DetailsProductAppBar extends StatelessWidget
       actions: [
         CartIconWithBadge(
           cartRepo: cartRepo,
-          onPressed: () {
-            context.push(Routes.cartView);
-          },
+          onPressed: () => context.push(Routes.layoutView, extra: 1),
         ),
         const SizedBox(width: 8),
       ],

@@ -74,10 +74,13 @@ abstract class AppRouter {
         path: Routes.verifyEmailView,
         pageBuilder: (context, state) => fadeTransitionPage(VerifyEmailView()),
       ),
-      // Layout View
+      // Layout View (supports optional initial tab index in state.extra)
       GoRoute(
         path: Routes.layoutView,
-        pageBuilder: (context, state) => fadeTransitionPage(LayoutView()),
+        pageBuilder: (context, state) {
+          final startIndex = state.extra as int? ?? 0;
+          return fadeTransitionPage(LayoutView(initialIndex: startIndex));
+        },
       ),
       // Details Product View
       GoRoute(
@@ -153,7 +156,8 @@ abstract class AppRouter {
       ),
       GoRoute(
         path: Routes.about,
-        pageBuilder: (context, state) => fadeTransitionPage(AboutMyStoreScreen()),
+        pageBuilder: (context, state) =>
+            fadeTransitionPage(AboutMyStoreScreen()),
       ),
     ],
   );

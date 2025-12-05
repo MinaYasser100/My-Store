@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 void main() {
   runApp(const AboutMyStoreScreen());
@@ -46,9 +47,7 @@ class AboutMyStore extends StatelessWidget {
             color: primaryColor,
             size: 20,
           ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+          onPressed: () => context.pop(),
         ),
         title: const Text(
           'About My Store',

@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:my_store/core/caching/hive/user_hive_helper.dart';
 import 'package:my_store/core/dependency_injection/set_up_dependencies.dart';
 import 'package:my_store/core/utils/colors.dart';
-import 'package:my_store/core/utils/constant.dart';
 import 'package:my_store/features/add/ui/add_view.dart';
-import 'package:my_store/features/cart/data/repo/cart_repo.dart';
-import 'package:my_store/features/cart/logic/cart_cubit.dart';
 import 'package:my_store/features/cart/ui/views/cart_view.dart';
 import 'package:my_store/features/favorites/data/repo/favorites_repo.dart';
 import 'package:my_store/features/favorites/manager/favorites_cubit.dart';
@@ -18,7 +14,8 @@ import 'package:my_store/features/layout/ui/widgets/favorites_nav_icon_with_badg
 import 'package:my_store/features/layout/ui/widgets/layout_nav_icon.dart';
 
 class LayoutView extends StatefulWidget {
-  const LayoutView({super.key});
+  final int initialIndex;
+  const LayoutView({super.key, this.initialIndex = 0});
 
   @override
   State<LayoutView> createState() => _LayoutViewState();
@@ -26,25 +23,17 @@ class LayoutView extends StatefulWidget {
 
 class _LayoutViewState extends State<LayoutView> {
   int _currentIndex = 0;
-  late final CartCubit _cartCubit;
   late final FavoritesCubit _favoritesCubit;
 
   @override
   void initState() {
     super.initState();
-    final userId =
-        getIt<UserHiveHelper>().getUser(ConstantVariable.uId)?.uid ?? '';
-    _cartCubit = CartCubit(
-      repo: CartRepo(firestore: getIt()),
-      userId: userId,
-    );
-    _cartCubit.listenToCart();
     _favoritesCubit = FavoritesCubit(favoritesRepo: getIt<FavoritesRepoImpl>());
+    _currentIndex = widget.initialIndex;
   }
 
   @override
   void dispose() {
-    _cartCubit.close();
     _favoritesCubit.close();
     super.dispose();
   }

@@ -73,7 +73,7 @@ class FavoriteTile extends StatelessWidget {
           subtitle: Text(
             "${product.price?.toStringAsFixed(0) ?? "0"} LE",
             style: TextStyle(
-              color: theme.primaryColor,
+              color: theme.textTheme.bodyMedium?.color,
               fontWeight: FontWeight.bold,
               fontSize: 16,
             ),
